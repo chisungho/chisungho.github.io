@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스마트 타임워치 | csh2020</title>
+<meta name="description" content="설치 없이 바로 쓰는 무료 세계 시계, 정밀 스톱워치(랩 기록), 30초 타이머와 뽀모도로 25분 타이머">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+colors: {
+brand: {
+50: '#f0f7ff',
+100: '#e0effe',
+200: '#bae0fd',
+500: '#3b82f6',
+600: '#2563eb',
+700: '#1d4ed8',
+}
+},
+fontFamily: {
+sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+mono: ['JetBrains Mono', 'SFMono-Regular', 'Menlo', 'monospace']
+}
+}
+}
+}
+</script>
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+body {
+font-family: 'Pretendard', sans-serif;
+user-select: none;
+-webkit-tap-highlight-color: transparent;
+}
+.font-mono-numbers {
+font-family: 'JetBrains Mono', monospace;
+font-variant-numeric: tabular-nums;
+}
+.progress-ring__circle {
+transition: stroke-dashoffset 0.1s linear;
+transform: rotate(-90deg);
+transform-origin: 50% 50%;
+}
+/* Smooth card shadow & light glow */
+.bright-glow {
+box-shadow: 0 10px 35px -5px rgba(59, 130, 246, 0.12), 0 8px 16px -6px rgba(15, 23, 42, 0.04);
+}
+.sun-glow {
+box-shadow: 0 0 25px rgba(251, 191, 36, 0.25);
+}
+::-webkit-scrollbar {
+width: 5px;
+}
+::-webkit-scrollbar-track {
+background: transparent;
+}
+::-webkit-scrollbar-thumb {
+background: rgba(148, 163, 184, 0.4);
+border-radius: 9999px;
+}
+</style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-sky-50/50 to-indigo-50/40 text-slate-800 min-h-screen flex flex-col transition-colors duration-300">
+<!-- Top Navigation Header -->
+<header class="w-full max-w-4xl mx-auto px-4 py-4 sm:py-5 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-500 to-sky-400 flex items-center justify-center shadow-lg shadow-blue-500/25 ring-2 ring-white">
+<i data-lucide="globe" class="w-6 h-6 text-white"></i>
+</div>
+<div>
+<h1 class="text-xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-800">
+Smart Timewatch
+</h1>
+<p class="text-xs font-medium text-slate-500">세계 시계 · 정밀 스톱워치 · 30초 타이머</p>
+</div>
+</div>
+<!-- Quick Utilities -->
+<div class="flex items-center gap-2">
+<a href="https://csh2020.kro.kr/" target="_top" title="홈으로" class="p-2.5 rounded-xl bg-white/90 hover:bg-white border border-slate-200/80 text-slate-600 hover:text-blue-600 shadow-sm transition-all active:scale-95">
+<i data-lucide="home" class="w-5 h-5"></i>
+</a>
+<button id="soundToggleBtn" title="사운드 토글" class="p-2.5 rounded-xl bg-white/90 hover:bg-white border border-slate-200/80 text-slate-600 hover:text-blue-600 shadow-sm transition-all active:scale-95">
+<i data-lucide="volume-2" id="soundIcon" class="w-5 h-5"></i>
+</button>
+<div class="hidden sm:flex items-center px-3 py-1.5 rounded-xl bg-white/80 border border-slate-200/70 text-xs font-semibold text-slate-600 shadow-sm gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+<span id="headerLiveTime" class="font-mono-numbers">00:00:00</span>
+</div>
+</div>
+</header>
+<!-- Main Container -->
+<main class="flex-1 w-full max-w-4xl mx-auto px-4 pb-12 flex flex-col">
+<!-- Navigation Tabs (World Clock / Stopwatch / Timer) -->
+<div class="flex p-1.5 bg-white/70 backdrop-blur-md rounded-2xl border border-slate-200/80 mb-6 shadow-sm">
+<button id="tabWorldClock" class="flex-1 py-2.5 px-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white shadow-md shadow-blue-500/20">
+<i data-lucide="globe" class="w-4 h-4"></i>
+<span>세계 시계</span>
+</button>
+<button id="tabStopwatch" class="flex-1 py-2.5 px-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-blue-600">
+<i data-lucide="timer" class="w-4 h-4"></i>
+<span>스톱워치</span>
+</button>
+<button id="tabTimer" class="flex-1 py-2.5 px-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-blue-600">
+<i data-lucide="hourglass" class="w-4 h-4"></i>
+<span>타이머</span>
+</button>
+</div>
+<!-- 1. WORLD CLOCK VIEW -->
+<section id="worldClockSection" class="flex flex-col gap-6">
+<!-- Featured Hero City: Seoul (Current User Origin) -->
+<div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-600 text-white p-6 sm:p-8 shadow-xl shadow-blue-600/15">
+<div class="absolute -right-8 -bottom-10 opacity-10 pointer-events-none">
+<i data-lucide="compass" class="w-64 h-64 text-white"></i>
+</div>
+<div class="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+<div>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold mb-3">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+기준 시간대 (대한민국)
+</div>
+<h2 class="text-2xl sm:text-3xl font-extrabold flex items-center gap-2">
+서울, 대한민국 <span class="text-sm font-normal text-sky-200">KST (UTC+9)</span>
+</h2>
+<p id="seoulDateDisplay" class="text-sm text-sky-100 mt-1">2026년 10월 14일 수요일</p>
+</div>
+<div class="text-left sm:text-right">
+<div id="seoulTimeDisplay" class="text-5xl sm:text-6xl font-black font-mono-numbers tracking-tight drop-shadow-sm">
+00:00:00
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Search & Filter Info -->
+<div class="flex items-center justify-between text-xs text-slate-500 px-1">
+<span class="font-semibold text-slate-700 flex items-center gap-1.5">
+<i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-500"></i> 주요 글로벌 거점 도시
+</span>
+<span id="liveSyncStatus" class="flex items-center gap-1 text-slate-400">
+<i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-500"></i> 실시간 동기화 중
+</span>
+</div>
+<!-- World Cities Grid -->
+<div id="worldClockGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Dynamically injected via JavaScript -->
+</div>
+</section>
+<!-- 2. STOPWATCH VIEW -->
+<section id="stopwatchSection" class="hidden flex flex-col items-center">
+<!-- Visual Circle & Display -->
+<div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center my-4 bright-glow rounded-full bg-white/90 border border-slate-200/80 backdrop-blur-xl">
+<svg class="w-full h-full -rotate-90 p-3">
+<circle cx="50%" cy="50%" r="44%" stroke="#e2e8f0" stroke-width="6" fill="transparent" />
+<circle id="stopwatchProgressCircle" cx="50%" cy="50%" r="44%" stroke="currentColor" stroke-width="6" stroke-linecap="round" class="text-blue-500 progress-ring__circle" stroke-dasharray="880" stroke-dashoffset="0" fill="transparent" />
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<div class="text-xs uppercase tracking-widest text-blue-600 font-bold mb-1">Elapsed Time</div>
+<div class="text-4xl sm:text-5xl font-black font-mono-numbers tracking-tight text-slate-900 flex items-baseline">
+<span id="swMinutes">00</span><span class="text-blue-500 mx-0.5">:</span><span id="swSeconds">00</span>
+<span class="text-xl sm:text-2xl text-slate-400 font-semibold ml-1">.<span id="swMilliseconds">00</span></span>
+</div>
+<div id="swCurrentLapTime" class="text-xs text-slate-500 font-mono-numbers mt-2 opacity-0 transition-opacity">
+현재 랩: <span class="text-slate-800 font-semibold">00:00.00</span>
+</div>
+</div>
+</div>
+<!-- Control Buttons -->
+<div class="flex items-center justify-center gap-4 mt-2 w-full max-w-sm">
+<button id="swLapResetBtn" class="flex-1 py-3.5 px-5 rounded-2xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold shadow-sm transition active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2" disabled>
+<i data-lucide="flag" class="w-4 h-4"></i>
+<span id="swLapResetText">랩</span>
+</button>
+<button id="swStartPauseBtn" class="flex-[1.4] py-3.5 px-6 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base shadow-lg shadow-blue-500/25 transition active:scale-95 flex items-center justify-center gap-2">
+<i data-lucide="play" id="swStartIcon" class="w-5 h-5 fill-current"></i>
+<span id="swStartPauseText">시작</span>
+</button>
+</div>
+<div class="text-xs text-slate-400 mt-4 flex gap-4">
+<span><kbd class="px-1.5 py-0.5 bg-white border border-slate-200 shadow-sm rounded text-[10px] text-slate-600">Space</kbd> 시작/정지</span>
+<span><kbd class="px-1.5 py-0.5 bg-white border border-slate-200 shadow-sm rounded text-[10px] text-slate-600">L</kbd> 랩</span>
+<span><kbd class="px-1.5 py-0.5 bg-white border border-slate-200 shadow-sm rounded text-[10px] text-slate-600">R</kbd> 리셋</span>
+</div>
+<!-- Lap List Container -->
+<div id="lapContainer" class="w-full mt-6 bg-white/80 border border-slate-200/90 rounded-2xl p-4 shadow-sm backdrop-blur-md hidden transition-all">
+<div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-2">
+<span class="text-xs font-bold text-slate-600">랩 기록 (<span id="lapCount">0</span>)</span>
+<button id="copyLapsBtn" class="text-xs text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1">
+<i data-lucide="copy" class="w-3.5 h-3.5"></i>
+<span>복사하기</span>
+</button>
+</div>
+<div class="max-h-56 overflow-y-auto pr-1 space-y-1.5" id="lapList">
+<!-- Dynamically inserted laps -->
+</div>
+</div>
+</section>
+<!-- 3. TIMER VIEW (Default set to 30 Seconds) -->
+<section id="timerSection" class="hidden flex flex-col items-center">
+<!-- Timer Circle Gauge -->
+<div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center my-4 bright-glow rounded-full bg-white/90 border border-slate-200/80 backdrop-blur-xl">
+<svg class="w-full h-full -rotate-90 p-3">
+<circle cx="50%" cy="50%" r="44%" stroke="#e2e8f0" stroke-width="6" fill="transparent" />
+<circle id="timerProgressCircle" cx="50%" cy="50%" r="44%" stroke="currentColor" stroke-width="6" stroke-linecap="round" class="text-emerald-500 progress-ring__circle" stroke-dasharray="880" stroke-dashoffset="0" fill="transparent" />
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<!-- Time Setup Inputs (Default: 00h : 00m : 30s) -->
+<div id="timerInputMode" class="flex items-center gap-1 font-mono-numbers">
+<div class="flex flex-col items-center">
+<input type="number" id="inputHours" min="0" max="99" value="00" class="w-16 h-14 bg-slate-50 border border-slate-300 rounded-xl text-center text-3xl font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner">
+<span class="text-[10px] text-slate-400 mt-1 font-bold uppercase font-sans">시간</span>
+</div>
+<span class="text-2xl font-bold text-slate-300 self-center mb-4">:</span>
+<div class="flex flex-col items-center">
+<input type="number" id="inputMinutes" min="0" max="59" value="00" class="w-16 h-14 bg-slate-50 border border-slate-300 rounded-xl text-center text-3xl font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner">
+<span class="text-[10px] text-slate-400 mt-1 font-bold uppercase font-sans">분</span>
+</div>
+<span class="text-2xl font-bold text-slate-300 self-center mb-4">:</span>
+<div class="flex flex-col items-center">
+<input type="number" id="inputSeconds" min="0" max="59" value="30" class="w-16 h-14 bg-blue-50/70 border-2 border-blue-400 rounded-xl text-center text-3xl font-bold text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-inner">
+<span class="text-[10px] text-blue-600 mt-1 font-bold uppercase font-sans">초</span>
+</div>
+</div>
+<!-- Running Timer Display Mode -->
+<div id="timerRunningMode" class="hidden flex flex-col items-center">
+<div class="text-xs uppercase tracking-widest text-emerald-600 font-bold mb-1">Time Remaining</div>
+<div class="text-4xl sm:text-5xl font-black font-mono-numbers tracking-tight text-slate-900">
+<span id="tmDisplay">00:00:30</span>
+</div>
+<div id="timerOriginalTime" class="text-xs text-slate-400 mt-2 font-mono-numbers font-medium">
+기본 세팅: 30초
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Preset Buttons -->
+<div id="timerPresets" class="flex flex-wrap gap-2 justify-center max-w-sm mb-4">
+<button class="preset-btn px-3.5 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-blue-50 border border-blue-200 text-blue-600 shadow-sm transition active:scale-95" data-secs="30">30초 기본</button>
+<button class="preset-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 shadow-sm transition active:scale-95" data-secs="60">+1분</button>
+<button class="preset-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 shadow-sm transition active:scale-95" data-secs="180">+3분</button>
+<button class="preset-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 shadow-sm transition active:scale-95" data-secs="300">+5분</button>
+<button class="preset-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 shadow-sm transition active:scale-95" data-secs="1500">뽀모도로 (25분)</button>
+</div>
+<!-- Timer Controls -->
+<div class="flex items-center justify-center gap-4 w-full max-w-sm">
+<button id="tmResetBtn" class="flex-1 py-3.5 px-5 rounded-2xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold shadow-sm transition active:scale-95 flex items-center justify-center gap-2">
+<i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+<span>30초 리셋</span>
+</button>
+<button id="tmStartPauseBtn" class="flex-[1.4] py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-base shadow-lg shadow-emerald-500/25 transition active:scale-95 flex items-center justify-center gap-2">
+<i data-lucide="play" id="tmStartIcon" class="w-5 h-5 fill-current"></i>
+<span id="tmStartPauseText">시작</span>
+</button>
+</div>
+</section>
+<!-- Custom In-App Toast Notification -->
+<div id="toastNotification" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white px-5 py-3 rounded-2xl shadow-xl backdrop-blur-md flex items-center gap-3 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-3 z-50">
+<i data-lucide="bell" id="toastIcon" class="w-5 h-5 text-blue-400"></i>
+<span id="toastMessage" class="text-sm font-medium">알림 메시지</span>
+</div>
+</main>
+<script>
+// Initialize Lucide Icons
+lucide.createIcons();
+// 1. Web Audio Synthesizer (Zero External Dependencies)
+const AudioEngine = {
+ctx: null,
+enabled: true,
+init() {
+if (!this.ctx) {
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+if (AudioContext) this.ctx = new AudioContext();
+}
+},
+playBeep(freq = 600, duration = 0.08, type = 'sine') {
+if (!this.enabled) return;
+this.init();
+if (!this.ctx) return;
+if (this.ctx.state === 'suspended') this.ctx.resume();
+const osc = this.ctx.createOscillator();
+const gain = this.ctx.createGain();
+osc.type = type;
+osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+osc.connect(gain);
+gain.connect(this.ctx.destination);
+osc.start();
+osc.stop(this.ctx.currentTime + duration);
+},
+playAlarm() {
+if (!this.enabled) return;
+this.init();
+const notes = [523.25, 659.25, 783.99, 1046.50, 783.99, 1046.50];
+notes.forEach((freq, idx) => {
+setTimeout(() => {
+this.playBeep(freq, 0.16, 'triangle');
+}, idx * 140);
+});
+}
+};
+// Sound toggle handler
+const soundToggleBtn = document.getElementById('soundToggleBtn');
+const soundIcon = document.getElementById('soundIcon');
+soundToggleBtn.addEventListener('click', () => {
+AudioEngine.enabled = !AudioEngine.enabled;
+soundIcon.setAttribute('data-lucide', AudioEngine.enabled ? 'volume-2' : 'volume-x');
+lucide.createIcons();
+showToast(AudioEngine.enabled ? '사운드가 켜졌습니다.' : '사운드가 음소거되었습니다.');
+});
+function showToast(msg, icon = 'bell') {
+const toast = document.getElementById('toastNotification');
+const toastMsg = document.getElementById('toastMessage');
+const toastIco = document.getElementById('toastIcon');
+toastMsg.textContent = msg;
+toastIco.setAttribute('data-lucide', icon);
+lucide.createIcons();
+toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+toast.classList.add('opacity-100', 'translate-y-0');
+clearTimeout(window.toastTimer);
+window.toastTimer = setTimeout(() => {
+toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+toast.classList.remove('opacity-100', 'translate-y-0');
+}, 2400);
+}
+// 2. World Clock Data & Engine
+const WORLD_CITIES = [
+{ name: '도쿄', country: '일본', zone: 'Asia/Tokyo', flag: 'JP', tag: 'JST' },
+{ name: '뉴욕', country: '미국', zone: 'America/New_York', flag: 'US', tag: 'EST/EDT' },
+{ name: '런던', country: '영국', zone: 'Europe/London', flag: 'GB', tag: 'GMT/BST' },
+{ name: '파리', country: '프랑스', zone: 'Europe/Paris', flag: 'FR', tag: 'CET/CEST' },
+{ name: '시드니', country: '호주', zone: 'Australia/Sydney', flag: 'AU', tag: 'AEST/AEDT' },
+{ name: '싱가포르', country: '싱가포르', zone: 'Asia/Singapore', flag: 'SG', tag: 'SGT' },
+{ name: '로스앤젤레스', country: '미국', zone: 'America/Los_Angeles', flag: 'US', tag: 'PST/PDT' },
+{ name: '베를린', country: '독일', zone: 'Europe/Berlin', flag: 'DE', tag: 'CET/CEST' },
+{ name: '두바이', country: '아랍에미리트', zone: 'Asia/Dubai', flag: 'AE', tag: 'GST' }
+];
+const worldClockGrid = document.getElementById('worldClockGrid');
+const seoulDateDisplay = document.getElementById('seoulDateDisplay');
+const seoulTimeDisplay = document.getElementById('seoulTimeDisplay');
+const headerLiveTime = document.getElementById('headerLiveTime');
+function getTimeDiffText(targetZone) {
+try {
+const now = new Date();
+const seoulDate = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+const targetDate = new Date(now.toLocaleString('en-US', { timeZone: targetZone }));
+const diffHours = Math.round((targetDate - seoulDate) / (1000 * 60 * 60));
+if (diffHours === 0) return '시차 없음';
+return diffHours > 0 ? `+${diffHours}시간` : `${diffHours}시간`;
+} catch (e) {
+return '';
+}
+}
+function initWorldClockCards() {
+worldClockGrid.innerHTML = WORLD_CITIES.map((city, idx) => `
+<div class="bg-white/85 hover:bg-white border border-slate-200/90 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between" id="city-card-${idx}">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-2">
+<span class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 text-xs font-black flex items-center justify-center border border-blue-100">${city.flag}</span>
+<div>
+<h4 class="font-bold text-slate-800 text-base leading-tight">${city.name}</h4>
+<p class="text-xs text-slate-400 font-medium">${city.country} · ${city.tag}</p>
+</div>
+</div>
+<span class="text-[11px] px-2 py-0.5 rounded-full font-bold bg-slate-100 text-slate-600 city-diff font-mono-numbers">
+${getTimeDiffText(city.zone)}
+</span>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex items-baseline justify-between">
+<span class="text-xs text-slate-400 city-date font-medium">--월 --일</span>
+<span class="text-2xl font-black font-mono-numbers text-slate-800 city-time tracking-tight">00:00:00</span>
+</div>
+</div>
+`).join('');
+}
+function updateWorldClocks() {
+const now = new Date();
+// Update Seoul Hero Clock
+const seoulOptions = { timeZone: 'Asia/Seoul', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+const seoulTimeStr = new Intl.DateTimeFormat('ko-KR', seoulOptions).format(now);
+const seoulDateOptions = { timeZone: 'Asia/Seoul', year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+seoulDateDisplay.textContent = new Intl.DateTimeFormat('ko-KR', seoulDateOptions).format(now);
+seoulTimeDisplay.textContent = seoulTimeStr;
+headerLiveTime.textContent = seoulTimeStr;
+// Update Grid Cards
+WORLD_CITIES.forEach((city, idx) => {
+const card = document.getElementById(`city-card-${idx}`);
+if (!card) return;
+const timeFormatter = new Intl.DateTimeFormat('ko-KR', {
+timeZone: city.zone,
+hour12: false,
+hour: '2-digit',
+minute: '2-digit',
+second: '2-digit'
+});
+const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
+timeZone: city.zone,
+month: 'short',
+day: 'numeric',
+weekday: 'short'
+});
+const timeEl = card.querySelector('.city-time');
+const dateEl = card.querySelector('.city-date');
+if (timeEl) timeEl.textContent = timeFormatter.format(now);
+if (dateEl) dateEl.textContent = dateFormatter.format(now);
+});
+}
+initWorldClockCards();
+updateWorldClocks();
+setInterval(updateWorldClocks, 1000);
+// Tab Switching Logic
+const tabWorldClock = document.getElementById('tabWorldClock');
+const tabStopwatch = document.getElementById('tabStopwatch');
+const tabTimer = document.getElementById('tabTimer');
+const worldClockSection = document.getElementById('worldClockSection');
+const stopwatchSection = document.getElementById('stopwatchSection');
+const timerSection = document.getElementById('timerSection');
+function setActiveTab(activeBtn, activeSection) {
+[tabWorldClock, tabStopwatch, tabTimer].forEach(b => {
+b.className = "flex-1 py-2.5 px-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:text-blue-600";
+});
+[worldClockSection, stopwatchSection, timerSection].forEach(s => s.classList.add('hidden'));
+activeBtn.className = "flex-1 py-2.5 px-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 bg-blue-600 text-white shadow-md shadow-blue-500/20";
+activeSection.classList.remove('hidden');
+}
+tabWorldClock.addEventListener('click', () => setActiveTab(tabWorldClock, worldClockSection));
+tabStopwatch.addEventListener('click', () => setActiveTab(tabStopwatch, stopwatchSection));
+tabTimer.addEventListener('click', () => setActiveTab(tabTimer, timerSection));
+// 3. STOPWATCH IMPLEMENTATION
+let swRunning = false;
+let swStartTime = 0;
+let swElapsedTime = 0;
+let swInterval = null;
+let swLaps = [];
+let swLastLapTime = 0;
+const swMinutesEl = document.getElementById('swMinutes');
+const swSecondsEl = document.getElementById('swSeconds');
+const swMillisecondsEl = document.getElementById('swMilliseconds');
+const swStartPauseBtn = document.getElementById('swStartPauseBtn');
+const swStartPauseText = document.getElementById('swStartPauseText');
+const swStartIcon = document.getElementById('swStartIcon');
+const swLapResetBtn = document.getElementById('swLapResetBtn');
+const swLapResetText = document.getElementById('swLapResetText');
+const swProgressCircle = document.getElementById('stopwatchProgressCircle');
+const lapContainer = document.getElementById('lapContainer');
+const lapList = document.getElementById('lapList');
+const lapCount = document.getElementById('lapCount');
+const swCurrentLapTime = document.getElementById('swCurrentLapTime');
+const circumference = 2 * Math.PI * 140;
+swProgressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+function formatTime(ms) {
+const totalSeconds = Math.floor(ms / 1000);
+const minutes = Math.floor(totalSeconds / 60);
+const seconds = totalSeconds % 60;
+const milliseconds = Math.floor((ms % 1000) / 10);
+const mm = String(minutes).padStart(2, '0');
+const ss = String(seconds).padStart(2, '0');
+const msStr = String(milliseconds).padStart(2, '0');
+return { mm, ss, msStr, full: `${mm}:${ss}.${msStr}` };
+}
+function updateStopwatchDisplay() {
+const formatted = formatTime(swElapsedTime);
+swMinutesEl.textContent = formatted.mm;
+swSecondsEl.textContent = formatted.ss;
+swMillisecondsEl.textContent = formatted.msStr;
+const secModulo = (swElapsedTime % 60000) / 60000;
+const offset = circumference - (secModulo * circumference);
+swProgressCircle.style.strokeDashoffset = offset;
+if (swLaps.length > 0 && swRunning) {
+const curLapElapsed = swElapsedTime - swLastLapTime;
+swCurrentLapTime.classList.remove('opacity-0');
+swCurrentLapTime.querySelector('span').textContent = formatTime(curLapElapsed).full;
+}
+}
+function toggleStopwatch() {
+AudioEngine.playBeep(swRunning ? 440 : 660);
+if (!swRunning) {
+swRunning = true;
+swStartTime = performance.now() - swElapsedTime;
+swInterval = requestAnimationFrame(swTick);
+swStartPauseText.textContent = '일시정지';
+swStartIcon.setAttribute('data-lucide', 'pause');
+swStartPauseBtn.className = "flex-[1.4] py-3.5 px-6 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-base shadow-lg shadow-rose-500/25 transition active:scale-95 flex items-center justify-center gap-2";
+swLapResetBtn.disabled = false;
+swLapResetText.textContent = '랩';
+swLapResetBtn.querySelector('i').setAttribute('data-lucide', 'flag');
+} else {
+swRunning = false;
+cancelAnimationFrame(swInterval);
+swStartPauseText.textContent = '계속';
+swStartIcon.setAttribute('data-lucide', 'play');
+swStartPauseBtn.className = "flex-[1.4] py-3.5 px-6 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base shadow-lg shadow-blue-500/25 transition active:scale-95 flex items-center justify-center gap-2";
+swLapResetText.textContent = '초기화';
+swLapResetBtn.querySelector('i').setAttribute('data-lucide', 'rotate-ccw');
+}
+lucide.createIcons();
+}
+function swTick() {
+if (!swRunning) return;
+swElapsedTime = performance.now() - swStartTime;
+updateStopwatchDisplay();
+swInterval = requestAnimationFrame(swTick);
+}
+function recordLap() {
+if (!swRunning) {
+resetStopwatch();
+return;
+}
+AudioEngine.playBeep(840, 0.05);
+const lapTime = swElapsedTime - swLastLapTime;
+swLastLapTime = swElapsedTime;
+swLaps.unshift({
+number: swLaps.length + 1,
+lapTime: lapTime,
+overallTime: swElapsedTime
+});
+renderLaps();
+}
+function renderLaps() {
+if (swLaps.length === 0) {
+lapContainer.classList.add('hidden');
+return;
+}
+lapContainer.classList.remove('hidden');
+lapCount.textContent = swLaps.length;
+let fastest = Infinity;
+let slowest = -1;
+if (swLaps.length >= 2) {
+swLaps.forEach(l => {
+if (l.lapTime < fastest) fastest = l.lapTime;
+if (l.lapTime > slowest) slowest = l.lapTime;
+});
+}
+lapList.innerHTML = swLaps.map(l => {
+let tagClass = 'text-slate-700';
+let badge = '';
+if (swLaps.length >= 2) {
+if (l.lapTime === fastest) {
+tagClass = 'text-emerald-600 font-bold';
+badge = '<span class="text-[10px] ml-2 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 font-bold">최고</span>';
+} else if (l.lapTime === slowest) {
+tagClass = 'text-rose-600 font-bold';
+badge = '<span class="text-[10px] ml-2 px-1.5 py-0.5 rounded bg-rose-100 text-rose-700 font-bold">최저</span>';
+}
+}
+return `
+<div class="flex items-center justify-between py-2 px-3 rounded-xl bg-slate-50/70 border border-slate-100 text-xs font-mono-numbers">
+<span class="text-slate-500 font-semibold">랩 ${String(l.number).padStart(2, '0')}${badge}</span>
+<span class="${tagClass}">+${formatTime(l.lapTime).full}</span>
+<span class="text-slate-400 font-medium">${formatTime(l.overallTime).full}</span>
+</div>
+`;
+}).join('');
+}
+function resetStopwatch() {
+AudioEngine.playBeep(350, 0.08);
+swRunning = false;
+cancelAnimationFrame(swInterval);
+swElapsedTime = 0;
+swLastLapTime = 0;
+swLaps = [];
+updateStopwatchDisplay();
+swProgressCircle.style.strokeDashoffset = 0;
+swCurrentLapTime.classList.add('opacity-0');
+swStartPauseText.textContent = '시작';
+swStartIcon.setAttribute('data-lucide', 'play');
+swStartPauseBtn.className = "flex-[1.4] py-3.5 px-6 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base shadow-lg shadow-blue-500/25 transition active:scale-95 flex items-center justify-center gap-2";
+swLapResetBtn.disabled = true;
+swLapResetText.textContent = '랩';
+swLapResetBtn.querySelector('i').setAttribute('data-lucide', 'flag');
+renderLaps();
+lucide.createIcons();
+}
+swStartPauseBtn.addEventListener('click', toggleStopwatch);
+swLapResetBtn.addEventListener('click', recordLap);
+document.getElementById('copyLapsBtn').addEventListener('click', () => {
+if (swLaps.length === 0) return;
+const text = swLaps.map(l => `랩 ${l.number}: 구간 +${formatTime(l.lapTime).full} (전체 ${formatTime(l.overallTime).full})`).reverse().join('\n');
+const textarea = document.createElement('textarea');
+textarea.value = text;
+document.body.appendChild(textarea);
+textarea.select();
+document.execCommand('copy');
+document.body.removeChild(textarea);
+showToast('랩 기록이 클립보드에 복사되었습니다!', 'check-check');
+});
+// 4. TIMER IMPLEMENTATION (Default 30 Seconds)
+const DEFAULT_TIMER_SECONDS = 30;
+let tmRunning = false;
+let tmTotalSeconds = DEFAULT_TIMER_SECONDS;
+let tmRemainingSeconds = DEFAULT_TIMER_SECONDS;
+let tmInterval = null;
+const inputHours = document.getElementById('inputHours');
+const inputMinutes = document.getElementById('inputMinutes');
+const inputSeconds = document.getElementById('inputSeconds');
+const timerInputMode = document.getElementById('timerInputMode');
+const timerRunningMode = document.getElementById('timerRunningMode');
+const tmDisplay = document.getElementById('tmDisplay');
+const timerOriginalTime = document.getElementById('timerOriginalTime');
+const tmStartPauseBtn = document.getElementById('tmStartPauseBtn');
+const tmStartPauseText = document.getElementById('tmStartPauseText');
+const tmStartIcon = document.getElementById('tmStartIcon');
+const tmResetBtn = document.getElementById('tmResetBtn');
+const timerProgressCircle = document.getElementById('timerProgressCircle');
+timerProgressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+function formatTimerDisplay(totalSec) {
+const h = Math.floor(totalSec / 3600);
+const m = Math.floor((totalSec % 3600) / 60);
+const s = totalSec % 60;
+return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+function getSecondsFromInputs() {
+const h = parseInt(inputHours.value, 10) || 0;
+const m = parseInt(inputMinutes.value, 10) || 0;
+const s = parseInt(inputSeconds.value, 10) || 0;
+return (h * 3600) + (m * 60) + s;
+}
+function setInputsFromSeconds(sec) {
+const h = Math.floor(sec / 3600);
+const m = Math.floor((sec % 3600) / 60);
+const s = sec % 60;
+inputHours.value = String(h).padStart(2, '0');
+inputMinutes.value = String(m).padStart(2, '0');
+inputSeconds.value = String(s).padStart(2, '0');
+}
+// Input sanitizing
+[inputHours, inputMinutes, inputSeconds].forEach(inp => {
+inp.addEventListener('change', () => {
+let val = parseInt(inp.value, 10);
+if (isNaN(val) || val < 0) val = 0;
+if (inp !== inputHours && val > 59) val = 59;
+inp.value = String(val).padStart(2, '0');
+});
+});
+// Preset buttons
+document.querySelectorAll('.preset-btn').forEach(btn => {
+btn.addEventListener('click', () => {
+AudioEngine.playBeep(520, 0.05);
+const addSec = parseInt(btn.getAttribute('data-secs'), 10);
+if (!tmRunning) {
+if (addSec === 30 && btn.textContent.includes('30초 기본')) {
+setInputsFromSeconds(30);
+showToast('30초로 설정되었습니다.');
+} else if (addSec === 1500) {
+setInputsFromSeconds(1500);
+showToast('뽀모도로(25분)로 설정되었습니다.');
+} else {
+const current = getSecondsFromInputs();
+setInputsFromSeconds(current + addSec);
+showToast(`+${Math.floor(addSec / 60)}분이 추가되었습니다.`);
+}
+} else {
+tmRemainingSeconds += addSec;
+tmTotalSeconds += addSec;
+updateTimerDisplay();
+showToast(`+${addSec >= 60 ? Math.floor(addSec/60) + '분' : addSec + '초'}이 연장되었습니다.`);
+}
+});
+});
+function updateTimerDisplay() {
+tmDisplay.textContent = formatTimerDisplay(tmRemainingSeconds);
+const progress = tmTotalSeconds > 0 ? (tmRemainingSeconds / tmTotalSeconds) : 0;
+const offset = circumference - (progress * circumference);
+timerProgressCircle.style.strokeDashoffset = offset;
+}
+function toggleTimer() {
+AudioEngine.playBeep(tmRunning ? 440 : 660);
+if (!tmRunning) {
+if (tmRemainingSeconds <= 0 || timerInputMode.classList.contains('flex')) {
+const inputSec = getSecondsFromInputs();
+if (inputSec <= 0) {
+showToast('설정할 시간을 입력해주세요.', 'alert-circle');
+return;
+}
+tmTotalSeconds = inputSec;
+tmRemainingSeconds = inputSec;
+timerOriginalTime.textContent = `설정 시간: ${formatTimerDisplay(tmTotalSeconds)}`;
+}
+tmRunning = true;
+timerInputMode.classList.remove('flex');
+timerInputMode.classList.add('hidden');
+timerRunningMode.classList.remove('hidden');
+tmStartPauseText.textContent = '일시정지';
+tmStartIcon.setAttribute('data-lucide', 'pause');
+tmStartPauseBtn.className = "flex-[1.4] py-3.5 px-6 rounded-2xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-base shadow-lg shadow-amber-600/25 transition active:scale-95 flex items-center justify-center gap-2";
+updateTimerDisplay();
+tmInterval = setInterval(() => {
+if (tmRemainingSeconds > 0) {
+tmRemainingSeconds--;
+updateTimerDisplay();
+} else {
+clearInterval(tmInterval);
+tmRunning = false;
+AudioEngine.playAlarm();
+showToast('⏰ 30초 타이머가 종료되었습니다!', 'bell-ring');
+tmStartPauseText.textContent = '다시 시작';
+tmStartIcon.setAttribute('data-lucide', 'play');
+tmStartPauseBtn.className = "flex-[1.4] py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-base shadow-lg shadow-emerald-500/25 transition active:scale-95 flex items-center justify-center gap-2";
+}
+}, 1000);
+} else {
+tmRunning = false;
+clearInterval(tmInterval);
+tmStartPauseText.textContent = '계속';
+tmStartIcon.setAttribute('data-lucide', 'play');
+tmStartPauseBtn.className = "flex-[1.4] py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-base shadow-lg shadow-emerald-500/25 transition active:scale-95 flex items-center justify-center gap-2";
+}
+lucide.createIcons();
+}
+function resetTimer() {
+AudioEngine.playBeep(350, 0.08);
+tmRunning = false;
+clearInterval(tmInterval);
+timerInputMode.classList.add('flex');
+timerInputMode.classList.remove('hidden');
+timerRunningMode.classList.add('hidden');
+// Reset to 30 seconds default
+setInputsFromSeconds(DEFAULT_TIMER_SECONDS);
+tmTotalSeconds = DEFAULT_TIMER_SECONDS;
+tmRemainingSeconds = DEFAULT_TIMER_SECONDS;
+timerProgressCircle.style.strokeDashoffset = 0;
+tmStartPauseText.textContent = '시작';
+tmStartIcon.setAttribute('data-lucide', 'play');
+tmStartPauseBtn.className = "flex-[1.4] py-3.5 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-base shadow-lg shadow-emerald-500/25 transition active:scale-95 flex items-center justify-center gap-2";
+lucide.createIcons();
+}
+tmStartPauseBtn.addEventListener('click', toggleTimer);
+tmResetBtn.addEventListener('click', resetTimer);
+// Keyboard Shortcuts
+window.addEventListener('keydown', (e) => {
+if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+if (e.code === 'Space') {
+e.preventDefault();
+if (!stopwatchSection.classList.contains('hidden')) {
+toggleStopwatch();
+} else if (!timerSection.classList.contains('hidden')) {
+toggleTimer();
+}
+} else if (e.code === 'KeyL') {
+if (!stopwatchSection.classList.contains('hidden')) {
+recordLap();
+}
+} else if (e.code === 'KeyR') {
+if (!stopwatchSection.classList.contains('hidden')) {
+resetStopwatch();
+} else if (!timerSection.classList.contains('hidden')) {
+resetTimer();
+}
+}
+});
+// Initialize display with 30s default
+setInputsFromSeconds(DEFAULT_TIMER_SECONDS);
+updateStopwatchDisplay();
+</script>
+</body>
+</html>

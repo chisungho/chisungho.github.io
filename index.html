@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>새로운 도전을 위하여 | csh2020</title>
+<meta name="description" content="경제·정책, 생활정보, 여행, 스포츠 소식을 표로 쉽게 정리하는 블로그 '새로운 도전을 위하여'">
+<meta name="google-site-verification" content="WxuQOogiUurYeVQETj5Wj7RlfqjtQFFNyIurKWU4Fo8" />
+<meta name="naver-site-verification" content="a244cad04d92c12797a903c8a047c60c2fb545c5" />
+<meta name="keywords" content="새로운 도전을 위하여, csh2020, 경제 정책, 생활 정보, 지원금, 연말정산, 단풍, 가을야구, 생활 꿀팁">
+<meta name="author" content="csh2020">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="새로운 도전을 위하여">
+<meta property="og:title" content="새로운 도전을 위하여 | 생활도구">
+<meta property="og:description" content="생활에 유용한 도구와 정보를 한곳에서 만나보세요.">
+<meta property="og:url" content="/">
+<meta property="og:image" content="https://blogthumb.pstatic.net/MjAyNjEwMTRfMTg4/MDAxNzkxOTUwMzg1MzIw.37uFN4uVhHv9lGF6Q9jZb3Ry68a5PHLCRJpEmyDnJ38g.LTERmaKWcMTjqryhB0FkTpl6tPM7meUU7yCZ4su1eMAg.PNG/danpung_cover.png?type=w800">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#064e3b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2316a34a'/%3E%3Ctext x='32' y='44' font-size='34' font-weight='700' text-anchor='middle' fill='%23fde047' font-family='Arial'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--g:#16a34a;--g2:#0f766e;--gd:#064e3b;--y:#fde047;--ink:#0f172a;--mute:#64748b;--line:#e2e8f0;--bg:#f8fafc}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+mark{background:linear-gradient(transparent 55%,var(--y) 55%);color:inherit;padding:0 2px}
+/* nav */
+nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px}
+.logo i{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--g),var(--g2));display:grid;place-items:center;color:#fff;font-style:normal;font-size:15px}
+nav ul{display:flex;gap:26px;list-style:none;font-size:15px;font-weight:600;color:#334155}
+nav ul a:hover{color:var(--g)}
+/* hero */
+.hero{position:relative;overflow:hidden;background:radial-gradient(1200px 500px at 85% -10%,#22c55e55,transparent 60%),radial-gradient(800px 400px at -10% 110%,#fde04733,transparent 60%),linear-gradient(160deg,#052e1f,#064e3b 55%,#0f766e);color:#fff;padding:96px 0 110px;text-align:center}
+.hero .badge{display:inline-flex;gap:8px;align-items:center;padding:6px 14px;border:1px solid #ffffff33;border-radius:99px;font-size:13px;background:#ffffff12}
+.hero .badge b{width:8px;height:8px;border-radius:50%;background:var(--y);box-shadow:0 0 12px var(--y)}
+.hero h1{font-size:clamp(34px,6vw,60px);font-weight:900;letter-spacing:-.03em;line-height:1.2;margin:22px 0 18px}
+.hero h1 span{color:var(--y)}
+.hero p{font-size:clamp(16px,2.2vw,19px);color:#d1fae5;max-width:640px;margin:0 auto}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:14px;font-weight:700;font-size:15px;transition:.2s}
+.btn.p{background:var(--y);color:#1a1a1a;box-shadow:0 10px 30px -10px #fde047aa}
+.btn.s{background:#ffffff14;border:1px solid #ffffff40;color:#fff}
+.btn:hover{transform:translateY(-2px)}
+.stats{display:flex;justify-content:center;gap:48px;margin-top:56px;flex-wrap:wrap}
+.stats div{font-size:13px;color:#a7f3d0}
+.stats strong{display:block;font-size:28px;color:#fff;font-weight:800}
+/* requested homepage restyle */
+.hero .badge{display:none!important}
+.hero h1.hero-title{font-size:clamp(54px,9vw,96px);font-weight:900;letter-spacing:-.04em;line-height:1.08;margin:0 0 34px;color:transparent!important;-webkit-text-fill-color:transparent;background:linear-gradient(90deg,#ff3b30 0%,#ff9500 16.6%,#ffd60a 33.2%,#34c759 49.8%,#00c7be 66.4%,#0a84ff 83%,#bf5af2 100%);background-size:200% 100%;background-clip:text;-webkit-background-clip:text;animation:lifeToolRainbowBlink 2.8s ease-in-out infinite}
+@keyframes lifeToolRainbowBlink{0%,100%{opacity:1;background-position:0% 50%}50%{opacity:.72;background-position:100% 50%}}
+.hero .cta{margin-top:44px}
+.hero .btn.p{font-size:30px;padding:28px 52px;border-radius:24px;min-height:88px;animation:blogButtonColors 3.6s ease-in-out infinite;box-shadow:0 14px 36px -10px #22c55e99}
+@keyframes blogButtonColors{0%,100%{background:#16a34a;color:#fff;box-shadow:0 14px 36px -10px #16a34aaa}33%{background:#0f766e;color:#fff;box-shadow:0 14px 36px -10px #0f766eaa}66%{background:#fde047;color:#1a1a1a;box-shadow:0 14px 36px -10px #fde047aa}}
+#topics{display:none!important}
+@media(max-width:560px){.hero .btn.p{font-size:24px;padding:22px 34px;min-height:72px}}
+@media(prefers-reduced-motion:reduce){.hero h1.hero-title,.hero .btn.p{animation:none}}
+/* sections */
+section{padding:84px 0}
+.head{text-align:center;margin-bottom:44px}
+.head small{color:var(--g);font-weight:800;letter-spacing:.12em;font-size:13px}
+.head h2{font-size:clamp(26px,4vw,36px);font-weight:800;letter-spacing:-.02em;margin-top:6px;color:var(--gd)}
+.head p{color:var(--mute);margin-top:8px}
+/* topics */
+.topics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.topic{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 22px;transition:.25s}
+.topic:hover{transform:translateY(-4px);box-shadow:0 20px 40px -20px #0f766e55;border-color:#86efac}
+.topic .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;font-weight:900;color:#15803d;margin-bottom:14px;background:#dcfce7}
+.topic h3{font-size:18px;font-weight:800;margin-bottom:6px}
+.topic p{font-size:14px;color:var(--mute)}
+/* posts */
+.posts-bg{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.post{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff;transition:.25s}
+.post:hover{transform:translateY(-4px);box-shadow:0 22px 44px -22px #06402f66}
+.post .top{height:118px;padding:18px;display:flex;align-items:flex-end;color:#fff;font-weight:800;font-size:13px;letter-spacing:.04em}
+.post .body{padding:18px 20px 22px;flex:1;display:flex;flex-direction:column}
+.post h3{font-size:16.5px;font-weight:700;line-height:1.45;margin-bottom:12px;flex:1}
+.post .meta{font-size:13px;color:var(--mute);display:flex;justify-content:space-between}
+.post .meta b{color:var(--g)}
+.c1{background:linear-gradient(135deg,#f97316,#dc2626)}
+.c2{background:linear-gradient(135deg,#16a34a,#0f766e)}
+.c3{background:linear-gradient(135deg,#2563eb,#1e3a8a)}
+.c4{background:linear-gradient(135deg,#0ea5e9,#0f766e)}
+.c5{background:linear-gradient(135deg,#a855f7,#6d28d9)}
+.c6{background:linear-gradient(135deg,#eab308,#ca8a04)}
+.more{text-align:center;margin-top:34px}
+.more a{color:var(--g);font-weight:700;border-bottom:2px solid var(--y)}
+/* channels */
+.chs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.ch{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;transition:.2s}
+.ch:hover{border-color:var(--g);box-shadow:0 12px 28px -18px #16a34a}
+.ch i{width:44px;height:44px;flex:none;border-radius:12px;display:grid;place-items:center;color:#fff;font-style:normal;font-weight:900;font-size:15px}
+.ch b{display:block;font-size:15px}
+.ch span{font-size:12.5px;color:var(--mute)}
+/* about */
+.about{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+.about h2{font-size:clamp(26px,4vw,34px);font-weight:800;color:var(--gd);letter-spacing:-.02em;line-height:1.35}
+.about p{color:#475569;margin-top:16px}
+table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;font-size:15px}
+th,td{padding:14px 18px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:#f0fdf4;color:var(--gd);width:34%;font-weight:700}
+tr:last-child th,tr:last-child td{border-bottom:0}
+/* timewatch top bar */
+.twbar{display:block;width:100%;border:0;cursor:pointer;font:inherit;background:linear-gradient(90deg,#0f172a,#312e81 55%,#1e3a8a);color:#e0e7ff;text-align:left}
+.twbar .wrap{display:flex;align-items:center;gap:14px;height:40px;font-size:13.5px;white-space:nowrap;overflow:hidden}
+.twbar .ico{width:24px;height:24px;flex:none;border-radius:7px;display:grid;place-items:center;background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;font-size:13px}
+.twbar .nm{font-weight:800;color:#fff}
+.twbar .now{font-weight:800;color:var(--y);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.twbar .cities{display:flex;gap:14px;color:#a5b4fc;font-variant-numeric:tabular-nums;overflow:hidden}
+.twbar .cities b{color:#e0e7ff;font-weight:600;margin-left:4px}
+.twbar .go{margin-left:auto;flex:none;font-weight:700;color:#1a1a1a;background:var(--y);padding:4px 11px;border-radius:8px;font-size:12.5px}
+.twbar:hover .go{background:#fff}
+.hero .twbar{max-width:760px;margin:34px auto 0;border-radius:16px;border:1px solid #ffffff2e;box-shadow:0 18px 40px -18px #000a;overflow:hidden;transition:.2s}
+.hero .twbar:hover{transform:translateY(-2px)}
+.hero .twbar .wrap{height:52px;padding:0 16px;font-size:14px}
+.twov{position:fixed;inset:0;z-index:1000;background:#0f172a;display:none;flex-direction:column}
+.twov.on{display:flex}
+.twov .tb{flex:none;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 22px 0 18px;background:linear-gradient(90deg,#0f172a,#312e81);color:#fff;font-weight:800;font-size:15px}
+.twov .tb span{display:flex;align-items:center;gap:10px}
+.twov .tb button{font:inherit;font-size:14px;font-weight:700;border:0;cursor:pointer;background:var(--y);color:#1a1a1a;padding:7px 14px;border-radius:10px}
+.twov iframe{flex:1;width:100%;border:0;background:#f8fafc}
+body.twlock{overflow:hidden}
+@media(max-width:700px){.twbar .cities{display:none}}
+@media(max-width:420px){.twbar .nm{display:none}}
+/* fin compare */
+.fin-bg{background:#fff;border-bottom:1px solid var(--line)}
+.finbox{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#f8fafc;box-shadow:0 24px 50px -30px #0f172a55}
+.finbox .fb{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;background:linear-gradient(90deg,#1e3a8a,#1d4ed8 60%,#0f766e);color:#fff}
+.finbox .fb b{font-size:15.5px;font-weight:800;display:flex;align-items:center;gap:10px}
+.finbox .fb b i{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:var(--y);color:#1a1a1a;font-style:normal;font-weight:900}
+.finbox .fb small{color:#bfdbfe;font-size:12.5px;margin-left:4px;font-weight:500}
+.finbox .fb a{flex:none;background:var(--y);color:#1a1a1a;font-weight:700;font-size:13px;padding:7px 13px;border-radius:10px}
+.finbox .fb a:hover{background:#fff}
+.finbox iframe{display:block;width:100%;height:860px;border:0;background:#f8fafc}
+.finnote{font-size:12.5px;color:var(--mute);text-align:center;margin-top:12px}
+.finbox.saju .fb{background:linear-gradient(90deg,#4a1d17,#7a2b22 60%,#a8801f)}
+.finbox.saju .fb small{color:#fde2d6}
+.finbox.saju iframe{background:#eef0ec}
+@media(max-width:700px){.finbox .fb small{display:none}.finbox iframe{height:760px}}
+.hero .twbar.pg{margin-top:12px}
+.twbar.fin{background:linear-gradient(90deg,#0f172a,#1e40af 55%,#0f766e)}
+.twbar.fin .ico{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+.twbar.sj{background:linear-gradient(90deg,#2a0f0b,#7a2b22 55%,#a8801f)}
+.twbar.sj .ico{background:linear-gradient(135deg,#b45309,#f59e0b);font-family:serif}
+.twbar .desc{color:#cbd5e1;overflow:hidden;text-overflow:ellipsis}
+.twbar.sj .desc{color:#fde2d6}
+.twbar.dr{background:linear-gradient(90deg,#070913,#3b1d6e 55%,#8b5cf6)}
+.twbar.dr .ico{background:linear-gradient(135deg,#7c3aed,#f59e0b)}
+.twbar.dr .desc{color:#ddd6fe}
+.finbox.dream .fb{background:linear-gradient(90deg,#070913,#3b1d6e 60%,#8b5cf6)}
+.finbox.dream .fb small{color:#ddd6fe}
+.finbox.dream iframe{background:#070913}
+@media(max-width:560px){.twbar .desc{display:none}}
+.vc{display:inline-flex;align-items:stretch;margin-top:30px;border:1px solid #ffffff33;border-radius:16px;overflow:hidden;background:#ffffff10;backdrop-filter:blur(6px)}
+.vc div{padding:10px 22px;text-align:center;min-width:120px}
+.vc div+div{border-left:1px solid #ffffff2e}
+.vc small{display:block;font-size:12.5px;color:#a7f3d0;font-weight:600;letter-spacing:.04em}
+.vc b{display:block;font-size:24px;font-weight:900;color:#fde047;font-variant-numeric:tabular-nums}
+.vc div:last-child b{color:#fff}
+.vc .lbl{display:flex;align-items:center;gap:6px;justify-content:center}
+.vc .dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e}
+/* footer */
+footer{background:#052e1f;color:#a7f3d0;padding:44px 0;text-align:center;font-size:14px}
+footer b{color:#fff}
+footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
+@media(max-width:900px){.topics,.chs{grid-template-columns:repeat(2,1fr)}.posts{grid-template-columns:repeat(2,1fr)}.about{grid-template-columns:1fr}nav ul{display:none}}
+@media(max-width:560px){.posts,.topics{grid-template-columns:1fr}.chs{grid-template-columns:1fr}.hero{padding:72px 0 84px}.stats{gap:28px}section{padding:64px 0}}
+
+/* refreshed, clean mobile-first app launcher */
+.hero{padding:72px 0 76px;background:radial-gradient(700px 340px at 90% 0%,#bbf7d0aa,transparent 65%),radial-gradient(520px 300px at 0% 90%,#dbeafe99,transparent 70%),linear-gradient(145deg,#f8fafc,#ecfdf5 56%,#eff6ff);color:#0f172a}
+.hero .badge{border-color:#d1fae5;background:#ffffffc9;color:#047857;font-weight:700}
+.hero .badge b{background:#22c55e;box-shadow:0 0 12px #22c55e66}
+.hero h1{margin:18px 0 12px;color:#0f172a}
+.hero h1 span{color:#059669}
+.hero p{color:#475569}
+.hero .twbar{max-width:none;width:100%;margin:0;border:1px solid #e2e8f0;border-radius:18px;background:#fff;color:#0f172a;text-align:left;box-shadow:0 12px 28px -20px #0f172a66}
+.hero .twbar:hover{transform:translateY(-3px);box-shadow:0 18px 34px -18px #0f172a44}
+.hero .twbar.pg{margin-top:0}
+.hero .twbar .wrap{height:auto;min-height:82px;padding:14px 16px;display:flex;gap:12px;white-space:normal;overflow:visible;font-size:15px}
+.hero .twbar .ico{width:42px;height:42px;border-radius:14px;font-size:18px;background:#dcfce7;color:#047857}
+.hero .twbar.fin .ico{background:#dbeafe;color:#1d4ed8}
+.hero .twbar.sj .ico{background:#ffedd5;color:#c2410c}
+.hero .twbar.dr .ico{background:#ede9fe;color:#6d28d9}
+.hero .twbar .nm{display:block;color:#0f172a;font-size:15px;font-weight:800}
+.hero .twbar .now,.hero .twbar .cities,.hero .twbar .desc{display:none}
+.hero .twbar .go{margin-left:auto;background:#f1f5f9;color:#475569;white-space:nowrap}
+.hero .twbar:hover .go{background:#dcfce7;color:#047857}
+.hero .app-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:760px;margin:30px auto 0}
+.hero .cta{margin-top:24px}
+.hero .btn.p{background:#059669;color:#fff;box-shadow:0 10px 24px -12px #05966999}
+.hero .btn.s{background:#fff;border:1px solid #dbe3ea;color:#334155}
+.stats{margin-top:34px}
+.stats div{color:#475569}.stats strong{color:#0f766e}
+.vc{background:#ffffffc9;border-color:#dbe3ea}.vc small{color:#475569}.vc b{color:#059669}.vc div:last-child b{color:#0f172a}.vc div+div{border-color:#e2e8f0}
+@media(max-width:560px){.hero{padding:48px 0 58px}.hero .app-grid{gap:10px;margin-top:24px}.hero .twbar .wrap{min-height:72px;padding:11px 10px;gap:9px}.hero .twbar .ico{width:36px;height:36px}.hero .twbar .nm{font-size:13.5px}.hero .twbar .go{font-size:11px;padding:4px 7px}.hero .cta{margin-top:20px}.hero .stats{gap:18px;margin-top:24px}.hero .stats strong{font-size:22px}.vc div{padding:8px 12px;min-width:100px}}
+@media(max-width:360px){.hero .twbar .go{display:none}.hero .twbar .nm{font-size:13px}}
+
+.hero .app-grid #twOpen{max-width:none;margin:0;border-radius:16px;height:100%}
+.hero .app-grid #twOpen .now,.hero .app-grid #twOpen .cities{display:none}
+.hero .app-grid #twOpen .wrap{height:100%;min-height:74px;padding:12px 14px}
+
+.to-top{position:fixed;right:20px;bottom:22px;z-index:90;border:0;border-radius:999px;padding:12px 16px;background:linear-gradient(135deg,#16a34a,#0f766e);color:#fff;font:700 14px Pretendard,-apple-system,"Malgun Gothic",sans-serif;box-shadow:0 8px 24px #064e3b44;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .2s,transform .2s,visibility .2s}
+.to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+.to-top:hover{background:#064e3b}
+@media(max-width:560px){.to-top{right:14px;bottom:16px;padding:11px 14px}}
+
+/* Hide embedded lower tool sections; hero shortcuts still open apps in the overlay. */
+#fin,#saju,#dream{display:none!important}
+
+
+</style>
+</head>
+<body>
+<button class="to-top" id="toTopBtn" type="button" aria-label="메인 화면 처음으로">↑ 처음으로</button>
+
+
+
+<nav><div class="wrap">
+  <a class="logo" href="#"><i>新</i>새로운 도전을 위하여</a>
+  <ul><li><a href="#" id="twNav">타임위치</a></li><li><a href="#fin">은행금리비교</a></li><li><a href="#saju">사주팔자보기</a></li><li><a href="#dream">꿈해몽</a></li><li><a href="#" id="ltNav">로또번호</a></li><li><a href="#posts">최신 글</a></li><li><a href="#channels">채널</a></li><li><a href="#about">소개</a></li></ul>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <h1 class="hero-title">생활도구</h1>
+
+  <div class="app-grid">
+  <button class="twbar" id="twOpen" type="button" aria-label="타임위치 열기"><div class="wrap">
+    <span class="ico">⏱</span><span class="nm">타임위치</span><span class="now" id="twNow">서울 --:--:--</span>
+    <span class="cities"><span>뉴욕<b id="twNY">--:--</b></span><span>런던<b id="twLD">--:--</b></span><span>파리<b id="twPR">--:--</b></span><span>도쿄<b id="twTK">--:--</b></span></span>
+    <span class="go">전체 화면 ⤢</span>
+  </div></button>
+  <button class="twbar pg fin" id="pgFin" type="button" data-src="/fin" data-title="은행금리비교" aria-label="은행금리비교 열기"><div class="wrap">
+    <span class="ico">₩</span><span class="nm">은행금리비교</span><span class="desc">예·적금 금리 · 환율 계산기 · 만기 이자</span>
+    <span class="go">전체 화면 ⤢</span>
+  </div></button>
+  <button class="twbar pg sj" id="pgSaju" type="button" data-src="/saju" data-title="사주팔자보기" aria-label="사주팔자보기 열기"><div class="wrap">
+    <span class="ico">命</span><span class="nm">사주팔자보기</span><span class="desc">네 기둥 · 대운 · 오늘의 운세</span>
+    <span class="go">전체 화면 ⤢</span>
+  </div></button>
+  <button class="twbar pg dr" id="pgDream" type="button" data-src="/dream" data-title="꿈해몽" aria-label="꿈해몽 열기"><div class="wrap">
+    <span class="ico">☾</span><span class="nm">꿈해몽</span><span class="desc">주역 64괘 · 전통 해몽 · 심리 분석</span>
+    <span class="go">전체 화면 ⤢</span>
+  </div></button>
+  <button class="twbar pg lt" id="pgLotto" type="button" data-src="/lotto" data-title="로또번호생성기" aria-label="로또번호생성기 열기"><div class="wrap">
+    <span class="ico">★</span><span class="nm">로또번호생성기</span><span class="desc">역대 당첨번호 통계 · 5게임 조합</span>
+    <span class="go">전체 화면 ⤢</span>
+  </div></button></div>
+  <div class="cta">
+    <a class="btn p" href="https://blog.naver.com/csh2020" target="_blank">블로그 바로가기 →</a>
+
+  </div>
+  <div class="vc" aria-label="방문자 수"><div><small class="lbl"><i class="dot"></i>오늘 방문</small><b id="vcToday">-</b></div><div><small>누적 방문</small><b id="vcTotal">-</b></div></div>
+</div></header>
+
+<section id="fin" class="fin-bg"><div class="wrap">
+  <div class="head"><small>MONEY TOOL</small><h2>은행별 예금금리 &amp; 환율 비교</h2><p>예·적금 금리 비교, 환율 계산기, <mark>만기 이자 계산</mark>까지 한 화면에서</p></div>
+  <div class="finbox">
+    <div class="fb"><b><i>₩</i>FinCompare<small>예·적금 금리 · 환율 · 이자 계산기</small></b><a href="/fin" target="_blank">전체 화면 ↗</a></div>
+    <iframe src="/fin" title="은행별 예금금리 및 환율 비교" loading="lazy"></iframe>
+  </div>
+  <p class="finnote">* 금리·환율은 참고용 예시 데이터이며, 실제 가입 전 각 은행 공시를 확인하세요.</p>
+</div></section>
+
+<section id="saju"><div class="wrap">
+  <div class="head"><small>FORTUNE TOOL</small><h2>사주팔자 만세력</h2><p>생년월일과 태어난 시만 넣으면 <mark>네 기둥 · 대운 · 오늘의 운세</mark>까지</p></div>
+  <div class="finbox saju">
+    <div class="fb"><b><i>命</i>사주 만세력<small>원국 · 오행 · 대운 · 세운 · 종합분석표</small></b><a href="/saju" target="_blank">전체 화면 ↗</a></div>
+    <iframe src="/saju" title="사주팔자 만세력" loading="lazy"></iframe>
+  </div>
+  <p class="finnote">* 전통 명리 규칙으로 자동 계산한 참고용 풀이입니다. 입력한 정보는 내 브라우저에만 저장됩니다.</p>
+</div></section>
+
+<section id="dream"><div class="wrap">
+  <div class="head"><small>DREAM TOOL</small><h2>꿈해몽 대백과</h2><p>어젯밤 꿈을 검색하면 <mark>주역 64괘 · 전통 해몽 · 심리 분석</mark>으로 풀어 드립니다</p></div>
+  <div class="finbox dream">
+    <div class="fb"><b><i>☾</i>꿈해몽 대백과<small>주역 64괘 · 길흉 판정 · 행운 조언</small></b><a href="/dream" target="_blank">전체 화면 ↗</a></div>
+    <iframe src="/dream" title="꿈해몽 대백과" loading="lazy"></iframe>
+  </div>
+  <p class="finnote">* 전통 해몽과 주역 괘상을 바탕으로 한 재미·참고용 풀이입니다.</p>
+</div></section>
+
+<section id="topics"><div class="wrap">
+  <div class="head"><small>TOPICS</small><h2>이런 이야기를 다룹니다</h2><p>생활에 바로 쓰이는 정보를 <mark>요약 + 표</mark>로 정리합니다</p></div>
+  <div class="topics">
+    <div class="topic"><div class="ic">₩</div><h3>경제 · 정책</h3><p>새로 바뀌는 제도, 지원금, 연말정산과 절세 팁</p></div>
+    <div class="topic"><div class="ic" style="background:#fef9c3">⌂</div><h3>생활 정보</h3><p>난방비 절약, 경조사 기준 등 알아두면 좋은 꿀팁</p></div>
+    <div class="topic"><div class="ic" style="background:#ffedd5">✿</div><h3>여행 · 날씨</h3><p>단풍 절정 시기, 기상이변, 계절별 나들이 정보</p></div>
+    <div class="topic"><div class="ic" style="background:#dbeafe">◎</div><h3>스포츠</h3><p>프로야구·MLB 일정과 대진, 경기 분석</p></div>
+  </div>
+</div></section>
+
+<section id="posts" class="posts-bg"><div class="wrap">
+  <div class="head"><small>LATEST</small><h2>최신 글</h2><p>블로그에 새로 올라온 이야기</p></div>
+  <div class="posts">
+    <a class="post" href="https://blog.naver.com/csh2020/224441318994" target="_blank"><div class="top c1">여행 · 단풍</div><div class="body"><h3>2026 내장산 단풍 절정 시기 | 무등산·백양사까지 호남 단풍 총정리</h3><div class="meta"><span>2026.10.14</span><b>읽기 →</b></div></div></a>
+    <a class="post" href="https://blog.naver.com/csh2020/224441101249" target="_blank"><div class="top c2">정책</div><div class="body"><h3>양육비 선지급 소득기준 폐지 총정리 | 10월 29일부터 누구나 신청</h3><div class="meta"><span>2026.10.13</span><b>읽기 →</b></div></div></a>
+    <a class="post" href="https://blog.naver.com/csh2020/224440560084" target="_blank"><div class="top c3">스포츠</div><div class="body"><h3>가을야구 일정·대진 총정리: 와일드카드부터 한국시리즈까지</h3><div class="meta"><span>2026.10.13</span><b>읽기 →</b></div></div></a>
+    <a class="post" href="https://blog.naver.com/csh2020/224440382459" target="_blank"><div class="top c4">생활 꿀팁</div><div class="body"><h3>겨울 난방비 전기요금 생활 꿀팁 총정리 | 에너지바우처·독감 무료접종까지</h3><div class="meta"><span>2026.10.13</span><b>읽기 →</b></div></div></a>
+    <a class="post" href="https://blog.naver.com/csh2020/224439909535" target="_blank"><div class="top c5">생활 정보</div><div class="body"><h3>결혼 축의금 / 장례 부의금 기준</h3><div class="meta"><span>2026.10.12</span><b>읽기 →</b></div></div></a>
+    <a class="post" href="https://blog.naver.com/csh2020/224439322315" target="_blank"><div class="top c6">경제 · 절세</div><div class="body"><h3>2026 연말정산 미리보기 & 소득공제 황금비율 맞추는 꿀팁</h3><div class="meta"><span>2026.10.12</span><b>읽기 →</b></div></div></a>
+  </div>
+  <div class="more"><a href="https://blog.naver.com/csh2020" target="_blank">전체 글 보러 가기</a></div>
+</div></section>
+
+<section id="channels"><div class="wrap">
+  <div class="head"><small>CHANNELS</small><h2>어디서든 만나보세요</h2><p>같은 소식을 다양한 채널에서 받아볼 수 있습니다</p></div>
+  <div class="chs">
+    <a class="ch" href="https://link.inpock.co.kr/hgy671001" target="_blank"><i style="background:#ff5a1f">in</i><div><b>인포크링크</b><span>모든 채널 한 번에 보기</span></div></a>
+    <a class="ch" href="https://blog.naver.com/csh2020" target="_blank"><i style="background:#03c75a">N</i><div><b>네이버 블로그</b><span>새로운 도전을 위하여</span></div></a>
+    <a class="ch" href="https://everyknowledgetv.blogspot.com" target="_blank"><i style="background:#f57c00">B</i><div><b>Blogger</b><span>세상의모든지식TV</span></div></a>
+    <a class="ch" href="https://myblog21350.tistory.com" target="_blank"><i style="background:#eb531f">T</i><div><b>티스토리</b><span>myblog21350</span></div></a>
+    <a class="ch" href="https://www.youtube.com/channel/UCTRxfcjoRxqMRT_X75N0new" target="_blank"><i style="background:#ff0000">▶</i><div><b>YouTube</b><span>세상의 모든 지식 TV</span></div></a>
+    <a class="ch" href="https://band.us/page/104755528" target="_blank"><i style="background:#2dc66b">b</i><div><b>네이버 밴드</b><span>새로운 것에 대한 도전</span></div></a>
+    <a class="ch" href="https://www.instagram.com/jiseungho7" target="_blank"><i style="background:linear-gradient(45deg,#f9a825,#e91e63,#7b1fa2)">IG</i><div><b>Instagram</b><span>@jiseungho7</span></div></a>
+    <a class="ch" href="https://www.tiktok.com/@hochi285" target="_blank"><i style="background:#111">♪</i><div><b>TikTok</b><span>@hochi285</span></div></a>
+    <a class="ch" href="https://x.com/hochi7650273690" target="_blank"><i style="background:#000">X</i><div><b>X (트위터)</b><span>@hochi7650273690</span></div></a>
+  </div>
+</div></section>
+
+<section id="about" style="padding-top:20px"><div class="wrap about">
+  <div>
+    <small style="color:var(--g);font-weight:800;letter-spacing:.12em;font-size:13px">ABOUT</small>
+    <h2>매일 조금씩,<br><mark>새로운 도전</mark>을 기록합니다</h2>
+    <p>광주에서 운영하는 정보 블로그입니다. 뉴스와 정책 자료를 꼼꼼히 확인해, 누구나 30초 만에 핵심을 파악할 수 있도록 요약과 표로 정리합니다.</p>
+  </div>
+  <table>
+    <tr><th>블로그명</th><td>새로운 도전을 위하여</td></tr>
+    <tr><th>주소</th><td>csh2020.kro.kr</td></tr>
+    <tr><th>주요 분야</th><td>경제·정책 / 생활 / 여행 / 스포츠</td></tr>
+    <tr><th>소통</th><td>네이버 블로그 댓글 · 이웃 신청 환영</td></tr>
+  </table>
+</div></section>
+
+<footer><div class="wrap">
+  <b>새로운 도전을 위하여</b> · csh2020.kro.kr
+  <div class="sub">© 2026 csh2020. All rights reserved.</div>
+</div></footer>
+
+<div class="twov" id="pgOv" role="dialog" aria-label="프로그램">
+  <div class="tb"><span id="pgTitle"></span><button type="button" id="pgClose">닫기 ✕</button></div>
+  <iframe id="pgFrame" title="프로그램"></iframe>
+</div>
+<script>
+(function(){
+  var ov=document.getElementById('pgOv'),fr=document.getElementById('pgFrame'),tt=document.getElementById('pgTitle');
+  function open(b){var s=b.getAttribute('data-src');if(fr.getAttribute('src')!==s)fr.setAttribute('src',s);tt.textContent=b.getAttribute('data-title');ov.classList.add('on');document.body.classList.add('twlock');}
+  function close(){ov.classList.remove('on');document.body.classList.remove('twlock');}
+  ['pgFin','pgSaju','pgDream','pgLotto'].forEach(function(id){var b=document.getElementById(id);b.addEventListener('click',function(){open(b);});});
+  var ln=document.getElementById('ltNav');if(ln)ln.addEventListener('click',function(e){e.preventDefault();open(document.getElementById('pgLotto'));});
+  document.getElementById('pgClose').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+<div class="twov" id="twOv" role="dialog" aria-label="스마트 타임워치">
+  <div class="tb"><span>⏱ 스마트 타임워치</span><button type="button" id="twClose">닫기 ✕</button></div>
+  <iframe id="twFrame" title="스마트 타임워치" allow="autoplay; fullscreen"></iframe>
+</div>
+<script>
+(function(){
+  function fmt(z,s){return new Intl.DateTimeFormat('ko-KR',{timeZone:z,hour12:false,hour:'2-digit',minute:'2-digit',second:s?'2-digit':undefined}).format(new Date());}
+  function tick(){
+    document.getElementById('twNow').textContent='서울 '+fmt('Asia/Seoul',1);
+    document.getElementById('twNY').textContent=fmt('America/New_York');
+    document.getElementById('twLD').textContent=fmt('Europe/London');
+    document.getElementById('twPR').textContent=fmt('Europe/Paris');
+    document.getElementById('twTK').textContent=fmt('Asia/Tokyo');
+  }
+  tick();setInterval(tick,1000);
+  var ov=document.getElementById('twOv'),fr=document.getElementById('twFrame');
+  function open(e){if(e)e.preventDefault();if(!fr.getAttribute('src'))fr.setAttribute('src','/timer');ov.classList.add('on');document.body.classList.add('twlock');}
+  function close(){ov.classList.remove('on');document.body.classList.remove('twlock');}
+  document.getElementById('twOpen').addEventListener('click',open);
+  document.getElementById('twNav').addEventListener('click',open);
+  document.getElementById('twClose').addEventListener('click',close);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+<script>
+(function(){
+  var B='https://abacus.jasoncameron.dev/',NS='csh2020kro';
+  var d=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date()).replace(/-/g,'');
+  var seen=false;try{seen=localStorage.getItem('vc_day')===d;}catch(e){}
+  var op=seen?'get':'hit';
+  function f(n){return Number(n||0).toLocaleString('ko-KR');}
+  function call(key,id){return fetch(B+op+'/'+NS+'/'+key).then(function(r){return r.ok?r.json():{value:0};}).then(function(j){document.getElementById(id).textContent=f(j.value);}).catch(function(){});}
+  Promise.all([call('day-'+d,'vcToday'),call('total','vcTotal')]).then(function(){if(!seen){try{localStorage.setItem('vc_day',d);}catch(e){}}});
+})();
+</script>
+<script>
+(function(){var b=document.getElementById("toTopBtn");function update(){b.classList.toggle("show",window.scrollY>280)}window.addEventListener("scroll",update,{passive:true});update();b.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})});})();
+</script>
+<style>
+
+/* Modern smart / IT visual refresh: preserve content order and app placement. */
+:root{--g:#22d3ee;--g2:#6366f1;--gd:#dff7ff;--y:#a3e635;--ink:#e7f0ff;--mute:#9aacc3;--line:rgba(148,190,224,.18);--bg:#07111f}
+body{background:radial-gradient(900px 500px at 90% 0%,rgba(34,211,238,.08),transparent 65%),#07111f;color:#e7f0ff}
+nav{background:rgba(7,17,31,.82);border-bottom:1px solid rgba(148,190,224,.16);box-shadow:0 10px 30px rgba(0,0,0,.16)}
+.logo i{background:linear-gradient(135deg,#22d3ee,#6366f1);box-shadow:0 0 22px rgba(34,211,238,.22)}
+nav ul{color:#c6d7ec}
+nav ul a:hover{color:#67e8f9}
+.hero{background:radial-gradient(900px 420px at 85% 5%,rgba(34,211,238,.18),transparent 60%),radial-gradient(650px 360px at 5% 100%,rgba(99,102,241,.19),transparent 62%),linear-gradient(145deg,#07111f 0%,#0c1b30 55%,#102642 100%);color:#f3f8ff}
+.hero .badge{background:rgba(16,31,52,.72);border-color:rgba(103,232,249,.26);color:#b8d9eb;box-shadow:inset 0 1px rgba(255,255,255,.07)}
+.hero .badge b{background:#a3e635;box-shadow:0 0 14px rgba(163,230,53,.75)}
+.hero h1 span{color:#67e8f9;text-shadow:0 0 28px rgba(34,211,238,.24)}
+.hero p{color:#b4c8df}
+.hero .app-grid .twbar{background:linear-gradient(145deg,rgba(15,31,52,.98),rgba(16,38,65,.95));border:1px solid rgba(103,232,249,.2);box-shadow:0 16px 44px rgba(0,0,0,.26),inset 0 1px rgba(255,255,255,.07);backdrop-filter:blur(12px)}
+.hero .app-grid .twbar:hover{border-color:rgba(103,232,249,.58);box-shadow:0 20px 48px rgba(0,0,0,.34),0 0 24px rgba(34,211,238,.09)}
+.hero .app-grid .twbar .ico{background:linear-gradient(135deg,#0e7490,#4f46e5);color:#e0fbff}
+.hero .app-grid .twbar .nm{color:#effaff}
+.hero .app-grid .twbar .go{background:#a3e635;color:#102016}
+.hero .btn.p{background:linear-gradient(135deg,#22d3ee,#818cf8);color:#07111f;box-shadow:0 12px 30px rgba(34,211,238,.19)}
+.hero .btn.s{background:rgba(15,31,52,.82);border-color:rgba(148,190,224,.24);color:#d9e8f8}
+section .head small{color:#67e8f9}
+section .head h2{color:#eaf7ff}
+section .head p{color:#9aacc3}
+#topics{background:linear-gradient(180deg,#081423,#0a1727);border-top:1px solid rgba(148,190,224,.08);border-bottom:1px solid rgba(148,190,224,.1)}
+.topic{background:linear-gradient(145deg,rgba(16,33,55,.96),rgba(12,25,42,.96));border-color:rgba(148,190,224,.17);box-shadow:0 12px 32px rgba(0,0,0,.16)}
+.topic:hover{border-color:rgba(103,232,249,.46);box-shadow:0 18px 42px rgba(0,0,0,.28),0 0 22px rgba(34,211,238,.08)}
+.topic .ic{background:linear-gradient(135deg,rgba(34,211,238,.16),rgba(99,102,241,.2));color:#67e8f9}
+.topic h3{color:#e9f5ff}
+.topic p{color:#9aacc3}
+#channels{background:#07111f;border-top:1px solid rgba(148,190,224,.1)}
+.ch{background:linear-gradient(145deg,rgba(15,31,52,.96),rgba(11,24,41,.96));border-color:rgba(148,190,224,.16);box-shadow:0 10px 28px rgba(0,0,0,.15)}
+.ch:hover{border-color:rgba(103,232,249,.48);box-shadow:0 16px 36px rgba(0,0,0,.26)}
+#about{background:linear-gradient(145deg,#0a1829,#0c1f34);border-top:1px solid rgba(148,190,224,.1)}
+.about h2{color:#e7f6ff}
+.about p{color:#a9bdd3}
+table{background:#0d1d30;color:#dceafa;border-color:rgba(148,190,224,.18)}
+th,td{border-color:rgba(148,190,224,.15)}
+footer{background:#050d18;color:#9db6cc;border-top:1px solid rgba(103,232,249,.16)}
+footer b{color:#e9f8ff}
+.to-top{background:linear-gradient(135deg,#22d3ee,#6366f1);color:#07111f;box-shadow:0 12px 30px rgba(34,211,238,.24)}
+.to-top:hover{background:linear-gradient(135deg,#67e8f9,#a3e635)}
+#posts{display:none!important}
+nav li:has(>a[href="#posts"]){display:none!important}
+.hero .cta a[href="#posts"]{display:none!important}
+
+.hero h1{color:#f3f8ff!important;text-shadow:0 4px 26px rgba(0,0,0,.24)}
+.hero h1 span{color:#67e8f9!important}
+.hero .stats div{color:#9db7d0!important}
+.hero .stats strong{color:#67e8f9!important}
+.vc{background:rgba(15,31,52,.88)!important;border-color:rgba(103,232,249,.22)!important;box-shadow:0 10px 30px rgba(0,0,0,.22)!important}
+.vc small{color:#9db7d0!important}
+.vc b{color:#67e8f9!important}
+.vc div:last-child b{color:#a3e635!important}
+.vc div+div{border-color:rgba(148,190,224,.18)!important}
+
+
+/* Mobile responsive layout: applies to phones only; tablet rules stay unchanged. */
+@media(max-width:560px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  .wrap{width:100%;max-width:100%;padding-left:16px;padding-right:16px}
+  .hero{padding:36px 0 48px}
+  .hero h1.hero-title{font-size:clamp(44px,12vw,60px);line-height:1.08;margin-bottom:22px}
+  .hero .app-grid{display:grid;grid-template-columns:minmax(0,1fr);width:100%;max-width:440px;gap:10px;margin:22px auto 0}
+  .hero .twbar{width:100%;min-width:0}
+  .hero .twbar .wrap{display:grid;grid-template-columns:36px minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:center;gap:2px 9px;width:100%;height:auto;min-height:64px;padding:10px 12px;white-space:normal;overflow:visible}
+  .hero .twbar .ico{grid-column:1;grid-row:1/3;width:34px;height:34px}
+  .hero .twbar .nm{display:block!important;grid-column:2;grid-row:1;font-size:14px;white-space:normal;line-height:1.25}
+  .hero .twbar .now{grid-column:2;grid-row:2;font-size:12px;white-space:nowrap;margin:0}
+  .hero .twbar .cities,.hero .twbar .desc{display:none!important}
+  .hero .twbar .go{grid-column:3;grid-row:1/3;margin:0;font-size:11px;padding:5px 8px;white-space:nowrap}
+  .hero .cta{margin:24px auto 0;padding:0 16px}
+  .hero .btn.p{display:flex;width:min(100%,360px);min-height:64px;justify-content:center;align-items:center;padding:18px 20px;font-size:clamp(18px,5.4vw,24px);line-height:1.2;white-space:normal}
+  .vc{width:fit-content;max-width:100%;margin:20px auto 0}
+  section{padding:44px 0}
+  .head{margin-bottom:28px}
+  .posts,.chs,.about{grid-template-columns:minmax(0,1fr)}
+  .posts{gap:14px}.chs{gap:10px}.about{gap:22px}
+  .about table{width:100%;table-layout:fixed}
+  .about th,.about td{padding:10px 9px;overflow-wrap:anywhere}
+  .finbox{border-radius:14px}
+  .finbox iframe{width:100%;height:70vh;min-height:520px}
+  .to-top{right:12px;bottom:12px}
+}
+@media(max-width:380px){
+  .wrap{padding-left:14px;padding-right:14px}
+  .hero .twbar .go{font-size:10px;padding:4px 6px}
+  .hero .twbar .wrap{grid-template-columns:32px minmax(0,1fr) auto;gap:2px 7px;padding-left:9px;padding-right:9px}
+}
+</style>
+</body>
+</html>

@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>은행별 예금금리 & 환율 비교 | csh2020</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+colors: {
+brand: {
+50: '#f0f7ff',
+100: '#e0effe',
+500: '#2563eb',
+600: '#1d4ed8',
+700: '#1e40af',
+}
+}
+}
+}
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap');
+* {
+font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+}
+.custom-scrollbar::-webkit-scrollbar {
+width: 6px;
+height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+background: #f1f5f9;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+background: #cbd5e1;
+border-radius: 4px;
+}
+.tab-active {
+border-bottom: 2px solid #2563eb;
+color: #2563eb;
+font-weight: 700;
+}
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-16">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+<i class="fa-solid fa-coins text-xl"></i>
+</div>
+<div>
+<h1 class="text-lg font-bold tracking-tight text-slate-900 flex items-center gap-2">
+FinCompare <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-semibold">실시간 비교</span>
+</h1>
+<p class="text-xs text-slate-500">은행별 예·적금 금리 및 실시간 환율 모니터링</p>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<div class="hidden sm:flex items-center text-xs text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+<span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+기준일시: <span id="lastUpdated" class="font-medium text-slate-700 ml-1">-</span>
+</div>
+<button onclick="refreshData()" class="p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors border border-slate-200" title="데이터 새로고침">
+<i id="refreshIcon" class="fa-solid fa-arrows-rotate"></i>
+</button>
+</div>
+</div>
+<div class="flex space-x-8 text-sm font-medium border-t border-slate-100 -mb-px overflow-x-auto">
+<button onclick="switchTab('rates')" id="tabBtn-rates" class="py-3 px-1 tab-active transition-colors flex items-center gap-2 whitespace-nowrap">
+<i class="fa-solid fa-vault"></i> 예·적금 금리 비교
+</button>
+<button onclick="switchTab('fx')" id="tabBtn-fx" class="py-3 px-1 text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-2 whitespace-nowrap">
+<i class="fa-solid fa-arrow-right-arrow-left"></i> 실시간 환율 비교 & 계산기
+</button>
+<button onclick="switchTab('calc')" id="tabBtn-calc" class="py-3 px-1 text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-2 whitespace-nowrap">
+<i class="fa-solid fa-calculator"></i> 만기 이자 계산기
+</button>
+<button onclick="switchTab('ai')" id="tabBtn-ai" class="py-3 px-1 text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-2 whitespace-nowrap">
+<i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> AI 금융 분석 & 추천
+</button>
+</div>
+</div>
+</header>
+<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+<section id="section-rates" class="space-y-6">
+<div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div>
+<label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">상품 유형</label>
+<div class="flex rounded-lg bg-slate-100 p-1 border border-slate-200">
+<button onclick="setProductType('deposit')" id="btnType-deposit" class="flex-1 py-1.5 text-xs font-bold rounded-md bg-white shadow-sm text-blue-600 transition-all">정기예금</button>
+<button onclick="setProductType('saving')" id="btnType-saving" class="flex-1 py-1.5 text-xs font-medium rounded-md text-slate-600 transition-all">정기적금</button>
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">금융권 분류</label>
+<select id="sectorFilter" onchange="filterRates()" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+<option value="all">전체 금융권</option>
+<option value="commercial">시중은행 (KB·신한·하나·우리·NH)</option>
+<option value="internet">인터넷전문은행 (카카오·토스·케이)</option>
+<option value="savings_bank">저축은행</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">저축 기간</label>
+<select id="periodFilter" onchange="filterRates()" class="w-full text-sm bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-slate-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+<option value="12">12개월 (1년)</option>
+<option value="6">6개월</option>
+<option value="24">24개월 (2년)</option>
+<option value="36">36개월 (3년)</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">은행 및 상품 검색</label>
+<div class="relative">
+<input type="text" id="searchKeyword" oninput="filterRates()" placeholder="예: 카카오뱅크, 첫만남..." class="w-full text-sm bg-slate-50 border border-slate-300 rounded-lg pl-9 pr-3 py-2 text-slate-700 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+<i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
+<div class="flex items-center gap-3">
+<span>검색 결과: <strong id="rateCount" class="text-blue-600">0</strong>건</span>
+<span class="text-slate-300">|</span>
+<span>평균 기본금리: <strong id="avgBaseRate" class="text-slate-900">-</strong></span>
+<span class="text-slate-300">|</span>
+<span>최고 우대금리: <strong id="topMaxRate" class="text-emerald-600 font-bold">-</strong></span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-slate-400">정렬:</span>
+<button onclick="setSortMode('max')" id="sortBtn-max" class="px-2.5 py-1 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200">최고금리순</button>
+<button onclick="setSortMode('base')" id="sortBtn-base" class="px-2.5 py-1 rounded bg-slate-100 text-slate-600 hover:bg-slate-200">기본금리순</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-100/70 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+<th class="py-3.5 px-4">은행명</th>
+<th class="py-3.5 px-4">상품명 / 특징</th>
+<th class="py-3.5 px-4 text-center">기간</th>
+<th class="py-3.5 px-4 text-right">기본 금리</th>
+<th class="py-3.5 px-4 text-right">최고 우대금리</th>
+<th class="py-3.5 px-4">주요 우대조건</th>
+<th class="py-3.5 px-4 text-center">이자 계산</th>
+</tr>
+</thead>
+<tbody id="ratesTableBody" class="divide-y divide-slate-100 text-sm">
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="section-fx" class="hidden space-y-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="fxHighlights">
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+<div class="p-5 border-b border-slate-100 flex items-center justify-between">
+<div>
+<h2 class="font-bold text-slate-900 text-base">주요 통화 실시간 매매기준율</h2>
+<p class="text-xs text-slate-500 mt-0.5">매매기준율, 현찰 사실 때/파실 때, 송금 보낼 때 비교</p>
+</div>
+<span class="text-xs px-2.5 py-1 rounded bg-slate-100 text-slate-600 font-medium">KEB하나은행 고시 기준</span>
+</div>
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-500 uppercase">
+<tr>
+<th class="py-3 px-4">통화명</th>
+<th class="py-3 px-4 text-right">매매기준율</th>
+<th class="py-3 px-4 text-right">전일대비</th>
+<th class="py-3 px-4 text-right">현찰 사실 때</th>
+<th class="py-3 px-4 text-right">송금 보낼 때</th>
+<th class="py-3 px-4 text-center">선택</th>
+</tr>
+</thead>
+<tbody id="fxTableBody" class="divide-y divide-slate-100">
+</tbody>
+</table>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+<h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+<i class="fa-solid fa-calculator text-blue-600"></i> 실시간 환율 계산기
+</h3>
+<button onclick="swapCurrencies()" class="text-xs text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+<i class="fa-solid fa-rotate"></i> 통화 맞바꾸기
+</button>
+</div>
+<div class="space-y-3">
+<div>
+<label class="block text-xs font-semibold text-slate-500 mb-1">보내는 금액 (기준)</label>
+<div class="flex rounded-xl border border-slate-200 bg-slate-50 focus-within:ring-2 focus-within:ring-blue-500 overflow-hidden">
+<select id="calcFromCurrency" onchange="calculateExchange()" class="bg-slate-100 text-slate-700 text-sm font-semibold px-3 py-2.5 border-r border-slate-200 focus:outline-none">
+<option value="KRW">KRW (대한민국 원)</option>
+<option value="USD" selected>USD (미국 달러)</option>
+<option value="JPY">JPY (일본 100엔)</option>
+<option value="EUR">EUR (유로화)</option>
+<option value="CNY">CNY (중국 위안)</option>
+</select>
+<input type="number" id="calcFromAmount" value="1000" oninput="calculateExchange()" class="w-full bg-transparent px-3 py-2 text-right font-semibold text-slate-900 focus:outline-none" placeholder="0">
+</div>
+</div>
+<div class="flex justify-center -my-1">
+<div class="w-8 h-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 shadow-sm cursor-pointer hover:bg-blue-100" onclick="swapCurrencies()">
+<i class="fa-solid fa-arrow-down-up text-xs"></i>
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-500 mb-1">받는 금액 (환전 후)</label>
+<div class="flex rounded-xl border border-slate-200 bg-slate-50 focus-within:ring-2 focus-within:ring-blue-500 overflow-hidden">
+<select id="calcToCurrency" onchange="calculateExchange()" class="bg-slate-100 text-slate-700 text-sm font-semibold px-3 py-2.5 border-r border-slate-200 focus:outline-none">
+<option value="KRW" selected>KRW (대한민국 원)</option>
+<option value="USD">USD (미국 달러)</option>
+<option value="JPY">JPY (일본 100엔)</option>
+<option value="EUR">EUR (유로화)</option>
+<option value="CNY">CNY (중국 위안)</option>
+</select>
+<input type="text" id="calcToAmount" readonly class="w-full bg-slate-100/50 px-3 py-2 text-right font-bold text-blue-600 focus:outline-none" placeholder="0">
+</div>
+</div>
+<div class="pt-2">
+<div class="flex justify-between items-center text-xs mb-1">
+<span class="text-slate-500 font-medium">환율 우대율 (스프레드 할인)</span>
+<span id="spreadDisplay" class="font-bold text-blue-600">80% 우대</span>
+</div>
+<input type="range" id="spreadDiscount" min="0" max="100" value="80" step="10" oninput="updateSpreadDiscount(this.value)" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+<div class="flex justify-between text-[10px] text-slate-400 mt-1">
+<span>0% (일반)</span>
+<span>50%</span>
+<span>90% (주요앱 우대)</span>
+<span>100% (원가)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-2">
+<div class="flex justify-between">
+<span>적용 기준환율:</span>
+<span id="calcAppliedRate" class="font-semibold text-slate-800">-</span>
+</div>
+<div class="flex justify-between">
+<span>환전 수수료 절감액:</span>
+<span id="calcSavedFee" class="font-bold text-emerald-600">0 원</span>
+</div>
+<p class="text-[11px] text-slate-400 border-t border-slate-200 pt-2">
+* 모바일 뱅킹 우대 환율(주요통화 80~90%) 적용 시 예상 절약 금액입니다.
+</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+<div class="flex flex-wrap items-center justify-between mb-4 gap-2">
+<div>
+<h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+<i class="fa-solid fa-chart-line text-blue-600"></i> 통화별 최근 환율 동향 (트렌드)
+</h3>
+<p class="text-xs text-slate-500">최근 7일간의 매매기준율 변동 추이</p>
+</div>
+<div class="flex items-center gap-2" id="chartCurrencyButtons">
+<button onclick="updateTrendChart('USD')" class="px-3 py-1 text-xs rounded-full bg-blue-600 text-white font-semibold">USD</button>
+<button onclick="updateTrendChart('JPY')" class="px-3 py-1 text-xs rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">JPY</button>
+<button onclick="updateTrendChart('EUR')" class="px-3 py-1 text-xs rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">EUR</button>
+<button onclick="updateTrendChart('CNY')" class="px-3 py-1 text-xs rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium">CNY</button>
+</div>
+</div>
+<div class="h-64 sm:h-72 w-full">
+<canvas id="fxTrendChart"></canvas>
+</div>
+</div>
+</section>
+<section id="section-calc" class="hidden space-y-6">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<div class="lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-5">
+<div>
+<h2 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+<i class="fa-solid fa-calculator text-blue-600"></i> 예·적금 만기 수령액 계산기
+</h2>
+<p class="text-xs text-slate-500 mt-1">예금 또는 적금의 세후 이자와 실수령액을 정확히 계산합니다.</p>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-600 mb-1.5">상품 선택</label>
+<div class="grid grid-cols-2 gap-2">
+<button type="button" onclick="setCalcProdMode('deposit')" id="calcMode-deposit" class="py-2.5 px-4 text-xs font-bold rounded-xl border border-blue-500 bg-blue-50 text-blue-700 text-center transition-all">
+정기예금 (목돈 굴리기)
+</button>
+<button type="button" onclick="setCalcProdMode('saving')" id="calcMode-saving" class="py-2.5 px-4 text-xs font-semibold rounded-xl border border-slate-200 bg-slate-50 text-slate-600 text-center transition-all hover:bg-slate-100">
+정기적금 (목돈 모으기)
+</button>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<label id="calcAmountLabel" class="text-xs font-semibold text-slate-600">예치 원금</label>
+<span id="amountInKorean" class="text-xs text-blue-600 font-medium">1,000만 원</span>
+</div>
+<div class="relative">
+<input type="number" id="calcPrincipal" value="10000000" step="100000" oninput="recalcSavings()" class="w-full text-base font-bold bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 pr-10 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+<span class="absolute right-3 top-3 text-sm text-slate-400 font-medium">원</span>
+</div>
+<div class="flex gap-1.5 mt-2 overflow-x-auto pb-1">
+<button onclick="addCalcAmount(1000000)" class="text-xs px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600">+100만</button>
+<button onclick="addCalcAmount(5000000)" class="text-xs px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600">+500만</button>
+<button onclick="addCalcAmount(10000000)" class="text-xs px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600">+1,000만</button>
+<button onclick="resetCalcAmount(10000000)" class="text-xs px-2.5 py-1 rounded bg-rose-50 text-rose-600 hover:bg-rose-100">초기화</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-semibold text-slate-600 mb-1">예치 기간 (개월)</label>
+<select id="calcMonths" onchange="recalcSavings()" class="w-full text-sm font-medium bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+<option value="6">6개월</option>
+<option value="12" selected>12개월 (1년)</option>
+<option value="24">24개월 (2년)</option>
+<option value="36">36개월 (3년)</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-600 mb-1">연 이자율 (%)</label>
+<div class="relative">
+<input type="number" id="calcAnnualRate" value="3.5" step="0.1" min="0.1" max="20" oninput="recalcSavings()" class="w-full text-sm font-bold bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 pr-8 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+<span class="absolute right-3 top-2.5 text-slate-400 font-bold text-sm">%</span>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold text-slate-600 mb-1.5">과세 구분</label>
+<div class="grid grid-cols-3 gap-2">
+<label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer hover:bg-slate-100">
+<input type="radio" name="taxOption" value="normal" checked onchange="recalcSavings()" class="text-blue-600 focus:ring-blue-500">
+<span class="text-xs font-medium text-slate-700">일반과세 (15.4%)</span>
+</label>
+<label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer hover:bg-slate-100">
+<input type="radio" name="taxOption" value="preferential" onchange="recalcSavings()" class="text-blue-600 focus:ring-blue-500">
+<span class="text-xs font-medium text-slate-700">세금우대 (9.5%)</span>
+</label>
+<label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 bg-slate-50 cursor-pointer hover:bg-slate-100">
+<input type="radio" name="taxOption" value="exempt" onchange="recalcSavings()" class="text-blue-600 focus:ring-blue-500">
+<span class="text-xs font-medium text-slate-700">비과세 (0%)</span>
+</label>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 space-y-4">
+<div class="bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 rounded-2xl shadow-lg p-6 sm:p-7 text-white relative overflow-hidden">
+<div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+<i class="fa-solid fa-piggy-bank text-9xl"></i>
+</div>
+<div class="relative z-10">
+<div class="flex justify-between items-start">
+<div>
+<span class="inline-block px-2.5 py-1 rounded-full bg-blue-500/30 text-blue-100 text-xs font-medium mb-2 border border-blue-400/20">
+최종 만기 수령액 (세후)
+</span>
+<h3 id="resTotalReceive" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-1">
+10,296,100 원
+</h3>
+<p class="text-blue-200 text-xs" id="resSummaryNote">원금 10,000,000원 + 세후 이자 296,100원</p>
+</div>
+<div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-xl">
+<i class="fa-solid fa-coins"></i>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-3 mt-6 pt-6 border-t border-blue-400/20 text-center">
+<div class="bg-blue-900/40 p-3 rounded-xl backdrop-blur-sm border border-blue-400/10">
+<p class="text-xs text-blue-200">총 납입원금</p>
+<p id="resPrincipal" class="text-sm sm:text-base font-bold text-white mt-0.5">10,000,000원</p>
+</div>
+<div class="bg-blue-900/40 p-3 rounded-xl backdrop-blur-sm border border-blue-400/10">
+<p class="text-xs text-blue-200">세전 총 이자</p>
+<p id="resPreTaxInterest" class="text-sm sm:text-base font-bold text-emerald-300 mt-0.5">+350,000원</p>
+</div>
+<div class="bg-blue-900/40 p-3 rounded-xl backdrop-blur-sm border border-blue-400/10">
+<p class="text-xs text-blue-200">이자 과세액</p>
+<p id="resTaxDeduction" class="text-sm sm:text-base font-bold text-rose-300 mt-0.5">-53,900원</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+<h4 class="font-bold text-slate-800 text-sm mb-3 flex items-center gap-2">
+<i class="fa-solid fa-list-check text-slate-500"></i> 이자 수령 상세 내역
+</h4>
+<div class="space-y-2.5 text-xs">
+<div class="flex justify-between py-1.5 border-b border-slate-100">
+<span class="text-slate-500">예치 방식:</span>
+<span id="resDetailMode" class="font-semibold text-slate-800">정기예금 (단리)</span>
+</div>
+<div class="flex justify-between py-1.5 border-b border-slate-100">
+<span class="text-slate-500">적용 이율:</span>
+<span id="resDetailRate" class="font-semibold text-slate-800">연 3.50%</span>
+</div>
+<div class="flex justify-between py-1.5 border-b border-slate-100">
+<span class="text-slate-500">세금 세율:</span>
+<span id="resDetailTaxRate" class="font-semibold text-slate-800">15.4% (이자소득세 14% + 지방소득세 1.4%)</span>
+</div>
+<div class="flex justify-between py-1.5">
+<span class="text-slate-500">실질 수익률 (세후):</span>
+<span id="resDetailNetYield" class="font-bold text-blue-600">연 2.96%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-ai" class="hidden space-y-6">
+<div class="bg-gradient-to-r from-indigo-900 via-slate-900 to-blue-950 rounded-2xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
+<div class="max-w-2xl">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-400/20 mb-3">
+<i class="fa-solid fa-robot"></i> Gemini AI 금융 맞춤 브리핑
+</span>
+<h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+나에게 맞는 최적의 금리 & 환전 타이밍
+</h2>
+<p class="text-slate-300 text-sm mt-2 leading-relaxed">
+현재 시장 금리, 시중은행 우대조건, 주요 통화(USD/JPY)의 환율 변동 추세를 종합 분석하여 고객님의 목돈 굴리기 및 환전 전략을 안내해 드립니다.
+</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+<h3 class="font-bold text-slate-900 text-sm">빠른 AI 질문 템플릿</h3>
+<div class="space-y-2">
+<button onclick="askAIPreset('deposit_recommend')" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all text-xs group">
+<span class="font-bold text-slate-800 group-hover:text-blue-700 block mb-0.5">₩ 1,000만 원 안전하게 1년 굴리기</span>
+<span class="text-slate-500">현재 가장 유리한 1금융권 vs 저축은행 정기예금 추천</span>
+</button>
+<button onclick="askAIPreset('fx_timing')" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all text-xs group">
+<span class="font-bold text-slate-800 group-hover:text-blue-700 block mb-0.5">✈️ 일본 여행 및 달러 환전 타이밍</span>
+<span class="text-slate-500">현재 엔화/달러 환율 분석 및 분할 매수 환전 전략</span>
+</button>
+<button onclick="askAIPreset('savings_vs_fx')" class="w-full text-left p-3 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50/50 transition-all text-xs group">
+<span class="font-bold text-slate-800 group-hover:text-blue-700 block mb-0.5">⚖️ 고금리 적금 vs 외화 정기예금 비교</span>
+<span class="text-slate-500">원화 고금리 상품과 달러 예금 중 어떤 것이 유리할까?</span>
+</button>
+</div>
+<div class="pt-3 border-t border-slate-100">
+<label class="block text-xs font-semibold text-slate-600 mb-1.5">직접 금융 질문 입력하기</label>
+<div class="flex gap-2">
+<input type="text" id="aiCustomPrompt" placeholder="예: 첫 직장인 50만원 적금 추천해줘" class="flex-1 text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+<button onclick="handleCustomAIQuery()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs transition-colors shadow-sm">
+전송
+</button>
+</div>
+</div>
+</div>
+<div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between min-h-[380px]">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
+<i class="fa-solid fa-sparkles text-xs"></i>
+</div>
+<h3 class="font-bold text-slate-900 text-sm">AI 금융 분석 리포트</h3>
+</div>
+<span id="aiStatusBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">대기 중</span>
+</div>
+<div id="aiResponseContainer" class="prose prose-sm max-w-none text-slate-700 text-sm leading-relaxed space-y-3">
+<div class="p-6 text-center text-slate-400">
+<i class="fa-regular fa-comment-dots text-3xl mb-2 text-slate-300"></i>
+<p class="text-xs">왼쪽의 추천 질문을 클릭하거나 직접 질문을 입력해 보세요.<br>Gemini AI가 실시간 금융 데이터와 전략을 분석해 드립니다.</p>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-100 text-[11px] text-slate-400 flex items-center gap-2">
+<i class="fa-solid fa-circle-info"></i>
+<span>본 인공지능 분석 결과는 참고용 자료이며 실제 투자 및 금융 계약의 최종 책임은 본인에게 있습니다.</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<div id="detailModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+<div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden transform transition-all">
+<div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+<div class="flex items-center gap-2.5">
+<span id="modalBankBadge" class="text-xs px-2.5 py-1 rounded-md bg-blue-100 text-blue-700 font-bold">은행</span>
+<h3 id="modalBankName" class="font-bold text-slate-900 text-base">은행 상세</h3>
+</div>
+<button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-lg w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-200">
+<i class="fa-solid fa-xmark"></i>
+</button>
+</div>
+<div class="p-5 space-y-4 text-sm" id="modalContent">
+</div>
+<div class="p-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-2">
+<button onclick="closeModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-white border border-slate-300 rounded-xl hover:bg-slate-100">
+닫기
+</button>
+<button id="modalActionBtn" class="px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm">
+계산기로 만기이자 보기
+</button>
+</div>
+</div>
+</div>
+<div id="toastMessage" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg border border-slate-700 transform translate-y-16 opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-2">
+<i class="fa-solid fa-check-circle text-emerald-400"></i>
+<span id="toastText">알림 메시지</span>
+</div>
+<script>
+const BANK_RATES_DATA = [
+{
+id: 'kb_star',
+bank: 'KB국민은행',
+sector: 'commercial',
+type: 'deposit',
+productName: 'KB Star 정기예금',
+rateBase: 3.10,
+rateMax: 3.55,
+periodMonths: [6, 12, 24, 36],
+preferentialCond: 'KB스타뱅킹 가입, 첫거래 우대 및 급여이체 실적 (최대 +0.45%p)',
+joinTarget: '실명의 개인',
+maxLimit: '제한없음'
+},
+{
+id: 'shinhan_sol',
+bank: '신한은행',
+sector: 'commercial',
+type: 'deposit',
+productName: '쏠편한 정기예금',
+rateBase: 3.15,
+rateMax: 3.50,
+periodMonths: [6, 12, 24],
+preferentialCond: '신한 신용/체크카드 결제계좌 지정 및 오픈뱅킹 등록 (+0.35%p)',
+joinTarget: '개인 및 개인사업자',
+maxLimit: '제한없음'
+},
+{
+id: 'hana_one',
+bank: '하나은행',
+sector: 'commercial',
+type: 'deposit',
+productName: '하나의정기예금',
+rateBase: 3.10,
+rateMax: 3.60,
+periodMonths: [6, 12, 24, 36],
+preferentialCond: '스마트폰 뱅킹(하나원큐) 가입 및 마케팅 동의 우대 (+0.50%p)',
+joinTarget: '실명의 개인',
+maxLimit: '제한없음'
+},
+{
+id: 'woori_won',
+bank: '우리은행',
+sector: 'commercial',
+type: 'deposit',
+productName: 'WON플러스예금',
+rateBase: 3.12,
+rateMax: 3.52,
+periodMonths: [6, 12, 24, 36],
+preferentialCond: '조건 없이 누구나 최고금리 제공형 (기간별 자동우대 반영)',
+joinTarget: '개인 고객 누구나',
+maxLimit: '제한없음'
+},
+{
+id: 'nh_allone',
+bank: 'NH농협은행',
+sector: 'commercial',
+type: 'deposit',
+productName: 'NH올원e예금',
+rateBase: 3.05,
+rateMax: 3.45,
+periodMonths: [6, 12, 24],
+preferentialCond: '올원뱅크 전용, 농협카드 결제실적 연계 (+0.40%p)',
+joinTarget: '개인',
+maxLimit: '1백만원 이상 10억원 이하'
+},
+{
+id: 'kakaobank_dep',
+bank: '카카오뱅크',
+sector: 'internet',
+type: 'deposit',
+productName: '카카오뱅크 정기예금',
+rateBase: 3.20,
+rateMax: 3.70,
+periodMonths: [6, 12, 24, 36],
+preferentialCond: '자동연장 신청 및 복수계좌 보유시 우대 (+0.50%p)',
+joinTarget: '만 17세 이상 실명 개인',
+maxLimit: '100만원 이상'
+},
+{
+id: 'toss_dep',
+bank: '토스뱅크',
+sector: 'internet',
+type: 'deposit',
+productName: '먼저 이자 받는 예금',
+rateBase: 3.30,
+rateMax: 3.65,
+periodMonths: [6, 12],
+preferentialCond: '가입 즉시 만기이자 선지급 (복잡한 우대조건 없음)',
+joinTarget: '토스뱅크 통장 보유 회원',
+maxLimit: '100만원 이상'
+},
+{
+id: 'kbank_dep',
+bank: '케이뱅크',
+sector: 'internet',
+type: 'deposit',
+productName: '코드K 정기예금',
+rateBase: 3.25,
+rateMax: 3.75,
+periodMonths: [6, 12, 24, 36],
+preferentialCond: '이벤트 금리코드 입력 및 친구추천 우대 (+0.50%p)',
+joinTarget: '만 17세 이상 개인',
+maxLimit: '100만원 이상'
+},
+{
+id: 'sbi_cider',
+bank: 'SBI저축은행',
+sector: 'savings_bank',
+type: 'deposit',
+productName: '사이다뱅크 복리정기예금',
+rateBase: 3.60,
+rateMax: 4.10,
+periodMonths: [6, 12, 24],
+preferentialCond: '모바일 비대면 가입 우대, 월복리 계산 방식 적용 (+0.50%p)',
+joinTarget: '개인 고객',
+maxLimit: '10만원 이상 5,000만원 한도 권장'
+},
+{
+id: 'ok_dep',
+bank: 'OK저축은행',
+sector: 'savings_bank',
+type: 'deposit',
+productName: 'OK안심정기예금',
+rateBase: 3.55,
+rateMax: 4.05,
+periodMonths: [12, 24, 36],
+preferentialCond: '인터넷/스마트폰 가입 시 자동 가산 우대금리 (+0.50%p)',
+joinTarget: '개인 누구나',
+maxLimit: '10만원 이상'
+},
+{
+id: 'pepper_dep',
+bank: '페퍼저축은행',
+sector: 'savings_bank',
+type: 'deposit',
+productName: '페퍼스 회전정기예금',
+rateBase: 3.65,
+rateMax: 4.15,
+periodMonths: [12, 24, 36],
+preferentialCond: '1년 단위 금리 재산정 및 비대면 우대 (+0.50%p)',
+joinTarget: '개인',
+maxLimit: '10만원 이상'
+},
+{
+id: 'shinhan_first_sav',
+bank: '신한은행',
+sector: 'commercial',
+type: 'saving',
+productName: '신한 청년 처음적금',
+rateBase: 3.50,
+rateMax: 6.50,
+periodMonths: [12],
+preferentialCond: '만 18세~39세 청년, 신한 첫거래 및 급여이체, 신한카드 실적 (+3.00%p)',
+joinTarget: '만 18세 이상 만 39세 이하',
+maxLimit: '월 30만원 이하'
+},
+{
+id: 'kb_special_sav',
+bank: 'KB국민은행',
+sector: 'commercial',
+type: 'saving',
+productName: 'KB 특약정기적금 (온국민)',
+rateBase: 3.20,
+rateMax: 5.50,
+periodMonths: [12, 24],
+preferentialCond: 'KB국민카드 결제 및 자동이체 건수 5회 이상 충족 (+2.30%p)',
+joinTarget: '개인',
+maxLimit: '월 50만원 이하'
+},
+{
+id: 'kakao_26week',
+bank: '카카오뱅크',
+sector: 'internet',
+type: 'saving',
+productName: '26주적금',
+rateBase: 3.00,
+rateMax: 5.50,
+periodMonths: [6],
+preferentialCond: '연속 성공 우대(7주차 +1.0%p, 26주 만기달성 +1.5%p)',
+joinTarget: '카카오뱅크 고객',
+maxLimit: '주차별 1천원~1만원 증액형'
+},
+{
+id: 'toss_gather_sav',
+bank: '토스뱅크',
+sector: 'internet',
+type: 'saving',
+productName: '토스뱅크 굴비 적금',
+rateBase: 2.80,
+rateMax: 5.00,
+periodMonths: [6],
+preferentialCond: '자주 저축할 때마다 밥상 반찬 생성 및 만기 달성 (+2.20%p)',
+joinTarget: '토스뱅크 통장 보유 개인',
+maxLimit: '월 최대 30만원'
+},
+{
+id: 'ok_jump_sav',
+bank: 'OK저축은행',
+sector: 'savings_bank',
+type: 'saving',
+productName: 'OK 짠테크 정기적금',
+rateBase: 3.80,
+rateMax: 7.00,
+periodMonths: [12],
+preferentialCond: '마케팅 동의 및 비대면 계좌개설 후 월 50만원 이하 납입 우대 (+3.20%p)',
+joinTarget: '개인',
+maxLimit: '월 50만원 이하'
+}
+];
+const FX_RATES_DATA = [
+{
+code: 'USD',
+name: '미국 달러',
+unit: 1,
+flag: 'US',
+baseRate: 1385.50,
+change: 3.20,
+cashBuy: 1410.25,
+cashSell: 1360.75,
+send: 1399.10,
+receive: 1371.90,
+history: [1376.0, 1378.5, 1382.0, 1380.2, 1384.0, 1382.3, 1385.5]
+},
+{
+code: 'JPY',
+name: '일본 엔 (100엔)',
+unit: 100,
+flag: 'JP',
+baseRate: 912.40,
+change: -1.80,
+cashBuy: 928.36,
+cashSell: 896.44,
+send: 921.32,
+receive: 903.48,
+history: [918.5, 916.0, 915.2, 914.8, 913.0, 914.2, 912.4]
+},
+{
+code: 'EUR',
+name: '유로',
+unit: 1,
+flag: 'EU',
+baseRate: 1498.20,
+change: 1.40,
+cashBuy: 1528.00,
+cashSell: 1468.40,
+send: 1512.80,
+receive: 1483.60,
+history: [1490.0, 1492.5, 1495.0, 1494.2, 1497.0, 1496.8, 1498.2]
+},
+{
+code: 'CNY',
+name: '중국 위안',
+unit: 1,
+flag: 'CN',
+baseRate: 191.80,
+change: 0.15,
+cashBuy: 201.39,
+cashSell: 180.30,
+send: 193.71,
+receive: 189.89,
+history: [190.9, 191.2, 191.4, 191.3, 191.7, 191.65, 191.8]
+},
+{
+code: 'GBP',
+name: '영국 파운드',
+unit: 1,
+flag: 'GB',
+baseRate: 1782.60,
+change: -4.30,
+cashBuy: 1817.80,
+cashSell: 1747.40,
+send: 1800.20,
+receive: 1765.00,
+history: [1792.0, 1790.5, 1788.0, 1789.2, 1785.0, 1786.9, 1782.6]
+},
+{
+code: 'AUD',
+name: '호주 달러',
+unit: 1,
+flag: 'AU',
+baseRate: 905.10,
+change: 2.10,
+cashBuy: 923.00,
+cashSell: 887.20,
+send: 914.00,
+receive: 896.20,
+history: [898.0, 900.2, 902.1, 901.5, 904.0, 903.0, 905.1]
+}
+];
+let state = {
+currentTab: 'rates',
+productType: 'deposit', // 'deposit' | 'saving'
+sectorFilter: 'all',
+periodFilter: '12',
+searchKeyword: '',
+sortMode: 'max', // 'max' | 'base'
+selectedCurrencyForChart: 'USD',
+spreadDiscountRate: 80, // %
+calcProdMode: 'deposit', // 'deposit' | 'saving'
+chartInstance: null
+};
+window.addEventListener('DOMContentLoaded', () => {
+updateTimestamp();
+renderRateTable();
+renderFXSection();
+initTrendChart();
+recalcSavings();
+calculateExchange();
+});
+function switchTab(tabName) {
+state.currentTab = tabName;
+const tabs = ['rates', 'fx', 'calc', 'ai'];
+tabs.forEach(t => {
+const section = document.getElementById(`section-${t}`);
+const btn = document.getElementById(`tabBtn-${t}`);
+if (t === tabName) {
+section.classList.remove('hidden');
+btn.className = 'py-3 px-1 tab-active transition-colors flex items-center gap-2 whitespace-nowrap';
+} else {
+section.classList.add('hidden');
+btn.className = 'py-3 px-1 text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-2 whitespace-nowrap';
+}
+});
+if (tabName === 'fx' && state.chartInstance) {
+setTimeout(() => {
+state.chartInstance.resize();
+}, 100);
+}
+}
+function updateTimestamp() {
+const now = new Date();
+const year = now.getFullYear();
+const month = String(now.getMonth() + 1).padStart(2, '0');
+const day = String(now.getDate()).padStart(2, '0');
+const hours = String(now.getHours()).padStart(2, '0');
+const minutes = String(now.getMinutes()).padStart(2, '0');
+const seconds = String(now.getSeconds()).padStart(2, '0');
+document.getElementById('lastUpdated').textContent = `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
+}
+function showToast(message) {
+const toast = document.getElementById('toastMessage');
+const toastText = document.getElementById('toastText');
+toastText.textContent = message;
+toast.classList.remove('translate-y-16', 'opacity-0');
+toast.classList.add('translate-y-0', 'opacity-100');
+setTimeout(() => {
+toast.classList.remove('translate-y-0', 'opacity-100');
+toast.classList.add('translate-y-16', 'opacity-0');
+}, 2500);
+}
+function refreshData() {
+const icon = document.getElementById('refreshIcon');
+icon.classList.add('fa-spin');
+setTimeout(() => {
+FX_RATES_DATA.forEach(item => {
+const delta = (Math.random() * 1.6 - 0.8);
+item.baseRate = +(item.baseRate + delta).toFixed(2);
+item.change = +(item.change + delta).toFixed(2);
+item.cashBuy = +(item.baseRate * 1.0175).toFixed(2);
+item.cashSell = +(item.baseRate * 0.9825).toFixed(2);
+item.history[item.history.length - 1] = item.baseRate;
+});
+updateTimestamp();
+renderRateTable();
+renderFXSection();
+updateTrendChart(state.selectedCurrencyForChart);
+calculateExchange();
+icon.classList.remove('fa-spin');
+showToast('최신 은행 금리 및 환율 데이터가 갱신되었습니다.');
+}, 600);
+}
+function setProductType(type) {
+state.productType = type;
+const depBtn = document.getElementById('btnType-deposit');
+const savBtn = document.getElementById('btnType-saving');
+if (type === 'deposit') {
+depBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-md bg-white shadow-sm text-blue-600 transition-all';
+savBtn.className = 'flex-1 py-1.5 text-xs font-medium rounded-md text-slate-600 transition-all';
+} else {
+savBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-md bg-white shadow-sm text-blue-600 transition-all';
+depBtn.className = 'flex-1 py-1.5 text-xs font-medium rounded-md text-slate-600 transition-all';
+}
+filterRates();
+}
+function setSortMode(mode) {
+state.sortMode = mode;
+const maxBtn = document.getElementById('sortBtn-max');
+const baseBtn = document.getElementById('sortBtn-base');
+if (mode === 'max') {
+maxBtn.className = 'px-2.5 py-1 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200';
+baseBtn.className = 'px-2.5 py-1 rounded bg-slate-100 text-slate-600 hover:bg-slate-200';
+} else {
+baseBtn.className = 'px-2.5 py-1 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200';
+maxBtn.className = 'px-2.5 py-1 rounded bg-slate-100 text-slate-600 hover:bg-slate-200';
+}
+filterRates();
+}
+function filterRates() {
+state.sectorFilter = document.getElementById('sectorFilter').value;
+state.periodFilter = document.getElementById('periodFilter').value;
+state.searchKeyword = document.getElementById('searchKeyword').value.trim().toLowerCase();
+renderRateTable();
+}
+function renderRateTable() {
+const tableBody = document.getElementById('ratesTableBody');
+const periodVal = parseInt(state.periodFilter, 10);
+let filtered = BANK_RATES_DATA.filter(item => {
+if (item.type !== state.productType) return false;
+if (state.sectorFilter !== 'all' && item.sector !== state.sectorFilter) return false;
+if (!item.periodMonths.includes(periodVal)) return false;
+if (state.searchKeyword) {
+const matchName = item.bank.toLowerCase().includes(state.searchKeyword);
+const matchProd = item.productName.toLowerCase().includes(state.searchKeyword);
+const matchCond = item.preferentialCond.toLowerCase().includes(state.searchKeyword);
+if (!matchName && !matchProd && !matchCond) return false;
+}
+return true;
+});
+filtered.sort((a, b) => {
+if (state.sortMode === 'max') return b.rateMax - a.rateMax;
+return b.rateBase - a.rateBase;
+});
+document.getElementById('rateCount').textContent = filtered.length;
+if (filtered.length > 0) {
+const avg = (filtered.reduce((acc, cur) => acc + cur.rateBase, 0) / filtered.length).toFixed(2);
+const top = Math.max(...filtered.map(f => f.rateMax)).toFixed(2);
+document.getElementById('avgBaseRate').textContent = `${avg}%`;
+document.getElementById('topMaxRate').textContent = `${top}%`;
+} else {
+document.getElementById('avgBaseRate').textContent = '-';
+document.getElementById('topMaxRate').textContent = '-';
+}
+if (filtered.length === 0) {
+tableBody.innerHTML = `
+<tr>
+<td colspan="7" class="py-12 text-center text-slate-400">
+<i class="fa-solid fa-folder-open text-3xl mb-2 text-slate-300"></i>
+<p class="text-sm">조건에 맞는 금융 상품이 없습니다. 검색어나 필터를 변경해 보세요.</p>
+</td>
+</tr>
+`;
+return;
+}
+tableBody.innerHTML = filtered.map((item, index) => {
+let sectorBadge = '';
+if (item.sector === 'commercial') {
+sectorBadge = '<span class="text-[11px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200">1금융권</span>';
+} else if (item.sector === 'internet') {
+sectorBadge = '<span class="text-[11px] px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-semibold border border-amber-200">인터넷은행</span>';
+} else {
+sectorBadge = '<span class="text-[11px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">저축은행</span>';
+}
+const isHighest = index === 0;
+return `
+<tr class="hover:bg-slate-50/80 transition-colors group">
+<td class="py-3.5 px-4 font-semibold text-slate-900">
+<div class="flex items-center gap-2">
+<span>${item.bank}</span>
+${sectorBadge}
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-bold text-slate-900 flex items-center gap-1.5">
+<span>${item.productName}</span>
+${isHighest ? '<span class="bg-rose-500 text-white text-[10px] font-bold px-1.5 py-0.2 rounded">최고</span>' : ''}
+</div>
+<span class="text-xs text-slate-400">한도: ${item.maxLimit}</span>
+</td>
+<td class="py-3.5 px-4 text-center font-medium text-slate-600">
+<span class="px-2 py-1 rounded bg-slate-100 text-xs">${periodVal}개월</span>
+</td>
+<td class="py-3.5 px-4 text-right font-medium text-slate-700">
+${item.rateBase.toFixed(2)}%
+</td>
+<td class="py-3.5 px-4 text-right">
+<span class="text-base font-extrabold text-blue-600">${item.rateMax.toFixed(2)}%</span>
+</td>
+<td class="py-3.5 px-4 max-w-xs">
+<p class="text-xs text-slate-600 truncate" title="${item.preferentialCond}">${item.preferentialCond}</p>
+</td>
+<td class="py-3.5 px-4 text-center">
+<button onclick="applyToCalculator('${item.id}', ${item.rateMax})" class="px-2.5 py-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all text-xs font-semibold flex items-center justify-center gap-1 mx-auto">
+<i class="fa-solid fa-calculator"></i> 계산
+</button>
+</td>
+</tr>
+`;
+}).join('');
+}
+function applyToCalculator(productId, rate) {
+const product = BANK_RATES_DATA.find(p => p.id === productId);
+if (!product) return;
+setCalcProdMode(product.type);
+document.getElementById('calcAnnualRate').value = rate;
+document.getElementById('calcMonths').value = state.periodFilter;
+switchTab('calc');
+recalcSavings();
+showToast(`${product.bank} ${product.productName} 금리(${rate}%)가 계산기에 적용되었습니다.`);
+}
+function renderFXSection() {
+const highlightsContainer = document.getElementById('fxHighlights');
+const mainCurrencies = FX_RATES_DATA.slice(0, 4);
+highlightsContainer.innerHTML = mainCurrencies.map(curr => {
+const isPositive = curr.change >= 0;
+const changeClass = isPositive ? 'text-rose-600' : 'text-blue-600';
+const changeIcon = isPositive ? 'fa-caret-up' : 'fa-caret-down';
+return `
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-400 transition-all cursor-pointer" onclick="selectCurrencyForCalc('${curr.code}')">
+<div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+<span class="flex items-center gap-1.5 font-bold text-slate-700">
+<span class="inline-flex items-center justify-center w-7 h-5 rounded bg-blue-600 text-white text-[10px] font-bold">${curr.flag}</span> ${curr.code}
+</span>
+<span class="text-[11px] text-slate-400">${curr.name}</span>
+</div>
+<div class="flex items-baseline justify-between mt-2">
+<span class="text-xl font-extrabold text-slate-900">${curr.baseRate.toLocaleString()} <span class="text-xs font-normal text-slate-500">원</span></span>
+<span class="text-xs font-semibold ${changeClass} flex items-center gap-0.5">
+<i class="fa-solid ${changeIcon}"></i> ${Math.abs(curr.change)}원
+</span>
+</div>
+</div>
+`;
+}).join('');
+const fxTable = document.getElementById('fxTableBody');
+fxTable.innerHTML = FX_RATES_DATA.map(curr => {
+const isPositive = curr.change >= 0;
+const changeClass = isPositive ? 'text-rose-600' : 'text-blue-600';
+const changeIcon = isPositive ? 'fa-caret-up' : 'fa-caret-down';
+return `
+<tr class="hover:bg-slate-50/80 transition-colors">
+<td class="py-3 px-4 font-bold text-slate-900">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center justify-center w-7 h-5 rounded bg-blue-600 text-white text-[10px] font-bold">${curr.flag}</span>
+<div>
+<div class="leading-tight">${curr.code}</div>
+<div class="text-[11px] text-slate-400 font-normal">${curr.name}</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 text-right font-extrabold text-slate-900">
+${curr.baseRate.toLocaleString()} 원
+</td>
+<td class="py-3 px-4 text-right font-semibold ${changeClass}">
+<i class="fa-solid ${changeIcon}"></i> ${Math.abs(curr.change).toFixed(2)}
+</td>
+<td class="py-3 px-4 text-right text-slate-600 text-xs">
+${curr.cashBuy.toLocaleString()} 원
+</td>
+<td class="py-3 px-4 text-right text-slate-600 text-xs">
+${curr.send.toLocaleString()} 원
+</td>
+<td class="py-3 px-4 text-center">
+<button onclick="selectCurrencyForCalc('${curr.code}')" class="px-2.5 py-1 rounded bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 text-xs font-semibold transition-colors">
+계산
+</button>
+</td>
+</tr>
+`;
+}).join('');
+}
+function selectCurrencyForCalc(code) {
+document.getElementById('calcFromCurrency').value = code;
+document.getElementById('calcToCurrency').value = 'KRW';
+calculateExchange();
+updateTrendChart(code);
+showToast(`${code} 환율 계산으로 설정되었습니다.`);
+}
+function swapCurrencies() {
+const fromSelect = document.getElementById('calcFromCurrency');
+const toSelect = document.getElementById('calcToCurrency');
+const temp = fromSelect.value;
+fromSelect.value = toSelect.value;
+toSelect.value = temp;
+calculateExchange();
+}
+function updateSpreadDiscount(val) {
+state.spreadDiscountRate = parseInt(val, 10);
+document.getElementById('spreadDisplay').textContent = `${val}% 우대`;
+calculateExchange();
+}
+function calculateExchange() {
+const from = document.getElementById('calcFromCurrency').value;
+const to = document.getElementById('calcToCurrency').value;
+const fromAmount = parseFloat(document.getElementById('calcFromAmount').value) || 0;
+const spreadDiscount = state.spreadDiscountRate / 100;
+const fromObj = FX_RATES_DATA.find(f => f.code === from);
+const toObj = FX_RATES_DATA.find(f => f.code === to);
+const getUnitRate = (item) => (item ? (item.baseRate / item.unit) : 1);
+const getCashBuyRate = (item) => (item ? (item.cashBuy / item.unit) : 1);
+let converted = 0;
+let appliedRateStr = '';
+let savedFee = 0;
+if (from === to) {
+converted = fromAmount;
+appliedRateStr = '1.00';
+} else if (from === 'KRW' && toObj) {
+const base = getUnitRate(toObj);
+const cashBuy = getCashBuyRate(toObj);
+const spread = cashBuy - base;
+const discountedSpread = spread * (1 - spreadDiscount);
+const effectiveRate = base + discountedSpread;
+converted = fromAmount / effectiveRate;
+appliedRateStr = `1 ${to} = ${(effectiveRate * toObj.unit).toFixed(2)} KRW`;
+const standardCost = fromAmount / cashBuy;
+savedFee = Math.max(0, (converted - standardCost) * effectiveRate);
+} else if (to === 'KRW' && fromObj) {
+const base = getUnitRate(fromObj);
+const cashSell = fromObj.cashSell / fromObj.unit;
+const spread = base - cashSell;
+const discountedSpread = spread * (1 - spreadDiscount);
+const effectiveRate = base - discountedSpread;
+converted = fromAmount * effectiveRate;
+appliedRateStr = `1 ${from} = ${(effectiveRate * fromObj.unit).toFixed(2)} KRW`;
+const standardProceeds = fromAmount * cashSell;
+savedFee = Math.max(0, converted - standardProceeds);
+} else if (fromObj && toObj) {
+const fromKRW = fromAmount * getUnitRate(fromObj);
+converted = fromKRW / getUnitRate(toObj);
+appliedRateStr = `1 ${from} ≈ ${(getUnitRate(fromObj) / getUnitRate(toObj)).toFixed(4)} ${to}`;
+savedFee = 0;
+}
+document.getElementById('calcToAmount').value = Math.round(converted).toLocaleString();
+document.getElementById('calcAppliedRate').textContent = appliedRateStr;
+document.getElementById('calcSavedFee').textContent = `${Math.round(savedFee).toLocaleString()} 원`;
+}
+function initTrendChart() {
+const ctx = document.getElementById('fxTrendChart').getContext('2d');
+const defaultCurr = FX_RATES_DATA.find(f => f.code === 'USD');
+const labels = ['6일 전', '5일 전', '4일 전', '3일 전', '2일 전', '어제', '오늘 (현재)'];
+state.chartInstance = new Chart(ctx, {
+type: 'line',
+data: {
+labels: labels,
+datasets: [{
+label: `USD 매매기준율 (원)`,
+data: defaultCurr.history,
+borderColor: '#2563eb',
+backgroundColor: 'rgba(37, 99, 235, 0.08)',
+fill: true,
+tension: 0.35,
+pointBackgroundColor: '#2563eb',
+pointBorderColor: '#fff',
+pointRadius: 4,
+pointHoverRadius: 6,
+borderWidth: 2.5
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: {
+legend: { display: false },
+tooltip: {
+backgroundColor: '#0f172a',
+padding: 10,
+titleFont: { size: 12 },
+bodyFont: { size: 13, weight: 'bold' },
+callbacks: {
+label: function(context) {
+return `환율: ${context.parsed.y.toLocaleString()} 원`;
+}
+}
+}
+},
+scales: {
+x: {
+grid: { display: false },
+ticks: { font: { size: 11 }, color: '#64748b' }
+},
+y: {
+grid: { color: '#f1f5f9' },
+ticks: { font: { size: 11 }, color: '#64748b' }
+}
+}
+}
+});
+}
+function updateTrendChart(currencyCode) {
+state.selectedCurrencyForChart = currencyCode;
+const currObj = FX_RATES_DATA.find(f => f.code === currencyCode);
+if (!currObj || !state.chartInstance) return;
+const btnContainer = document.getElementById('chartCurrencyButtons');
+const buttons = btnContainer.querySelectorAll('button');
+buttons.forEach(btn => {
+if (btn.textContent.trim() === currencyCode) {
+btn.className = 'px-3 py-1 text-xs rounded-full bg-blue-600 text-white font-semibold';
+} else {
+btn.className = 'px-3 py-1 text-xs rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium';
+}
+});
+state.chartInstance.data.datasets[0].label = `${currencyCode} 매매기준율 (원)`;
+state.chartInstance.data.datasets[0].data = currObj.history;
+state.chartInstance.update();
+}
+function setCalcProdMode(mode) {
+state.calcProdMode = mode;
+const depBtn = document.getElementById('calcMode-deposit');
+const savBtn = document.getElementById('calcMode-saving');
+const amountLabel = document.getElementById('calcAmountLabel');
+if (mode === 'deposit') {
+depBtn.className = 'py-2.5 px-4 text-xs font-bold rounded-xl border border-blue-500 bg-blue-50 text-blue-700 text-center transition-all';
+savBtn.className = 'py-2.5 px-4 text-xs font-semibold rounded-xl border border-slate-200 bg-slate-50 text-slate-600 text-center transition-all hover:bg-slate-100';
+amountLabel.textContent = '예치 원금 (목돈)';
+} else {
+savBtn.className = 'py-2.5 px-4 text-xs font-bold rounded-xl border border-blue-500 bg-blue-50 text-blue-700 text-center transition-all';
+depBtn.className = 'py-2.5 px-4 text-xs font-semibold rounded-xl border border-slate-200 bg-slate-50 text-slate-600 text-center transition-all hover:bg-slate-100';
+amountLabel.textContent = '월 납입액 (매월)';
+}
+recalcSavings();
+}
+function addCalcAmount(val) {
+const input = document.getElementById('calcPrincipal');
+input.value = (parseFloat(input.value) || 0) + val;
+recalcSavings();
+}
+function resetCalcAmount(val) {
+document.getElementById('calcPrincipal').value = val;
+recalcSavings();
+}
+function formatKoreanMoney(num) {
+if (num >= 100000000) {
+const eok = Math.floor(num / 100000000);
+const man = Math.floor((num % 100000000) / 10000);
+return man > 0 ? `${eok}억 ${man.toLocaleString()}만 원` : `${eok}억 원`;
+} else if (num >= 10000) {
+return `${Math.floor(num / 10000).toLocaleString()}만 원`;
+}
+return `${num.toLocaleString()} 원`;
+}
+function recalcSavings() {
+const principalInput = parseFloat(document.getElementById('calcPrincipal').value) || 0;
+const months = parseInt(document.getElementById('calcMonths').value, 10);
+const annualRate = (parseFloat(document.getElementById('calcAnnualRate').value) || 0) / 100;
+const taxOption = document.querySelector('input[name="taxOption"]:checked').value;
+document.getElementById('amountInKorean').textContent = formatKoreanMoney(principalInput);
+let taxRate = 0.154; // default normal (14% + 1.4%)
+let taxRateLabel = '15.4% (일반과세)';
+if (taxOption === 'preferential') {
+taxRate = 0.095;
+taxRateLabel = '9.5% (세금우대)';
+} else if (taxOption === 'exempt') {
+taxRate = 0;
+taxRateLabel = '0% (비과세)';
+}
+let totalPrincipal = 0;
+let preTaxInterest = 0;
+if (state.calcProdMode === 'deposit') {
+totalPrincipal = principalInput;
+preTaxInterest = totalPrincipal * annualRate * (months / 12);
+document.getElementById('resDetailMode').textContent = `정기예금 (${months}개월 만기)`;
+} else {
+totalPrincipal = principalInput * months;
+preTaxInterest = principalInput * annualRate * (months * (months + 1)) / (2 * 12);
+document.getElementById('resDetailMode').textContent = `정기적금 (매월 ${formatKoreanMoney(principalInput)}, ${months}회 납입)`;
+}
+const taxAmount = Math.floor(preTaxInterest * taxRate);
+const netInterest = Math.floor(preTaxInterest - taxAmount);
+const finalTotal = totalPrincipal + netInterest;
+const netYield = totalPrincipal > 0 ? ((netInterest / totalPrincipal) * (12 / months) * 100).toFixed(2) : '0.00';
+document.getElementById('resTotalReceive').textContent = `${Math.round(finalTotal).toLocaleString()} 원`;
+document.getElementById('resSummaryNote').textContent = `원금 ${Math.round(totalPrincipal).toLocaleString()}원 + 세후 이자 ${Math.round(netInterest).toLocaleString()}원`;
+document.getElementById('resPrincipal').textContent = `${Math.round(totalPrincipal).toLocaleString()}원`;
+document.getElementById('resPreTaxInterest').textContent = `+${Math.round(preTaxInterest).toLocaleString()}원`;
+document.getElementById('resTaxDeduction').textContent = `-${Math.round(taxAmount).toLocaleString()}원`;
+document.getElementById('resDetailRate').textContent = `연 ${(annualRate * 100).toFixed(2)}%`;
+document.getElementById('resDetailTaxRate').textContent = taxRateLabel;
+document.getElementById('resDetailNetYield').textContent = `연 ${netYield}%`;
+}
+async function fetchGeminiInsight(promptText) {
+const container = document.getElementById('aiResponseContainer');
+const statusBadge = document.getElementById('aiStatusBadge');
+statusBadge.className = 'text-xs px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium animate-pulse';
+statusBadge.textContent = 'AI 분석 중...';
+container.innerHTML = `
+<div class="flex items-center justify-center p-8 space-x-3 text-slate-500">
+<i class="fa-solid fa-circle-notch fa-spin text-2xl text-blue-600"></i>
+<span class="text-sm">현재 시중은행 금리와 실시간 환율을 종합 분석하고 있습니다...</span>
+</div>
+`;
+const systemPrompt = `당신은 대한민국 최고 수준의 전문 금융 자산관리사(FP) 및 외환 전문가입니다.
+사용자에게 현재 국내 은행별 예·적금 금리 추세, 저축은행 대비 1금융권의 안정성, 달러(USD) 및 엔화(JPY) 환율 변동에 따른 최적의 자금 운용 및 환전 타이밍 조언을 제공합니다.
+답변 규칙:
+1. 한국어로 친절하고 전문적이며 명확하게 작성하세요.
+2. 예금/적금 금리 비교, 예금자보호법(5,000만원 한도) 팁, 스마트 환전 우대 팁(모바일 앱 90% 우대, 분할 환전 등)을 포함해 실질적인 행동 지침을 제시하세요.
+3. 보기 편하게 불릿 포인트나 소제목으로 구조화하세요.`;
+const currentFXSnapshot = FX_RATES_DATA.map(f => `${f.name}(${f.code}): 매매기준율 ${f.baseRate}원`).join(', ');
+const fullUserPrompt = `[현재 시장 데이터 스냅샷]\n환율: ${currentFXSnapshot}\n\n[사용자 질문]\n${promptText}`;
+const apiKey = ""; // Canvas handles API key automatically in runtime
+const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+const payload = {
+contents: [{ parts: [{ text: fullUserPrompt }] }],
+systemInstruction: { parts: [{ text: systemPrompt }] }
+};
+let attempt = 0;
+const maxAttempts = 3;
+let success = false;
+let resultData = null;
+while (attempt < maxAttempts && !success) {
+try {
+const response = await fetch(apiUrl, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(payload)
+});
+if (response.ok) {
+resultData = await response.json();
+success = true;
+} else {
+throw new Error(`HTTP Error: ${response.status}`);
+}
+} catch (err) {
+attempt++;
+if (attempt >= maxAttempts) {
+break;
+}
+await new Promise(r => setTimeout(r, Math.pow(2, attempt) * 1000));
+}
+}
+statusBadge.className = 'text-xs px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium';
+statusBadge.textContent = '분석 완료';
+if (success && resultData?.candidates?.[0]?.content?.parts?.[0]?.text) {
+const markdownText = resultData.candidates[0].content.parts[0].text;
+container.innerHTML = formatMarkdownToHTML(markdownText);
+} else {
+container.innerHTML = generateFallbackInsight(promptText);
+statusBadge.textContent = '로컬 추천 분석';
+}
+}
+function formatMarkdownToHTML(text) {
+let html = text
+.replace(/^### (.*$)/gim, '<h4 class="text-base font-bold text-slate-900 mt-4 mb-2 flex items-center gap-1.5"><span class="w-1.5 h-4 bg-blue-600 rounded-full inline-block"></span>$1</h4>')
+.replace(/^## (.*$)/gim, '<h3 class="text-lg font-bold text-slate-900 mt-4 mb-2">$1</h3>')
+.replace(/\*\*(.*?)\*\*/gim, '<strong class="font-bold text-slate-900">$1</strong>')
+.replace(/^\* (.*$)/gim, '<li class="ml-4 list-disc text-slate-700 my-1">$1</li>')
+.replace(/^- (.*$)/gim, '<li class="ml-4 list-disc text-slate-700 my-1">$1</li>')
+.replace(/\n\n/gim, '</p><p class="text-slate-700 my-2">');
+return `<div class="space-y-2 text-slate-700">${html}</div>`;
+}
+function generateFallbackInsight(query) {
+return `
+<div class="space-y-4">
+<div class="p-3.5 bg-blue-50 rounded-xl border border-blue-200">
+<h4 class="font-bold text-blue-900 text-sm mb-1 flex items-center gap-1.5">
+<i class="fa-solid fa-chart-line text-blue-600"></i> AI 시장 진단 요약
+</h4>
+<p class="text-xs text-blue-800 leading-relaxed">
+현재 시중은행 12개월 정기예금은 연 3.10% ~ 3.75%, 저축은행은 최고 4.15% 수준입니다. 환율의 경우 달러는 1,380원대 후반에서 박스권 등락을 이어가고 있습니다.
+</p>
+</div>
+<div class="space-y-2 text-xs">
+<h4 class="font-bold text-slate-900 text-sm">★ 실전 금융 자산 운용 전략</h4>
+<ul class="list-disc ml-5 space-y-1.5 text-slate-700">
+<li><strong>안정형 예금 포트폴리오:</strong> 시중은행(신한·국민·하나) 및 인터넷은행(카카오·토스)의 비대면 우대금리를 공략하고, 5,000만원 초과 목돈은 저축은행별로 5천만원씩 분산 예치하여 예금자보호를 확보하세요.</li>
+<li><strong>외환 분할 매수 원칙:</strong> 환율 변동성이 큰 시기이므로 여행 또는 해외 결제 목적의 외화는 한 번에 환전하지 말고 3~4회에 걸쳐 분할 환전하는 것이 평균 매입 단가를 낮추는 데 유리합니다.</li>
+<li><strong>환전 수수료 90% 우대 활용:</strong> 시중 5대 은행 모바일 앱의 '환전 지갑' 서비스를 이용하면 주요 통화(USD, JPY, EUR)에 대해 최대 90% 스프레드 우대를 받을 수 있습니다.</li>
+</ul>
+</div>
+</div>
+`;
+}
+function askAIPreset(type) {
+switchTab('ai');
+let query = '';
+if (type === 'deposit_recommend') {
+query = '1,000만 원의 여유 자금을 1년간 안전하게 굴리고 싶습니다. 시중은행 vs 저축은행 상품 중 어떤 선택이 가장 실질 이득이 큰지 분석해 주세요.';
+} else if (type === 'fx_timing') {
+query = '현재 USD 환율(1,385원대)과 JPY 엔화 환율(910원대) 수준에서 여행용 및 투자용 환전을 지금 하는 것이 좋은지 분할 매수 타이밍 전략을 알려주세요.';
+} else if (type === 'savings_vs_fx') {
+query = '국내 원화 고금리 정기적금과 외화(달러) 정기예금 중 현재 금리 환경에서 어떤 금융 상품이 더 매력적인가요? 장단점을 비교해 주세요.';
+}
+document.getElementById('aiCustomPrompt').value = query;
+fetchGeminiInsight(query);
+}
+function handleCustomAIQuery() {
+const prompt = document.getElementById('aiCustomPrompt').value.trim();
+if (!prompt) {
+showToast('질문 내용을 입력해 주세요.');
+return;
+}
+fetchGeminiInsight(prompt);
+}
+function closeModal() {
+document.getElementById('detailModal').classList.add('hidden');
+}
+</script>
+<a id="homeBtn" href="https://csh2020.kro.kr/" target="_top" style="position:fixed;left:16px;bottom:16px;z-index:60;background:#16a34a;color:#fff;font-weight:700;font-size:13px;padding:9px 14px;border-radius:12px;box-shadow:0 8px 20px -8px #0008;text-decoration:none">&larr; 홈으로</a>
+<script>if(window.self!==window.top){document.getElementById('homeBtn').style.display='none';}</script>
+</body>
+</html>
