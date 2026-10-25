@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>알림글 관리 | csh2020</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Pretendard,"Malgun Gothic",sans-serif;background:#07111f;color:#e2edf9;line-height:1.55;padding:24px 16px 60px}
+.app{max-width:760px;margin:0 auto;display:grid;gap:16px}
+h1{font-size:24px;font-weight:900}
+h1 small{display:block;font-size:13px;font-weight:500;color:#9db7d0;margin-top:4px}
+.card{background:#0f1f34;border:1px solid #1f3651;border-radius:18px;padding:18px;display:grid;gap:12px}
+.card h2{font-size:16px;font-weight:800}
+label{font-size:13px;font-weight:700;color:#9db7d0;display:grid;gap:6px}
+input[type=text],input[type=password],textarea{width:100%;background:#07111f;border:1px solid #2a4566;border-radius:12px;color:#fff;font:inherit;font-size:15px;padding:11px 12px}
+textarea{min-height:84px;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button{font:inherit;font-weight:800;font-size:15px;border:0;border-radius:12px;padding:11px 18px;cursor:pointer}
+.p{background:#fde047;color:#111}.s{background:#1e3a5f;color:#e2edf9}.d{background:#7f1d1d;color:#fff}.g{background:#16a34a;color:#fff}
+button:disabled{opacity:.5;cursor:default}
+.chk{display:flex;gap:8px;align-items:center;font-size:15px;color:#e2edf9;font-weight:700}
+.chk input{width:20px;height:20px}
+.list{display:grid;gap:8px}
+.it{display:flex;gap:10px;align-items:center;background:#07111f;border:1px solid #1f3651;border-radius:12px;padding:10px 12px}
+.it .t{flex:1;min-width:0}
+.it .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px}
+.it .t span{font-size:12px;color:#9db7d0}
+.it.sel{border-color:#67e8f9}
+.badge{font-size:12px;font-weight:800;border-radius:99px;padding:3px 10px;flex:none}
+.on{background:#16a34a;color:#fff}.off{background:#334155;color:#cbd5e1}
+.it button{padding:7px 12px;font-size:13px}
+.msg{font-size:14px;font-weight:700;min-height:20px}
+.ok{color:#a3e635}.err{color:#fca5a5}
+.help{font-size:13px;color:#9db7d0}
+.help a{color:#67e8f9}
+.pv{background:rgba(15,31,52,.92);border:1px solid #1f3651;border-radius:12px;padding:10px 12px;display:flex;gap:10px;align-items:center;font-size:14px;font-weight:600}
+.pv .tg{font-size:12px;font-weight:800;color:#0f172a;background:#fde047;border-radius:99px;padding:3px 10px;flex:none}
+</style></head><body>
+<main class="app">
+  <h1>알림글 관리<small>홈페이지 상단 알림 바에 보일 글을 작성·수정·게재합니다</small></h1>
+
+  <section class="card" id="conn">
+    <h2>1. 관리자 연결</h2>
+    <p class="help">처음 한 번만 GitHub 토큰을 넣으면 이 브라우저에 저장됩니다. 토큰이 있어야 저장할 수 있어서 다른 사람은 알림글을 바꿀 수 없습니다.
+    토큰이 없으면 <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=csh2020-notice" target="_blank" rel="noopener">여기서 만들기</a> (public_repo 권한).</p>
+    <label>GitHub 토큰<input type="password" id="tok" placeholder="ghp_..." autocomplete="off"></label>
+    <div class="row"><button class="p" id="connBtn">연결</button><button class="s" id="discBtn">연결 해제</button><span class="msg" id="connMsg"></span></div>
+  </section>
+
+  <section class="card">
+    <h2>2. 알림글 목록</h2>
+    <div class="list" id="list"></div>
+    <div class="row"><button class="s" id="newBtn">+ 새 알림 작성</button></div>
+  </section>
+
+  <section class="card">
+    <h2 id="edTitle">3. 알림 작성</h2>
+    <label>알림 내용<textarea id="fText" maxlength="200" placeholder="예) 10월 29일부터 양육비 선지급 신청이 시작됩니다"></textarea></label>
+    <label>연결할 주소 (선택)<input type="text" id="fLink" placeholder="예) https://blog.naver.com/csh2020 또는 /fin"></label>
+    <label class="chk"><input type="checkbox" id="fPub" checked> 홈페이지에 게재</label>
+    <div class="pv"><span class="tg">알림</span><span id="pvTx">미리보기</span></div>
+    <div class="row"><button class="g" id="saveItem">목록에 적용</button><button class="s" id="cancelEd">새로 쓰기</button></div>
+  </section>
+
+  <section class="card">
+    <h2>4. 홈페이지에 반영</h2>
+    <p class="help">목록에서 바꾼 내용은 아래 버튼을 눌러야 홈페이지에 반영됩니다. 반영 후 1~2분 뒤 홈페이지에 나타납니다.</p>
+    <div class="row"><button class="p" id="publish">저장하고 홈페이지에 반영</button><a class="help" href="/" target="_blank">홈페이지 열기 →</a></div>
+    <div class="msg" id="pubMsg"></div>
+  </section>
+</main>
+<script>
+var OWNER='chisungho',REPO='chisungho.github.io',FILE='notice.json',API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+FILE;
+var data={items:[]},sha=null,editId=null,dirty=false;
+var $=function(id){return document.getElementById(id);};
+function tok(){try{return localStorage.getItem('csh_gh_tok')||'';}catch(e){return '';}}
+function msg(el,t,ok){el.textContent=t;el.className='msg '+(ok?'ok':'err');}
+function today(){return new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul'}).format(new Date());}
+function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function b64(s){return btoa(unescape(encodeURIComponent(s)));}
+function unb64(s){return decodeURIComponent(escape(atob(s.replace(/\n/g,''))));}
+function load(){
+  var h={Accept:'application/vnd.github+json'};if(tok())h.Authorization='Bearer '+tok();
+  return fetch(API+'?ref=main&t='+Date.now(),{headers:h,cache:'no-store'}).then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+  .then(function(j){sha=j.sha;data=JSON.parse(unb64(j.content));if(!data.items)data.items=[];render();})
+  .catch(function(){return fetch('/notice.json?t='+Date.now()).then(function(r){return r.json();}).then(function(j){data=j;render();}).catch(function(){render();});});
+}
+function render(){
+  var L=$('list');L.innerHTML='';
+  if(!data.items.length){L.innerHTML='<p class="help">아직 알림글이 없습니다.</p>';}
+  data.items.forEach(function(n,i){
+    var d=document.createElement('div');d.className='it'+(n.id===editId?' sel':'');
+    d.innerHTML='<span class="badge '+(n.published?'on':'off')+'">'+(n.published?'게재중':'내림')+'</span><div class="t"><b>'+esc(n.text)+'</b><span>'+esc(n.date||'')+(n.link?' · '+esc(n.link):'')+'</span></div>'+
+      '<button class="s" data-a="up">↑</button><button class="s" data-a="edit">수정</button><button class="'+(n.published?'s':'g')+'" data-a="tog">'+(n.published?'내리기':'게재')+'</button><button class="d" data-a="del">삭제</button>';
+    d.querySelectorAll('button').forEach(function(b){b.onclick=function(){act(b.getAttribute('data-a'),i);};});
+    L.appendChild(d);
+  });
+  $('publish').textContent=dirty?'저장하고 홈페이지에 반영 (변경 있음)':'저장하고 홈페이지에 반영';
+}
+function act(a,i){var n=data.items[i];
+  if(a==='edit'){editId=n.id;$('fText').value=n.text;$('fLink').value=n.link||'';$('fPub').checked=!!n.published;$('edTitle').textContent='3. 알림 수정';pv();render();window.scrollTo({top:$('edTitle').offsetTop-20,behavior:'smooth'});return;}
+  if(a==='tog'){n.published=!n.published;}
+  if(a==='del'){if(!confirm('이 알림을 삭제할까요?'))return;data.items.splice(i,1);if(editId===n.id)clearEd();}
+  if(a==='up'&&i>0){data.items.splice(i-1,0,data.items.splice(i,1)[0]);}
+  dirty=true;render();
+}
+function clearEd(){editId=null;$('fText').value='';$('fLink').value='';$('fPub').checked=true;$('edTitle').textContent='3. 알림 작성';pv();render();}
+function pv(){$('pvTx').textContent=$('fText').value.trim()||'미리보기';}
+$('fText').oninput=pv;
+$('cancelEd').onclick=clearEd;$('newBtn').onclick=function(){clearEd();$('fText').focus();};
+$('saveItem').onclick=function(){
+  var t=$('fText').value.trim();if(!t){alert('알림 내용을 입력해 주세요.');return;}
+  var o={text:t,link:$('fLink').value.trim(),published:$('fPub').checked,date:today()};
+  if(editId){var n=data.items.find(function(x){return x.id===editId;});Object.assign(n,o);}
+  else{o.id='n'+Date.now();data.items.unshift(o);}
+  dirty=true;clearEd();msg($('pubMsg'),'목록에 적용했습니다. 아래 버튼을 눌러야 홈페이지에 반영됩니다.',true);
+};
+$('connBtn').onclick=function(){
+  var t=$('tok').value.trim();if(!t){msg($('connMsg'),'토큰을 입력해 주세요.');return;}
+  fetch('https://api.github.com/repos/'+OWNER+'/'+REPO,{headers:{Authorization:'Bearer '+t,Accept:'application/vnd.github+json'}}).then(function(r){return r.json().then(function(j){return [r.ok,j];});})
+  .then(function(x){if(x[0]&&x[1].permissions&&x[1].permissions.push){try{localStorage.setItem('csh_gh_tok',t);}catch(e){}$('tok').value='';msg($('connMsg'),'연결되었습니다.',true);load();}else msg($('connMsg'),'이 토큰으로는 저장 권한이 없습니다.');})
+  .catch(function(){msg($('connMsg'),'연결하지 못했습니다. 인터넷을 확인해 주세요.');});
+};
+$('discBtn').onclick=function(){try{localStorage.removeItem('csh_gh_tok');}catch(e){}msg($('connMsg'),'연결을 해제했습니다.',true);};
+$('publish').onclick=function(){
+  if(!tok()){msg($('pubMsg'),'먼저 1번에서 관리자 연결을 해 주세요.');return;}
+  var b=$('publish');b.disabled=true;msg($('pubMsg'),'반영하는 중...',true);
+  data.updated=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',dateStyle:'short',timeStyle:'short'}).format(new Date());
+  var body={message:'알림글 업데이트',content:b64(JSON.stringify(data,null,2)+'\n'),branch:'main'};if(sha)body.sha=sha;
+  fetch(API,{method:'PUT',headers:{Authorization:'Bearer '+tok(),Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify(body)})
+  .then(function(r){return r.json().then(function(j){return [r.ok,j,r.status];});})
+  .then(function(x){b.disabled=false;if(x[0]){sha=x[1].content.sha;dirty=false;render();msg($('pubMsg'),'반영했습니다. 1~2분 뒤 홈페이지에 나타납니다.',true);}
+    else if(x[2]===409){msg($('pubMsg'),'다른 곳에서 먼저 바뀌었습니다. 새로고침 후 다시 해 주세요.');}
+    else msg($('pubMsg'),'반영하지 못했습니다 ('+x[2]+'). 관리자 연결을 다시 확인해 주세요.');})
+  .catch(function(){b.disabled=false;msg($('pubMsg'),'반영하지 못했습니다. 인터넷을 확인해 주세요.');});
+};
+window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
+if(tok())msg($('connMsg'),'이 브라우저는 관리자 연결이 되어 있습니다.',true);
+load();
+</script>
+</body></html>

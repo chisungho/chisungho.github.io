@@ -221,6 +221,17 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 #fin,#saju,#dream{display:none!important}
 
 
+
+/* notice bar */
+.ntc{display:none;border-top:1px solid rgba(148,190,224,.16);background:rgba(15,31,52,.92)}
+.ntc.on{display:block}
+.ntc .wrap{display:flex!important;align-items:center;gap:10px;height:40px!important;justify-content:flex-start!important;overflow:hidden}
+.ntc .tg{flex:none;font-size:12px;font-weight:800;color:#0f172a;background:#fde047;border-radius:99px;padding:3px 10px}
+.ntc .tx{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14px;font-weight:600;color:#e2edf9;transition:opacity .35s}
+.ntc .tx a{color:inherit}
+.ntc .tx a:hover{color:#67e8f9}
+.ntc .ct{flex:none;font-size:12px;color:#9db7d0}
+@media(max-width:560px){.ntc .tx{font-size:13px}.ntc .ct{display:none}}
 </style>
 </head>
 <body>
@@ -231,7 +242,9 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 <nav><div class="wrap">
   <a class="logo" href="/"><i>新</i>새로운 도전을 위하여</a>
   <ul><li><a href="/timer" id="twNav">타임워치</a></li><li><a href="/fin" data-open="pgFin">은행금리비교</a></li><li><a href="/saju" data-open="pgSaju">사주팔자보기</a></li><li><a href="/dream" data-open="pgDream">꿈해몽</a></li><li><a href="/lotto" id="ltNav">로또번호</a></li><li><a href="#guide">도구 안내</a></li><li><a href="#channels">채널</a></li><li><a href="#about">소개</a></li></ul>
-</div></nav>
+</div>
+<div class="ntc" id="ntc" role="region" aria-label="알림"><div class="wrap"><span class="tg">알림</span><span class="tx" id="ntcTx" aria-live="polite"></span><span class="ct" id="ntcCt"></span></div></div>
+</nav>
 
 <header class="hero"><div class="wrap">
   <h1 class="hero-title">생활도구</h1>
@@ -263,7 +276,7 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
     <a class="btn p" href="https://blog.naver.com/csh2020" target="_blank">블로그 바로가기 →</a>
 
   </div>
-  <div class="vc" aria-label="방문자 수"><div><small class="lbl"><i class="dot"></i>오늘 방문</small><b id="vcToday">-</b></div><div style="display:none"><small>누적 방문</small><b id="vcTotal">-</b></div></div>
+  <div class="vc" aria-label="방문자 수"><div><small class="lbl"><i class="dot"></i>오늘 방문</small><b id="vcToday">-</b></div><div><small>누적 방문</small><b id="vcTotal">-</b></div></div>
 </div></header>
 
 <section id="guide"><div class="wrap">
@@ -482,5 +495,19 @@ document.querySelectorAll('nav a[data-open]').forEach(function(a){a.addEventList
 .about td a{color:#67e8f9}
 @media(max-width:560px){.faq{grid-template-columns:minmax(0,1fr)}}
 </style>
+<script>
+(function(){
+  var bar=document.getElementById('ntc'),tx=document.getElementById('ntcTx'),ct=document.getElementById('ntcCt');
+  function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  fetch('/notice.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+    var it=(j&&j.items||[]).filter(function(n){return n.published&&n.text;});
+    if(!it.length)return;
+    var i=0;
+    function show(){var n=it[i];var t=esc(n.text);tx.innerHTML=n.link?'<a href="'+esc(n.link)+'"'+(/^https?:/.test(n.link)?' target="_blank" rel="noopener"':'')+'>'+t+' →</a>':t;ct.textContent=it.length>1?(i+1)+' / '+it.length:(n.date||'');}
+    show();bar.classList.add('on');
+    if(it.length>1)setInterval(function(){tx.style.opacity=0;setTimeout(function(){i=(i+1)%it.length;show();tx.style.opacity=1;},350);},5000);
+  }).catch(function(){});
+})();
+</script>
 </body>
 </html>
