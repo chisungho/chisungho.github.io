@@ -324,11 +324,11 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
     <p>광주에서 운영하는 생활도구·생활정보 사이트입니다. 생활에 쓸모 있는 무료 도구를 직접 만들어 공개하고, 뉴스와 정책 자료를 꼼꼼히 확인해 누구나 30초 만에 핵심을 파악할 수 있도록 블로그에 요약과 표로 정리합니다.</p>
   </div>
   <table>
-    <tr><th>사이트명</th><td>새로운 도전을 위하여</td></tr>
-    <tr><th>주소</th><td><a href="http://csh2020.kro.kr/">csh2020.kro.kr</a></td></tr>
-    <tr><th>주요 분야</th><td>무료 생활도구 / 경제·정책 / 생활 / 여행 / 스포츠</td></tr>
-    <tr><th>소통</th><td>네이버 블로그 댓글 · 이웃 신청 환영</td></tr>
-    <tr><th>관리자</th><td><a href="mailto:hgy671001@gmail.com">hgy671001@gmail.com</a></td></tr>
+    <tr><th><span class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></span>사이트명</th><td>새로운 도전을 위하여</td></tr>
+    <tr><th><span class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg></span>주소</th><td><a href="http://csh2020.kro.kr/">csh2020.kro.kr</a></td></tr>
+    <tr><th><span class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>주요 분야</th><td>무료 생활도구 / 경제·정책 / 생활 / 여행 / 스포츠</td></tr>
+    <tr><th><span class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 10h8M8 13h5"/></svg></span>소통</th><td>네이버 블로그 댓글 · 이웃 신청 환영</td></tr>
+    <tr><th><span class="ai"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>관리자</th><td><a href="mailto:hgy671001@gmail.com">hgy671001@gmail.com</a></td></tr>
   </table>
 </div></section>
 
@@ -497,6 +497,12 @@ document.querySelectorAll('nav a[data-open]').forEach(function(a){a.addEventList
 .faq p{font-size:14px;color:#9aacc3;line-height:1.6}
 .about td a{color:#67e8f9}
 @media(max-width:560px){.faq{grid-template-columns:minmax(0,1fr)}}
+
+/* about icons */
+#about th{background:linear-gradient(135deg,rgba(14,116,144,.35),rgba(79,70,229,.28));color:#cffafe;font-weight:700;white-space:nowrap}
+#about th .ai{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;margin-right:10px;border-radius:9px;background:linear-gradient(135deg,#22d3ee,#6366f1);color:#fff;vertical-align:middle;box-shadow:0 4px 12px rgba(34,211,238,.25)}
+#about th .ai svg{width:17px;height:17px}
+@media (max-width:560px){#about th{white-space:normal}#about th .ai{width:24px;height:24px;margin-right:6px;border-radius:7px}#about th .ai svg{width:14px;height:14px}}
 </style>
 <script>
 (function(){
