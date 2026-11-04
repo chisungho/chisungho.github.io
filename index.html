@@ -234,6 +234,31 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 .ntc .tx a:hover{color:#67e8f9}
 .ntc .ct{flex:none;font-size:12px;color:#9db7d0}
 @media(max-width:560px){.ntc .tx{font-size:13px}.ntc .ct{display:none}}
+
+/* tool request strip */
+.req{background:linear-gradient(90deg,#0e7490,#4338ca);color:#fff;font-size:14.5px;font-weight:700}
+.req .wrap{display:flex;align-items:center;justify-content:center;gap:12px;min-height:44px;padding-top:6px;padding-bottom:6px;flex-wrap:wrap;text-align:center}
+.req .rq{letter-spacing:-.01em}
+.req .ml{display:inline-flex;align-items:center;gap:6px;background:#fde047;color:#0f172a;border-radius:99px;padding:5px 14px;font-weight:900;animation:reqBlink 1s steps(1,end) infinite}
+.req .ml:hover,.req .ml:focus-visible{animation:none;background:#fff}
+.req .bd{color:#cffafe;font-size:13px;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+@keyframes reqBlink{50%{opacity:.15}}
+@media(max-width:560px){.req{font-size:13.5px}.req .wrap{gap:8px}.req .bd{display:none}}
+
+/* board section */
+#board{background:linear-gradient(180deg,#0a1727,#081423);border-top:1px solid rgba(148,190,224,.08)}
+.bl{max-width:820px;margin:0 auto;display:grid;gap:10px}
+.bi{display:flex;align-items:center;gap:14px;background:rgba(15,31,52,.72);border:1px solid rgba(148,190,224,.16);border-radius:16px;padding:14px 18px;transition:.2s}
+.bi:hover{border-color:#67e8f9;transform:translateY(-1px)}
+.bi .no{flex:none;font-size:12px;font-weight:800;color:#0f172a;background:#67e8f9;border-radius:99px;padding:3px 10px}
+.bi .tt{flex:1;min-width:0;font-size:15.5px;font-weight:700;color:#e7f0ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bi .dt{flex:none;font-size:12.5px;color:#9aacc3}
+.bl .em{text-align:center;color:#9aacc3;font-size:14px;padding:18px}
+.bact{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.bact a{font-weight:800;font-size:14.5px;border-radius:99px;padding:11px 20px}
+.bact .b1{background:#22d3ee;color:#04202b}
+.bact .b2{background:rgba(148,190,224,.12);color:#e7f0ff;border:1px solid rgba(148,190,224,.25)}
+@media(max-width:560px){.bi{padding:12px 14px;gap:10px}.bi .dt{display:none}}
 </style>
 <meta name="google-adsense-account" content="ca-pub-2790239178229519">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2790239178229519" crossorigin="anonymous"></script>
@@ -243,9 +268,15 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 
 
 
+<div class="req" role="region" aria-label="도구 신청 안내"><div class="wrap">
+  <span class="rq">필요한 도구 신청을 해주세요</span>
+  <a class="ml" href="mailto:hgy671001@gmail.com?subject=%5Bcsh2020%5D%20%ED%95%84%EC%9A%94%ED%95%9C%20%EB%8F%84%EA%B5%AC%20%EC%8B%A0%EC%B2%AD&amp;body=%E2%96%A0%20%ED%95%84%EC%9A%94%ED%95%9C%20%EB%8F%84%EA%B5%AC%20%EC%9D%B4%EB%A6%84%3A%0A%E2%96%A0%20%EC%96%B4%EB%96%A4%20%EA%B8%B0%EB%8A%A5%EC%9D%B4%20%ED%95%84%EC%9A%94%ED%95%9C%EA%B0%80%EC%9A%94%3F%3A%0A%E2%96%A0%20%EC%B0%B8%EA%B3%A0%ED%95%A0%20%EC%82%AC%EC%9D%B4%ED%8A%B8(%EC%84%A0%ED%83%9D)%3A%0A">✉ 메일로 보내주세요</a>
+  <a class="bd" href="/board">신청·공개 게시판 보기</a>
+</div></div>
+
 <nav><div class="wrap">
   <a class="logo" href="/"><i>新</i>새로운 도전을 위하여</a>
-  <ul><li><a href="/timer" id="twNav">타임워치</a></li><li><a href="/fin" data-open="pgFin">은행금리비교</a></li><li><a href="/saju" data-open="pgSaju">사주팔자보기</a></li><li><a href="/dream" data-open="pgDream">꿈해몽</a></li><li><a href="/lotto" id="ltNav">로또번호</a></li><li><a href="#guide">도구 안내</a></li><li><a href="#channels">채널</a></li><li><a href="#about">소개</a></li></ul>
+  <ul><li><a href="/timer" id="twNav">타임워치</a></li><li><a href="/fin" data-open="pgFin">은행금리비교</a></li><li><a href="/saju" data-open="pgSaju">사주팔자보기</a></li><li><a href="/dream" data-open="pgDream">꿈해몽</a></li><li><a href="/lotto" id="ltNav">로또번호</a></li><li><a href="#guide">도구 안내</a></li><li><a href="/board">게시판</a></li><li><a href="#channels">채널</a></li><li><a href="#about">소개</a></li></ul>
 </div>
 <div class="ntc" id="ntc" role="region" aria-label="알림"><div class="wrap"><span class="tg">알림</span><span class="tx" id="ntcTx" aria-live="polite"></span><span class="ct" id="ntcCt"></span></div></div>
 </nav>
@@ -292,6 +323,12 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
     <a class="ch" href="/dream"><i style="background:linear-gradient(135deg,#0e7490,#4f46e5)">☾</i><div><b>꿈해몽 대백과</b><span>돼지꿈·이빨 빠지는 꿈·뱀꿈 등 전통 해몽과 주역 64괘 풀이</span></div></a>
     <a class="ch" href="/lotto"><i style="background:linear-gradient(135deg,#0e7490,#4f46e5)">★</i><div><b>로또 번호 생성기</b><span>역대 당첨번호 통계로 로또 6/45 번호 5게임 조합</span></div></a>
   </div>
+</div></section>
+
+<section id="board"><div class="wrap">
+  <div class="head"><small>BOARD</small><h2>게시판</h2><p>신청받아 만든 도구와 필요한 프로그램을 올려 둡니다</p></div>
+  <div class="bl" id="bdList"><p class="em">게시글을 불러오는 중...</p></div>
+  <div class="bact"><a class="b1" href="/board">게시판 전체 보기 →</a><a class="b2" href="mailto:hgy671001@gmail.com?subject=%5Bcsh2020%5D%20%ED%95%84%EC%9A%94%ED%95%9C%20%EB%8F%84%EA%B5%AC%20%EC%8B%A0%EC%B2%AD&amp;body=%E2%96%A0%20%ED%95%84%EC%9A%94%ED%95%9C%20%EB%8F%84%EA%B5%AC%20%EC%9D%B4%EB%A6%84%3A%0A%E2%96%A0%20%EC%96%B4%EB%96%A4%20%EA%B8%B0%EB%8A%A5%EC%9D%B4%20%ED%95%84%EC%9A%94%ED%95%9C%EA%B0%80%EC%9A%94%3F%3A%0A%E2%96%A0%20%EC%B0%B8%EA%B3%A0%ED%95%A0%20%EC%82%AC%EC%9D%B4%ED%8A%B8(%EC%84%A0%ED%83%9D)%3A%0A">✉ 필요한 도구 메일로 신청</a></div>
 </div></section>
 
 <section id="faq"><div class="wrap">
@@ -518,6 +555,17 @@ document.querySelectorAll('nav a[data-open]').forEach(function(a){a.addEventList
     show();bar.classList.add('on');
     if(it.length>1)setInterval(function(){tx.style.opacity=0;setTimeout(function(){i=(i+1)%it.length;show();tx.style.opacity=1;},350);},5000);
   }).catch(function(){});
+})();
+</script>
+<script>
+(function(){
+  var L=document.getElementById('bdList');
+  function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  fetch('/board.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+    var it=(j&&j.items||[]).filter(function(n){return n.published&&n.title;});
+    if(!it.length){L.innerHTML='<p class="em">아직 게시글이 없습니다.</p>';return;}
+    L.innerHTML=it.slice(0,5).map(function(n,i){return '<a class="bi" href="/board#'+esc(n.id)+'"><span class="no">'+(n.link?'프로그램':'글')+'</span><span class="tt">'+esc(n.title)+'</span><span class="dt">'+esc(n.date)+'</span></a>';}).join('');
+  }).catch(function(){L.innerHTML='<p class="em">게시글을 불러오지 못했습니다.</p>';});
 })();
 </script>
 </body>
