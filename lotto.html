@@ -139,6 +139,14 @@ body{color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;-webk
 @media (prefers-reduced-motion:reduce){.deepring svg{animation-duration:3s}}
 .status #drawsNote{font-family:Consolas,monospace;font-size:11px;word-break:break-all}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:13px;font-weight:500;box-shadow:var(--shadow)}
+.news{margin-bottom:14px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:none}
+.news.on{display:block}
+.news h2{font-size:13px;font-weight:800;margin:0 0 8px;display:flex;justify-content:space-between;gap:8px}
+.news h2 span{font-weight:500;opacity:.65}
+.news ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.news li{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.5}
+.news li b{flex:none;font-size:11px;font-weight:800;background:#fde047;color:#111;border-radius:99px;padding:2px 8px;margin-top:1px}
+.news li a{text-decoration:underline;text-underline-offset:2px}
 </style>
 <meta name="google-adsense-account" content="ca-pub-2790239178229519">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2790239178229519" crossorigin="anonymous"></script>
@@ -153,6 +161,8 @@ body{color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;-webk
     </div>
     <span class="tag" id="verBadge">테스트 버전</span>
   </div>
+
+  <section class="news" id="news" aria-label="로또 최신 소식"><h2>로또 최신 소식 <span id="newsUpd"></span></h2><ul id="newsList"></ul></section>
 
   <section class="card" aria-label="번호 생성">
     <div class="seg" role="group" aria-label="선택 방식">
@@ -539,5 +549,16 @@ $("openFolder").onclick=()=>api("api/open",{}).catch(()=>toast("폴더를 열지
 </script>
 
 <a id="homeBtn" href="https://csh2020.com/" target="_top" style="position:fixed;left:14px;bottom:14px;z-index:60;background:#16a34a;color:#fff;font-weight:700;font-size:13px;padding:9px 14px;border-radius:12px;box-shadow:0 8px 20px -8px #0008;text-decoration:none">&larr; 홈으로</a>
+<script>
+(function(){
+  function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  fetch('/lotto-news.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){
+    var it=j&&j.items||[];if(!it.length)return;
+    document.getElementById('newsList').innerHTML=it.map(function(n){var t=esc(n.text);if(n.link)t='<a href="'+esc(n.link)+'" target="_top">'+t+'</a>';return '<li><b>'+esc(n.tag)+'</b><span>'+t+'</span></li>';}).join('');
+    document.getElementById('newsUpd').textContent=j.updated?j.updated+' 업데이트':'';
+    document.getElementById('news').classList.add('on');
+  }).catch(function(){});
+})();
+</script>
 </body>
 </html>
