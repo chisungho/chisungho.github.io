@@ -99,7 +99,7 @@ font-weight: 700;
 <button onclick="switchTab('calc')" id="tabBtn-calc" class="py-3 px-1 text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-2 whitespace-nowrap">
 <i class="fa-solid fa-calculator"></i> 만기 이자 계산기
 </button>
-<button onclick="switchTab('ai')" id="tabBtn-ai" class="py-3 px-1 text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-2 whitespace-nowrap">
+<button onclick="switchTab('ai')" id="tabBtn-ai" style="display:none" class="py-3 px-1 text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-2 whitespace-nowrap">
 <i class="fa-solid fa-wand-magic-sparkles text-amber-500"></i> AI 금융 분석 & 추천
 </button>
 </div>
@@ -829,7 +829,32 @@ spreadDiscountRate: 80, // %
 calcProdMode: 'deposit', // 'deposit' | 'saving'
 chartInstance: null
 };
+const RATES_API = 'https://script.google.com/macros/s/AKfycbx9Jf-wKeOwKCc7jlYqv27MAZrY_vBFdHXj-dIHYZJFzIGr4rzWRcH45ZbXDEAbWKbq/exec?a=rates';
+let liveInfo = { updated: null, fxDate: null, productsDate: null };
+// 매일 오전 9시 서버에서 갱신한 환율·예적금 금리를 반영 (실패하면 기본 데이터 유지)
+function loadLiveRates() {
+return fetch(RATES_API + '&t=' + Date.now()).then(r => r.json()).then(d => {
+if (!d || !d.ok) return false;
+if (Array.isArray(d.fx)) {
+d.fx.forEach(f => {
+const it = FX_RATES_DATA.find(x => x.code === f.code);
+if (!it || !f.baseRate) return;
+it.baseRate = f.baseRate; it.change = f.change;
+it.cashBuy = +(f.baseRate * 1.0175).toFixed(2); it.cashSell = +(f.baseRate * 0.9825).toFixed(2);
+it.send = +(f.baseRate * 1.01).toFixed(2); it.receive = +(f.baseRate * 0.99).toFixed(2);
+if (f.history && f.history.length > 1) it.history = f.history.slice();
+});
+}
+if (Array.isArray(d.products) && d.products.length) {
+BANK_RATES_DATA.length = 0;
+d.products.forEach(p => BANK_RATES_DATA.push(p));
+}
+liveInfo = d;
+return true;
+}).catch(() => false);
+}
 window.addEventListener('DOMContentLoaded', () => {
+loadLiveRates().then(ok => { if (ok) { updateTimestamp(); renderRateTable(); renderFXSection(); updateTrendChart(state.selectedCurrencyForChart); calculateExchange(); } });
 updateTimestamp();
 renderRateTable();
 renderFXSection();
@@ -865,7 +890,7 @@ const day = String(now.getDate()).padStart(2, '0');
 const hours = String(now.getHours()).padStart(2, '0');
 const minutes = String(now.getMinutes()).padStart(2, '0');
 const seconds = String(now.getSeconds()).padStart(2, '0');
-document.getElementById('lastUpdated').textContent = `${year}.${month}.${day} ${hours}:${minutes}:${seconds}`;
+document.getElementById('lastUpdated').textContent = liveInfo.updated ? `${liveInfo.updated} (매일 오전 9시 갱신)` : `${year}.${month}.${day} 기본 데이터`;
 }
 function showToast(message) {
 const toast = document.getElementById('toastMessage');
@@ -881,59 +906,20 @@ toast.classList.add('translate-y-16', 'opacity-0');
 function refreshData() {
 const icon = document.getElementById('refreshIcon');
 icon.classList.add('fa-spin');
-setTimeout(() => {
-FX_RATES_DATA.forEach(item => {
-const delta = (Math.random() * 1.6 - 0.8);
-item.baseRate = +(item.baseRate + delta).toFixed(2);
-item.change = +(item.change + delta).toFixed(2);
-item.cashBuy = +(item.baseRate * 1.0175).toFixed(2);
-item.cashSell = +(item.baseRate * 0.9825).toFixed(2);
-item.history[item.history.length - 1] = item.baseRate;
-});
+loadLiveRates().then(ok => {
 updateTimestamp();
 renderRateTable();
 renderFXSection();
 updateTrendChart(state.selectedCurrencyForChart);
 calculateExchange();
 icon.classList.remove('fa-spin');
-showToast('최신 은행 금리 및 환율 데이터가 갱신되었습니다.');
-}, 600);
-}
-function setProductType(type) {
-state.productType = type;
-const depBtn = document.getElementById('btnType-deposit');
-const savBtn = document.getElementById('btnType-saving');
-if (type === 'deposit') {
-depBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-md bg-white shadow-sm text-blue-600 transition-all';
-savBtn.className = 'flex-1 py-1.5 text-xs font-medium rounded-md text-slate-600 transition-all';
-} else {
-savBtn.className = 'flex-1 py-1.5 text-xs font-bold rounded-md bg-white shadow-sm text-blue-600 transition-all';
-depBtn.className = 'flex-1 py-1.5 text-xs font-medium rounded-md text-slate-600 transition-all';
-}
-filterRates();
-}
-function setSortMode(mode) {
-state.sortMode = mode;
-const maxBtn = document.getElementById('sortBtn-max');
-const baseBtn = document.getElementById('sortBtn-base');
-if (mode === 'max') {
-maxBtn.className = 'px-2.5 py-1 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200';
-baseBtn.className = 'px-2.5 py-1 rounded bg-slate-100 text-slate-600 hover:bg-slate-200';
-} else {
-baseBtn.className = 'px-2.5 py-1 rounded bg-blue-50 text-blue-700 font-semibold border border-blue-200';
-maxBtn.className = 'px-2.5 py-1 rounded bg-slate-100 text-slate-600 hover:bg-slate-200';
-}
-filterRates();
-}
-function filterRates() {
-state.sectorFilter = document.getElementById('sectorFilter').value;
-state.periodFilter = document.getElementById('periodFilter').value;
-state.searchKeyword = document.getElementById('searchKeyword').value.trim().toLowerCase();
-renderRateTable();
+showToast(ok ? `오늘 오전 9시 기준 데이터입니다 (${liveInfo.updated}).` : '데이터 서버에 연결하지 못해 기본 데이터를 보여 줍니다.');
+});
 }
 function renderRateTable() {
 const tableBody = document.getElementById('ratesTableBody');
 const periodVal = parseInt(state.periodFilter, 10);
+BANK_RATES_DATA.forEach(item => { if (item.rates && item.rates[periodVal]) { item.rateBase = item.rates[periodVal][0]; item.rateMax = item.rates[periodVal][1]; } });
 let filtered = BANK_RATES_DATA.filter(item => {
 if (item.type !== state.productType) return false;
 if (state.sectorFilter !== 'all' && item.sector !== state.sectorFilter) return false;

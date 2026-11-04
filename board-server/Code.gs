@@ -75,7 +75,101 @@ function pub_(p, full) {
 function doGet(e) {
   var a = (e.parameter || {}).a || 'list';
   if (a === 'list') return out_({ ok: true, items: rows_().map(function (p) { return pub_(p, false); }) });
+  if (a === 'rates') {
+    var r = loadRates_();
+    return out_(r.ok ? r : { ok: false });
+  }
   return out_({ ok: false, error: 'unknown' });
+}
+
+// ===== 은행금리·환율: 매일 오전 9시(KST) 갱신 =====
+var FX_CODES = { USD: 1, JPY: 100, EUR: 1, CNY: 1, GBP: 1, AUD: 1 };
+var NET_BANKS = /카카오뱅크|토스뱅크|케이뱅크/;
+
+function fetchFx_() {
+  var j = JSON.parse(UrlFetchApp.fetch('https://open.er-api.com/v6/latest/KRW').getContentText());
+  if (j.result !== 'success') throw new Error('fx');
+  var props = PropertiesService.getScriptProperties();
+  var hist = JSON.parse(props.getProperty('FX_HIST') || '{}');
+  var day = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd');
+  var today = {};
+  Object.keys(FX_CODES).forEach(function (c) { today[c] = Math.round(FX_CODES[c] / j.rates[c] * 100) / 100; });
+  hist[day] = today;
+  var days = Object.keys(hist).sort().slice(-7);
+  var kept = {}; days.forEach(function (d) { kept[d] = hist[d]; });
+  props.setProperty('FX_HIST', JSON.stringify(kept));
+  return Object.keys(FX_CODES).map(function (c) {
+    var h = days.map(function (d) { return kept[d][c]; });
+    var prev = h.length > 1 ? h[h.length - 2] : h[0];
+    return { code: c, baseRate: today[c], change: Math.round((today[c] - prev) * 100) / 100, history: h };
+  });
+}
+
+// 금융감독원 금융상품통합비교공시 오픈API (인증키는 스크립트 속성 FSS_KEY)
+function fetchFss_(kind, key) {
+  // 020000: 은행, 030300: 저축은행
+  return fetchFssGroup_(kind, key, '020000').concat(fetchFssGroup_(kind, key, '030300'));
+}
+
+function fetchFssGroup_(kind, key, grp) {
+  var url = 'https://finlife.fss.or.kr/finlifeapi/' + (kind === 'deposit' ? 'depositProductsSearch' : 'savingProductsSearch') + '.json?auth=' + key + '&topFinGrpNo=' + grp + '&pageNo=1';
+  var res = JSON.parse(UrlFetchApp.fetch(url).getContentText()).result;
+  var byCode = {};
+  res.optionList.forEach(function (o) {
+    if (kind === 'saving' && o.rsrv_type_nm && o.rsrv_type_nm.indexOf('자유') < 0) return;
+    var m = Number(o.save_trm), b = Number(o.intr_rate) || 0, x = Number(o.intr_rate2) || b;
+    var r = (byCode[o.fin_prdt_cd] = byCode[o.fin_prdt_cd] || {});
+    if (!r[m] || x > r[m][1]) r[m] = [b, x];
+  });
+  return res.baseList.filter(function (p) { return byCode[p.fin_prdt_cd]; }).map(function (p) {
+    var rates = byCode[p.fin_prdt_cd], terms = Object.keys(rates).map(Number).sort(function (a, b) { return a - b; });
+    var ref = rates[12] || rates[terms[0]];
+    return {
+      id: kind + '_' + p.fin_prdt_cd, bank: p.kor_co_nm, sector: grp === '030300' ? 'savings_bank' : NET_BANKS.test(p.kor_co_nm) ? 'internet' : 'commercial', type: kind,
+      productName: p.fin_prdt_nm, rateBase: ref[0], rateMax: ref[1], periodMonths: terms, rates: rates,
+      preferentialCond: String(p.spcl_cnd || '없음').replace(/\s+/g, ' ').slice(0, 160), joinTarget: String(p.join_member || '').slice(0, 60),
+      maxLimit: p.max_limit ? Number(p.max_limit).toLocaleString('ko-KR') + '원' : '제한없음'
+    };
+  });
+}
+
+// 금리 데이터는 시트 'rates'에 나눠 저장 (속성은 9KB 한도라 부족)
+function ratesSheet_() {
+  var ss = sheet_().getParent();
+  return ss.getSheetByName('rates') || ss.insertSheet('rates');
+}
+function loadRates_() {
+  var sh = ratesSheet_(), n = sh.getLastRow();
+  if (!n) return {};
+  try { return JSON.parse(sh.getRange(1, 1, n, 1).getValues().map(function (r) { return r[0]; }).join('')); } catch (e) { return {}; }
+}
+function saveRates_(o) {
+  var s = JSON.stringify(o), parts = [];
+  for (var i = 0; i < s.length; i += 40000) parts.push(["'" + s.slice(i, i + 40000)]);
+  var sh = ratesSheet_();
+  sh.clear();
+  sh.getRange(1, 1, parts.length, 1).setValues(parts);
+}
+
+function updateRates() {
+  var props = PropertiesService.getScriptProperties();
+  var old = loadRates_();
+  var now = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy.MM.dd HH:mm');
+  var out = { ok: true, updated: now, fx: old.fx || null, fxDate: old.fxDate || null, products: old.products || null, productsDate: old.productsDate || null };
+  try { out.fx = fetchFx_(); out.fxDate = now; } catch (e) { out.fxError = String(e); }
+  var key = props.getProperty('FSS_KEY');
+  if (key) {
+    try { out.products = fetchFss_('deposit', key).concat(fetchFss_('saving', key)); out.productsDate = now; } catch (e) { out.productsError = String(e); }
+  }
+  saveRates_(out);
+  return out;
+}
+
+// 처음 한 번 실행: 매일 오전 9시 자동 갱신 예약
+function installDailyRates() {
+  ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'updateRates') ScriptApp.deleteTrigger(t); });
+  ScriptApp.newTrigger('updateRates').timeBased().atHour(9).nearMinute(0).everyDays(1).inTimezone('Asia/Seoul').create();
+  updateRates();
 }
 
 function doPost(e) {
