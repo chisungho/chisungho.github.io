@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>게시판 | 필요한 도구 신청·프로그램 모음 - 새로운 도전을 위하여</title>
-<meta name="description" content="신청받아 만든 무료 생활도구와 필요한 프로그램을 모아 둔 게시판입니다. 필요한 도구는 메일로 신청해 주세요.">
+<title>게시판 | 필요한 도구 신청·자유 게시판 - 새로운 도전을 위하여</title>
+<meta name="description" content="필요한 생활도구나 프로그램을 신청하고 의견을 남기는 게시판입니다. 공개 글과 비밀번호로 보호되는 비공개 글을 쓸 수 있습니다.">
 <link rel="canonical" href="https://csh2020.com/board">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="새로운 도전을 위하여">
-<meta property="og:title" content="게시판 | 필요한 도구 신청·프로그램 모음">
+<meta property="og:title" content="게시판 | 필요한 도구 신청·자유 게시판">
 <meta property="og:url" content="https://csh2020.com/board">
 <meta property="og:image" content="https://csh2020.com/og.png">
 <meta name="robots" content="index,follow">
@@ -28,67 +28,141 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 .logo i{font-style:normal;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,#22d3ee,#6366f1);color:#fff;font-size:15px}
 nav .home{font-size:14px;font-weight:700;color:#c6d7ec}
 nav .home:hover{color:#67e8f9}
-.req{background:linear-gradient(90deg,#0e7490,#4338ca);font-size:14.5px;font-weight:700}
-.req .wrap{display:flex;align-items:center;justify-content:center;gap:12px;min-height:44px;padding-top:6px;padding-bottom:6px;flex-wrap:wrap;text-align:center}
-.ml{display:inline-flex;align-items:center;gap:6px;background:#fde047;color:#0f172a;border-radius:99px;padding:5px 14px;font-weight:900;animation:reqBlink 1s steps(1,end) infinite}
-.ml:hover,.ml:focus-visible{animation:none;background:#fff}
-@keyframes reqBlink{50%{opacity:.15}}
-header{padding:48px 0 24px;text-align:center}
+header{padding:44px 0 22px;text-align:center}
 header small{color:#22d3ee;font-weight:800;letter-spacing:.12em;font-size:13px}
 header h1{font-size:clamp(26px,4vw,34px);font-weight:900;letter-spacing:-.02em;color:#dff7ff;margin-top:4px}
 header p{color:#9aacc3;margin-top:6px;font-size:15px}
-.howto{background:rgba(15,31,52,.72);border:1px solid rgba(148,190,224,.16);border-radius:16px;padding:16px 18px;font-size:14.5px;color:#c6d7ec;margin-bottom:22px}
-.howto b{color:#fde047}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.bar .cnt{font-size:14px;color:#9aacc3}
+.btn{font:inherit;font-weight:800;font-size:15px;border:0;border-radius:99px;padding:11px 20px;cursor:pointer;background:#fde047;color:#0f172a}
+.btn.s{background:rgba(148,190,224,.14);color:#e7f0ff;border:1px solid rgba(148,190,224,.25)}
+.btn:disabled{opacity:.55;cursor:default}
+.card{background:rgba(15,31,52,.72);border:1px solid rgba(148,190,224,.16);border-radius:18px;padding:20px;margin-bottom:22px;display:none;gap:12px;scroll-margin-top:80px}
+.card.on{display:grid}
+.card h2{font-size:18px;font-weight:800}
+label{font-size:13px;font-weight:700;color:#9db7d0;display:grid;gap:6px}
+input[type=text],input[type=password],textarea{width:100%;background:#07111f;border:1px solid #2a4566;border-radius:12px;color:#fff;font:inherit;font-size:15px;padding:11px 12px}
+input:focus,textarea:focus{outline:2px solid #22d3ee;border-color:transparent}
+textarea{min-height:160px;resize:vertical}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mode{display:flex;gap:8px}
+.mode label{flex:1;display:flex;align-items:center;gap:8px;background:#07111f;border:1px solid #2a4566;border-radius:12px;padding:11px 12px;font-size:15px;color:#e7f0ff;cursor:pointer}
+.mode input{width:18px;height:18px;accent-color:#22d3ee}
+.mode label:has(input:checked){border-color:#22d3ee;background:rgba(34,211,238,.08)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.msg{font-size:14px;font-weight:700;min-height:20px}
+.ok{color:#a3e635}.err{color:#fca5a5}
 .list{display:grid;gap:10px;padding-bottom:70px}
 .post{background:rgba(15,31,52,.72);border:1px solid rgba(148,190,224,.16);border-radius:16px;overflow:hidden;scroll-margin-top:80px}
-.post.open,.post:target{border-color:#67e8f9}
-.post summary{list-style:none;display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer}
-.post summary::-webkit-details-marker{display:none}
+.post.open{border-color:#67e8f9}
+.post .hd{display:flex;align-items:center;gap:12px;padding:15px 18px;cursor:pointer;width:100%;background:none;border:0;color:inherit;font:inherit;text-align:left}
 .tag{flex:none;font-size:12px;font-weight:800;color:#0f172a;background:#67e8f9;border-radius:99px;padding:3px 10px}
-.tag.pg{background:#a3e635}
+.tag.lk{background:#94a3b8}
 .tt{flex:1;min-width:0;font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dt{flex:none;font-size:12.5px;color:#9aacc3}
-.bd{padding:0 18px 18px;font-size:15px;color:#d5e3f3;white-space:pre-line;word-break:keep-all;overflow-wrap:anywhere}
-.go{display:inline-block;margin-top:14px;background:#22d3ee;color:#04202b;font-weight:800;border-radius:99px;padding:9px 18px;font-size:14px;white-space:normal}
+.post.lock .tt{color:#9aacc3}
+.meta{flex:none;font-size:12.5px;color:#9aacc3;text-align:right}
+.bd{display:none;padding:0 18px 18px;font-size:15px;color:#d5e3f3;white-space:pre-line;word-break:keep-all;overflow-wrap:anywhere}
+.post.open .bd{display:block}
+.pw{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
+.pw input{flex:1;min-width:160px}
 .em{text-align:center;color:#9aacc3;padding:30px}
 footer{border-top:1px solid rgba(148,190,224,.12);padding:26px 0;text-align:center;font-size:13px;color:#9aacc3}
-@media(max-width:560px){.req{font-size:13.5px}.req .wrap{gap:8px}.post summary{padding:13px 14px;gap:9px}.tt{white-space:normal}.dt{display:none}.bd{padding:0 14px 16px}}
+footer a{color:#67e8f9}
+@media(max-width:560px){.two{grid-template-columns:1fr}.post .hd{padding:13px 14px;gap:9px}.tt{white-space:normal}.meta{display:none}.bd{padding:0 14px 16px}.card{padding:16px}}
 </style>
 </head>
 <body>
-<div class="req" role="region" aria-label="도구 신청 안내"><div class="wrap">
-  <span>필요한 도구 신청을 해주세요</span>
-  <a class="ml" href="mailto:hgy671001@gmail.com?subject=%5Bcsh2020%5D%20%ED%95%84%EC%9A%94%ED%95%9C%20%EB%8F%84%EA%B5%AC%20%EC%8B%A0%EC%B2%AD&amp;body=%E2%96%A0%20%ED%95%84%EC%9A%94%ED%95%9C%20%EB%8F%84%EA%B5%AC%20%EC%9D%B4%EB%A6%84%3A%0A%E2%96%A0%20%EC%96%B4%EB%96%A4%20%EA%B8%B0%EB%8A%A5%EC%9D%B4%20%ED%95%84%EC%9A%94%ED%95%9C%EA%B0%80%EC%9A%94%3F%3A%0A%E2%96%A0%20%EC%B0%B8%EA%B3%A0%ED%95%A0%20%EC%82%AC%EC%9D%B4%ED%8A%B8(%EC%84%A0%ED%83%9D)%3A%0A">✉ 메일로 보내주세요</a>
-</div></div>
 <nav><div class="wrap">
   <a class="logo" href="/"><i>新</i>새로운 도전을 위하여</a>
   <a class="home" href="/">← 홈으로</a>
 </div></nav>
 
 <main class="wrap">
-  <header><small>BOARD</small><h1>게시판</h1><p>신청받아 만든 도구와 필요한 프로그램을 올려 둡니다</p></header>
-  <div class="howto">필요한 도구나 프로그램은 <b>메일(hgy671001@gmail.com)</b>로 신청해 주세요. 검토해서 만든 도구와 추천 프로그램을 이 게시판에 올려 드립니다.</div>
+  <header><small>BOARD</small><h1>게시판</h1><p>필요한 도구 신청, 프로그램 요청, 의견을 자유롭게 남겨 주세요</p></header>
+
+  <section class="card" id="write" aria-labelledby="wTitle">
+    <h2 id="wTitle">글쓰기</h2>
+    <div class="two">
+      <label>이름(별명)<input type="text" id="fAuthor" maxlength="20" placeholder="예) 홍길동"></label>
+      <div><label>공개 설정</label>
+        <div class="mode" style="margin-top:6px">
+          <label><input type="radio" name="mode" value="pub" checked> 공개</label>
+          <label><input type="radio" name="mode" value="priv"> 비공개</label>
+        </div>
+      </div>
+    </div>
+    <label id="pwBox" hidden>비밀번호 (4자 이상, 내 글을 다시 볼 때 필요)<input type="password" id="fPw" maxlength="40" autocomplete="new-password"></label>
+    <label>제목<input type="text" id="fTitle" maxlength="80" placeholder="예) 대출 이자 계산기가 있으면 좋겠어요"></label>
+    <label>내용<textarea id="fBody" maxlength="3000" placeholder="필요한 도구 이름, 원하는 기능, 참고할 사이트 등을 적어 주세요."></textarea></label>
+    <div class="hp" aria-hidden="true"><input type="text" id="fHp" tabindex="-1" autocomplete="off"></div>
+    <p style="font-size:13px;color:#9aacc3">비공개 글은 글쓴이(비밀번호)와 관리자만 볼 수 있습니다. 연락처 등 개인정보는 공개 글에 적지 마세요.</p>
+    <div class="row"><button class="btn" id="sendBtn" type="button">글 올리기</button><button class="btn s" id="closeW" type="button">취소</button></div>
+    <div class="msg" id="wMsg" role="status"></div>
+  </section>
+
+  <div class="bar"><span class="cnt" id="cnt"></span><button class="btn" id="openW" type="button">✎ 글쓰기</button></div>
   <div class="list" id="list"><p class="em">게시글을 불러오는 중...</p></div>
 </main>
 
-<footer><div class="wrap"><b>새로운 도전을 위하여</b> · csh2020.com</div></footer>
+<footer><div class="wrap"><b>새로운 도전을 위하여</b> · csh2020.com · <a href="/board-admin">관리자</a></div></footer>
 
 <script>
 (function(){
-  var L=document.getElementById('list');
+  var API='https://script.google.com/macros/s/AKfycbx9Jf-wKeOwKCc7jlYqv27MAZrY_vBFdHXj-dIHYZJFzIGr4rzWRcH45ZbXDEAbWKbq/exec';
+  var $=function(id){return document.getElementById(id);};
   function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  function safe(u){u=String(u||'').trim();return /^(https?:\/\/|\/)/.test(u)?u:'';}
-  fetch('/board.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){
-    var it=(j&&j.items||[]).filter(function(n){return n.published&&n.title;});
-    if(!it.length){L.innerHTML='<p class="em">아직 게시글이 없습니다.</p>';return;}
-    var hash=decodeURIComponent(location.hash.slice(1));
-    L.innerHTML=it.map(function(n,i){
-      var u=safe(n.link),open=(hash?hash===n.id:i===0);
-      return '<details class="post" id="'+esc(n.id)+'"'+(open?' open':'')+'><summary><span class="tag'+(u?' pg':'')+'">'+(u?'프로그램':'글')+'</span><span class="tt">'+esc(n.title)+'</span><span class="dt">'+esc(n.date)+'</span></summary>'+
-        '<div class="bd">'+esc(n.body)+(u?'\n<a class="go" href="'+esc(u)+'"'+(/^https?:/.test(u)?' target="_blank" rel="noopener"':'')+'>프로그램 열기 →</a>':'')+'</div></details>';
+  function post(o){return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(o)}).then(function(r){return r.json();});}
+  function msg(t,ok){$('wMsg').textContent=t;$('wMsg').className='msg '+(ok?'ok':'err');}
+  var items=[];
+
+  function render(){
+    var L=$('list');
+    $('cnt').textContent=items.length?'전체 '+items.length+'개':'';
+    if(!items.length){L.innerHTML='<p class="em">아직 게시글이 없습니다. 첫 글을 남겨 주세요.</p>';return;}
+    L.innerHTML=items.map(function(n){
+      return '<article class="post'+(n.private?' lock':'')+'" id="'+esc(n.id)+'"><button class="hd" type="button" aria-expanded="false"><span class="tag'+(n.private?' lk':'')+'">'+(n.private?'🔒 비공개':'공개')+'</span><span class="tt">'+esc(n.title)+'</span><span class="meta">'+esc(n.author)+'<br>'+esc(n.date)+'</span></button>'+
+        '<div class="bd">'+(n.private?'<span>비밀번호를 입력하면 내용을 볼 수 있습니다.</span><div class="pw"><input type="password" placeholder="비밀번호" aria-label="비밀번호"><button class="btn s" type="button">확인</button></div><div class="msg"></div>':esc(n.body))+'</div></article>';
     }).join('');
-    if(hash){var el=document.getElementById(hash);if(el)el.scrollIntoView();}
-  }).catch(function(){L.innerHTML='<p class="em">게시글을 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요.</p>';});
+    L.querySelectorAll('.post').forEach(function(el){
+      var hd=el.querySelector('.hd');
+      hd.onclick=function(){var o=el.classList.toggle('open');hd.setAttribute('aria-expanded',o);};
+      var b=el.querySelector('.pw button');
+      if(b){var inp=el.querySelector('.pw input'),m=el.querySelector('.bd .msg');
+        var go=function(){if(!inp.value){m.textContent='비밀번호를 입력해 주세요.';m.className='msg err';return;}b.disabled=true;
+          post({a:'view',id:el.id,pw:inp.value}).then(function(j){b.disabled=false;
+            if(j.ok){el.querySelector('.tt').textContent=j.item.title;el.classList.remove('lock');el.querySelector('.bd').textContent=j.item.body;}
+            else{m.textContent=j.error||'볼 수 없습니다.';m.className='msg err';}}).catch(function(){b.disabled=false;m.textContent='연결하지 못했습니다.';m.className='msg err';});};
+        b.onclick=go;inp.onkeydown=function(e){if(e.key==='Enter')go();};}
+    });
+    var h=decodeURIComponent(location.hash.slice(1));
+    if(h&&h!=='write'){var t=document.getElementById(h);if(t){t.classList.add('open');t.scrollIntoView();}}
+  }
+  function load(){
+    return fetch(API+'?a=list&t='+Date.now()).then(function(r){return r.json();}).then(function(j){items=j.items||[];render();})
+      .catch(function(){$('list').innerHTML='<p class="em">게시글을 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요.</p>';});
+  }
+
+  function openW(){$('write').classList.add('on');$('openW').hidden=true;$('write').scrollIntoView({behavior:'smooth'});setTimeout(function(){$('fAuthor').focus();},300);}
+  function closeW(){$('write').classList.remove('on');$('openW').hidden=false;if(location.hash==='#write')history.replaceState(null,'',location.pathname);}
+  $('openW').onclick=openW;$('closeW').onclick=closeW;
+  document.querySelectorAll('input[name=mode]').forEach(function(r){r.onchange=function(){$('pwBox').hidden=document.querySelector('input[name=mode]:checked').value!=='priv';};});
+  $('sendBtn').onclick=function(){
+    var priv=document.querySelector('input[name=mode]:checked').value==='priv';
+    var o={a:'write',author:$('fAuthor').value.trim(),title:$('fTitle').value.trim(),body:$('fBody').value.trim(),private:priv,pw:$('fPw').value,hp:$('fHp').value};
+    if(!o.title||!o.body){msg('제목과 내용을 입력해 주세요.');return;}
+    if(priv&&o.pw.length<4){msg('비공개 글은 비밀번호를 4자 이상 넣어 주세요.');return;}
+    var b=$('sendBtn');b.disabled=true;msg('올리는 중...',true);
+    post(o).then(function(j){b.disabled=false;
+      if(!j.ok){msg(j.error||'올리지 못했습니다.');return;}
+      ['fTitle','fBody','fPw'].forEach(function(k){$(k).value='';});
+      msg('글이 올라갔습니다. 고맙습니다!',true);
+      load().then(function(){setTimeout(closeW,1200);if(j.id){var t=document.getElementById(j.id);if(t){t.classList.add('open');}}});
+    }).catch(function(){b.disabled=false;msg('연결하지 못했습니다. 잠시 뒤 다시 시도해 주세요.');});
+  };
+  if(location.hash==='#write')openW();
+  window.addEventListener('hashchange',function(){if(location.hash==='#write')openW();});
+  load();
 })();
 </script>
 </body>

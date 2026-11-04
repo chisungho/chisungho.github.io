@@ -259,6 +259,9 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 .bact .b1{background:#22d3ee;color:#04202b}
 .bact .b2{background:rgba(148,190,224,.12);color:#e7f0ff;border:1px solid rgba(148,190,224,.25)}
 @media(max-width:560px){.bi{padding:12px 14px;gap:10px}.bi .dt{display:none}}
+.adm-new{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:30;display:flex;align-items:center;gap:10px;background:#fde047;color:#0f172a;font-weight:800;font-size:15px;border-radius:99px;padding:12px 20px;box-shadow:0 10px 30px rgba(0,0,0,.35);white-space:nowrap}
+.adm-new b{background:#0f172a;color:#fde047;border-radius:99px;padding:2px 10px;font-size:12px}
+@media(max-width:560px){.adm-new{bottom:76px;font-size:14px;padding:11px 16px}}
 </style>
 <meta name="google-adsense-account" content="ca-pub-2790239178229519">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2790239178229519" crossorigin="anonymous"></script>
@@ -270,8 +273,8 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 
 <div class="req" role="region" aria-label="도구 신청 안내"><div class="wrap">
   <span class="rq">필요한 도구 신청을 해주세요</span>
-  <a class="ml" href="mailto:hgy671001@gmail.com?subject=%5Bcsh2020%5D%20%ED%95%84%EC%9A%94%ED%95%9C%20%EB%8F%84%EA%B5%AC%20%EC%8B%A0%EC%B2%AD&amp;body=%E2%96%A0%20%ED%95%84%EC%9A%94%ED%95%9C%20%EB%8F%84%EA%B5%AC%20%EC%9D%B4%EB%A6%84%3A%0A%E2%96%A0%20%EC%96%B4%EB%96%A4%20%EA%B8%B0%EB%8A%A5%EC%9D%B4%20%ED%95%84%EC%9A%94%ED%95%9C%EA%B0%80%EC%9A%94%3F%3A%0A%E2%96%A0%20%EC%B0%B8%EA%B3%A0%ED%95%A0%20%EC%82%AC%EC%9D%B4%ED%8A%B8(%EC%84%A0%ED%83%9D)%3A%0A">✉ 메일로 보내주세요</a>
-  <a class="bd" href="/board">신청·공개 게시판 보기</a>
+  <a class="ml" href="/board#write">✎ 게시판에 글을 올려주세요</a>
+  <a class="bd" href="/board">게시판 보기</a>
 </div></div>
 
 <nav><div class="wrap">
@@ -326,9 +329,9 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 </div></section>
 
 <section id="board"><div class="wrap">
-  <div class="head"><small>BOARD</small><h2>게시판</h2><p>신청받아 만든 도구와 필요한 프로그램을 올려 둡니다</p></div>
+  <div class="head"><small>BOARD</small><h2>게시판</h2><p>필요한 도구 신청과 의견을 남겨 주세요 · 공개/비공개 글쓰기</p></div>
   <div class="bl" id="bdList"><p class="em">게시글을 불러오는 중...</p></div>
-  <div class="bact"><a class="b1" href="/board">게시판 전체 보기 →</a><a class="b2" href="mailto:hgy671001@gmail.com?subject=%5Bcsh2020%5D%20%ED%95%84%EC%9A%94%ED%95%9C%20%EB%8F%84%EA%B5%AC%20%EC%8B%A0%EC%B2%AD&amp;body=%E2%96%A0%20%ED%95%84%EC%9A%94%ED%95%9C%20%EB%8F%84%EA%B5%AC%20%EC%9D%B4%EB%A6%84%3A%0A%E2%96%A0%20%EC%96%B4%EB%96%A4%20%EA%B8%B0%EB%8A%A5%EC%9D%B4%20%ED%95%84%EC%9A%94%ED%95%9C%EA%B0%80%EC%9A%94%3F%3A%0A%E2%96%A0%20%EC%B0%B8%EA%B3%A0%ED%95%A0%20%EC%82%AC%EC%9D%B4%ED%8A%B8(%EC%84%A0%ED%83%9D)%3A%0A">✉ 필요한 도구 메일로 신청</a></div>
+  <div class="bact"><a class="b1" href="/board">게시판 전체 보기 →</a><a class="b2" href="/board#write">✎ 게시판에 글쓰기</a></div>
 </div></section>
 
 <section id="faq"><div class="wrap">
@@ -559,12 +562,18 @@ document.querySelectorAll('nav a[data-open]').forEach(function(a){a.addEventList
 </script>
 <script>
 (function(){
-  var L=document.getElementById('bdList');
+  var L=document.getElementById('bdList'),API='https://script.google.com/macros/s/AKfycbx9Jf-wKeOwKCc7jlYqv27MAZrY_vBFdHXj-dIHYZJFzIGr4rzWRcH45ZbXDEAbWKbq/exec';
   function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-  fetch('/board.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){
-    var it=(j&&j.items||[]).filter(function(n){return n.published&&n.title;});
-    if(!it.length){L.innerHTML='<p class="em">아직 게시글이 없습니다.</p>';return;}
-    L.innerHTML=it.slice(0,5).map(function(n,i){return '<a class="bi" href="/board#'+esc(n.id)+'"><span class="no">'+(n.link?'프로그램':'글')+'</span><span class="tt">'+esc(n.title)+'</span><span class="dt">'+esc(n.date)+'</span></a>';}).join('');
+  function ls(k){try{return localStorage.getItem(k)||'';}catch(e){return '';}}
+  fetch(API+'?a=list&t='+Date.now()).then(function(r){return r.json();}).then(function(j){
+    var it=j&&j.items||[];
+    if(!it.length){L.innerHTML='<p class="em">아직 게시글이 없습니다. 첫 글을 남겨 주세요.</p>';}
+    else L.innerHTML=it.slice(0,5).map(function(n){return '<a class="bi" href="/board#'+esc(n.id)+'"><span class="no">'+(n.private?'🔒 비공개':'공개')+'</span><span class="tt">'+esc(n.title)+'</span><span class="dt">'+esc(String(n.date).slice(0,10))+'</span></a>';}).join('');
+    // 관리자로 연결된 브라우저: 새 글이 있으면 관리자 보기 바로가기 표시
+    if(ls('csh_gh_tok')){
+      var seen=Number(ls('csh_board_seen')||0),nw=it.filter(function(n){return n.ts>seen;}).length;
+      if(nw){var a=document.createElement('a');a.className='adm-new';a.href='/board-admin';a.innerHTML='<b>관리자</b> 새 게시글 '+nw+'건 확인하기 →';document.body.appendChild(a);}
+    }
   }).catch(function(){L.innerHTML='<p class="em">게시글을 불러오지 못했습니다.</p>';});
 })();
 </script>
