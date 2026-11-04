@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://csh2020.kro.kr/sitemap.xml
+Sitemap: https://csh2020.com/sitemap.xml
