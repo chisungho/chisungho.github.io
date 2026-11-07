@@ -45,7 +45,23 @@ body{margin:0}
 html,body{background:var(--bg)}
 body{color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 .app{max-width:560px;margin:0 auto;padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:16px}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px}
+.bar .tag{justify-self:end}
+.qbtn{border:0;border-radius:999px;background:var(--ink);color:var(--surface);font:700 13.5px var(--ui);padding:10px 15px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 8px 18px -10px rgba(20,26,38,.6);transition:transform .12s}
+.qbtn svg{width:16px;height:16px;flex:none}.qbtn:hover{transform:translateY(-1px)}.qbtn:active{transform:none}
+.qbtn:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+@media (max-width:520px){.bar{grid-template-columns:1fr auto;grid-template-areas:"brand tag" "q q";row-gap:12px}.bar .brand{grid-area:brand}.bar .tag{grid-area:tag}.bar .qbtn{grid-area:q;justify-self:stretch;justify-content:center;padding:12px;font-size:14.5px}}
+.wq{position:fixed;inset:0;z-index:70;background:rgba(10,14,24,.55);display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;overflow:auto;overscroll-behavior:contain}
+.wq>.card{width:100%;max-width:560px;animation:wqin .22s ease-out}
+@keyframes wqin{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.wq>.card{animation:none}.qbtn{transition:none}}
+.wqwin{display:grid;gap:8px;background:var(--surface-2);border-radius:16px;padding:12px 14px}
+.wqwin .t{font-size:13px;color:var(--muted)}.wqwin .t b{color:var(--ink)}
+.wqwin .balls .ball i{font-style:normal}
+.wqplus{font:700 16px var(--num);color:var(--muted);align-self:center}
+.wqcongrats{background:var(--warn);color:#fff;border-radius:14px;padding:12px 14px;font-weight:700;text-align:center;font-size:15px}
+.wqmeta{font-size:11.5px;color:var(--muted);grid-column:2/-1;margin-top:-2px}
+.wqlist{display:grid;gap:6px}
 .brand{display:flex;align-items:center;gap:12px}
 .logo{width:42px;height:42px;border-radius:13px;background:var(--accent);display:grid;place-items:center;box-shadow:0 8px 18px -8px var(--accent)}
 .logo i{width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 18%,#ffd9cf 60%,#ffc2b3);display:block}
@@ -165,7 +181,17 @@ body{color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;-webk
       <div class="logo" aria-hidden="true"><i></i></div>
       <div><h1>로또 번호 생성기</h1><p>로또 6/45 통계 조합</p></div>
     </div>
+    <button class="qbtn" id="wqOpen" type="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>당첨 번호 조회</span></button>
     <span class="tag" id="verBadge">테스트 버전</span>
+  </div>
+
+  <div class="wq" id="wq" hidden role="dialog" aria-modal="true" aria-labelledby="wqTitle">
+    <section class="card">
+      <div class="head"><h2 id="wqTitle">당첨 번호 조회</h2><button class="ghost" id="wqClose" type="button">닫기</button></div>
+      <div class="dates" id="wqDraws" role="group" aria-label="회차 선택"></div>
+      <div id="wqBody"></div>
+      <p class="hint">이 기기에서 생성한 번호를 <b>생성할 때 판매 중이던 회차</b>의 당첨번호와만 맞춰 봅니다. 실제로 구입한 복권 용지와 꼭 함께 확인하세요.</p>
+    </section>
   </div>
 
   <section class="news" id="news" aria-label="로또 최신 소식"><h2>로또 최신 소식 <span id="newsUpd"></span></h2><ul id="newsList"></ul></section>
@@ -563,14 +589,78 @@ const wkey=r=>[r.date,r.time,r.run,r.game,r.nums.join(",")].join("|");
 function inSiteFrame(){ try{ return window.top!==window && window.top.location.host===location.host }catch(e){ return false } }
 async function checkWins(popup){
   if(!window.LottoWin) return;
-  let recs=[];
-  if(LOCAL){ try{ recs=(await api("api/records")).records||[] }catch(e){} } else recs=load(KEY+"records")||[];
+  const recs=await getRecords();
   const res=await LottoWin.check(recs).catch(()=>[]);
   WIN=new Map(res.map(w=>[wkey(w.rec),w]));
   renderWinNote(recs,res);
   if(!$("logCard").hidden) renderLogs();
   if(popup && !inSiteFrame()) LottoWin.celebrate(res);   // 홈 화면 안에 열렸으면 홈 화면이 안내함
 }
+async function getRecords(){
+  if(LOCAL){ try{ return (await api("api/records")).records||[] }catch(e){ return [] } }
+  return load(KEY+"records")||[];
+}
+
+/* ===== 당첨 번호 조회 (상단 버튼) =====
+   선택한 회차를 대상으로 생성한 번호 전부를 그 회차 당첨번호와만 비교합니다. */
+let WQ={recs:[],res:[],draw:null}, wqPrev=null;
+const wqMD=n=>LottoWin.drawDate(n).slice(5).replace("-","/");
+async function openWinQuery(){
+  if(!window.LottoWin){ toast("당첨 확인 기능을 불러오지 못했습니다. 새로고침해 주세요"); return }
+  wqPrev=document.activeElement;
+  $("wq").hidden=false; document.documentElement.style.overflow="hidden";
+  $("wqDraws").innerHTML=""; $("wqBody").innerHTML='<div class="logempty">이 기기의 생성 번호와 당첨번호를 맞춰 보는 중…</div>';
+  $("wqClose").focus();
+  const recs=await getRecords();
+  const res=await LottoWin.check(recs).catch(()=>[]);
+  WIN=new Map(res.map(w=>[wkey(w.rec),w]));
+  const draws=[...new Set(recs.map(r=>LottoWin.recDraw(r)))].sort((a,b)=>b-a);
+  const done=draws.filter(n=>LottoWin.isDrawn(n));
+  WQ={recs,res,draws,draw:done[0]??draws[0]??null};   // 기본: 추첨이 끝난 가장 최근 회차
+  renderWinQuery();
+}
+function closeWinQuery(){ $("wq").hidden=true; document.documentElement.style.overflow=""; if(wqPrev&&wqPrev.focus) wqPrev.focus() }
+function renderWinQuery(){
+  const {recs,res,draws,draw}=WQ;
+  if(!draws.length){
+    $("wqDraws").innerHTML="";
+    $("wqBody").innerHTML='<div class="logempty">이 기기에서 생성한 번호가 없습니다.<br>번호를 생성하면 추첨 뒤 여기서 바로 확인할 수 있습니다.</div>';
+    return;
+  }
+  const cnt=n=>recs.filter(r=>LottoWin.recDraw(r)===n).length;
+  $("wqDraws").innerHTML=draws.slice(0,12).map(n=>`<button class="dchip" data-n="${n}" aria-pressed="${n===draw}">제${n}회<small>${wqMD(n)} · ${cnt(n)}게임${LottoWin.isDrawn(n)?"":" · 추첨 전"}</small></button>`).join("");
+  $("wqDraws").querySelectorAll(".dchip").forEach(b=>b.onclick=()=>{WQ.draw=Number(b.dataset.n);renderWinQuery()});
+  const mine=recs.filter(r=>LottoWin.recDraw(r)===draw);
+  const meta=r=>`${r.date.slice(5).replace("-","/")} ${(r.time||"").slice(0,5)} · ${r.run?r.run+"회차 ":""}${r.game||""}`;
+  const plain=r=>`<div class="lrow wt"><div class="lbl">${r.game||""}</div><div class="balls">${r.nums.map(n=>ballHTML(n,"")).join("")}</div><span class="res wait">추첨 전</span><div class="wqmeta">${meta(r)}</div></div>`;
+  if(!LottoWin.isDrawn(draw)){
+    $("wqBody").innerHTML=`<div class="wqwin"><div class="t"><b>제${draw}회</b>는 ${LottoWin.drawDate(draw)}(토) 오후 8시 35분 추첨 예정입니다. 추첨이 끝나면 이 버튼으로 바로 확인할 수 있습니다.</div></div>
+      <div class="logsum"><span>이 회차 대상 번호 <b>${mine.length}</b>게임</span></div><div class="wqlist">${mine.map(plain).join("")}</div>`;
+    return;
+  }
+  const rs=res.filter(w=>w.drawNo===draw);
+  if(!rs.length){
+    $("wqBody").innerHTML=`<div class="logempty">제${draw}회 당첨번호를 아직 받지 못했습니다. 인터넷 연결을 확인하거나 잠시 뒤 다시 조회해 주세요.</div>`;
+    return;
+  }
+  const W=rs[0].win, c={}; rs.forEach(w=>{const k=w.rank||0;c[k]=(c[k]||0)+1});
+  const best=Math.min(...rs.map(w=>w.rank||9));
+  const sum=[1,2,3,4,5].filter(k=>c[k]).map(k=>`<span><b style="color:${k<=3?"var(--warn)":"var(--accent)"}">${k}등 ${c[k]}</b>게임</span>`).join("")+`<span>낙첨 <b>${c[0]||0}</b>게임</span>`;
+  const sorted=rs.slice().sort((a,b)=>(a.rank||9)-(b.rank||9)||b.match-a.match);
+  $("wqBody").innerHTML=
+    (best<=3?`<div class="wqcongrats">🎉 축하합니다! 제${draw}회 ${best}등 당첨 번호가 있습니다</div>`:"")+
+    `<div class="wqwin"><div class="t"><b>제${draw}회</b> 당첨번호 · ${W.date||LottoWin.drawDate(draw)} 추첨</div>
+      <div class="balls">${W.nums.map(n=>ballHTML(n,"")).join("")}<span class="wqplus">+</span>${ballHTML(W.bonus,"보너스")}</div></div>
+    <div class="logsum"><span>생성 <b>${rs.length}</b>게임</span>${sum}</div>
+    <div class="wqlist">${sorted.map(w=>{
+      const r=w.rec;
+      return `<div class="lrow chk"><div class="lbl">${r.game||""}</div><div class="balls">${r.nums.map(n=>{const h=ballHTML(n,"");return w.hit.includes(n)||(w.rank===2&&n===W.bonus)?h.replace('class="ball','class="ball hit'):h}).join("")}</div><span class="res r${w.rank}">${w.rank?w.rank+"등":w.match+"개 일치"}</span><div class="wqmeta">${meta(r)}${w.bonusHit&&w.rank!==2?" · 보너스 일치":""}</div></div>`}).join("")}</div>`;
+}
+$("wqOpen").onclick=openWinQuery;
+$("wqClose").onclick=closeWinQuery;
+$("wq").addEventListener("click",e=>{ if(e.target===$("wq")) closeWinQuery() });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("wq").hidden) closeWinQuery() });
+
 function renderWinNote(recs,res){
   const el=$("winNote"); if(!recs.length){el.hidden=true;return}
   const now=LottoWin.drawFor(Date.now()), md=n=>LottoWin.drawDate(n).slice(5).replace("-","/");
