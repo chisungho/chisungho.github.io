@@ -123,6 +123,12 @@ body{color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;-webk
 .lrow .lbl{font:700 12px var(--num);color:var(--muted);text-align:center}
 .lrow .balls .ball span{max-width:34px;font-size:clamp(12px,3.4vw,14px)}
 .lrow .balls .ball i{display:none}
+.lrow.chk,.lrow.wt{grid-template-columns:22px minmax(0,1fr) auto}
+.lrow.chk .ball span{opacity:.38}.lrow.chk .ball.hit span{opacity:1;box-shadow:0 0 0 2.5px var(--ink)}
+.res{font:700 11.5px var(--ui);border-radius:99px;padding:3px 9px;white-space:nowrap;background:var(--line);color:var(--muted)}
+.res.r1,.res.r2,.res.r3{background:var(--warn);color:#fff}.res.r4,.res.r5{background:var(--accent-soft);color:var(--accent)}.res.wait{background:transparent;color:var(--muted);border:1px dashed var(--line)}
+.runhead .draw{margin-left:auto;font-weight:600;color:var(--ink)}
+.winsum{font-size:12.5px;color:var(--muted);background:var(--surface-2);border-radius:12px;padding:9px 12px;line-height:1.6}.winsum b{color:var(--ink)}.winsum .big{color:var(--warn)}
 .logempty{padding:22px;text-align:center;color:var(--muted);font-size:13.5px;border:1.5px dashed var(--line);border-radius:14px}
 :is(.logbtn,.dchip):focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .deep{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;background:var(--accent-soft)}
@@ -181,6 +187,7 @@ body{color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;-webk
       <div class="meter" aria-hidden="true"><i id="meter" style="width:0"></i></div>
       <div class="count" id="count">오늘 0 / 4회 · 0 / 20게임</div>
       <div class="count" id="histNote">지금까지 생성한 조합 0개는 다시 나오지 않습니다.</div>
+      <div class="winsum" id="winNote" hidden></div>
       <div class="count folder" id="folderRow" hidden>기록 폴더 <span id="folderPath"></span> <button class="ghost" id="openFolder">폴더 열기</button></div>
       <div class="count" id="testNote">테스트 버전이라 20게임 제한이 적용되지 않습니다.</div>
     </div>
@@ -205,12 +212,15 @@ body{color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;-webk
     <div class="head"><h2>로또 번호 생성기 사용법</h2></div>
     <p class="hint">'전부 자동'을 고르면 역대 로또 6/45 당첨번호 통계를 참고해 5게임 번호를 한 번에 조합합니다. '일부 수동 선택'을 고르면 원하는 번호를 먼저 정하고 나머지 번호만 자동으로 채울 수 있습니다.</p>
     <p class="hint">만든 번호는 '번호 복사'로 바로 옮길 수 있고, '생성 기록 조회'에서 날짜별로 다시 볼 수 있습니다. 한 번 만든 조합은 다시 나오지 않으며, 하루 최대 20게임까지 생성됩니다.</p>
+    <p class="hint"><b>주간 당첨 확인</b> · 생성한 번호는 이 휴대폰·컴퓨터에만 기록되고, 생성한 시각에 판매 중인 회차(토요일 오후 8시 판매 마감 전이면 그 주, 마감 뒤면 다음 주) <b>한 회차의 당첨번호와만</b> 대조합니다. 추첨이 끝나면 자동으로 맞춰 보고, 3등 이상이면 홈페이지에 들어올 때 축하 안내를 띄웁니다. 다른 기기나 브라우저 기록을 지운 경우에는 확인할 수 없습니다.</p>
     <p class="hint">생성 번호는 통계를 바탕으로 한 재미·참고용이며 당첨을 보장하지 않습니다.</p>
   </section>
 
   <div class="status"><span id="status">과거 당첨번호 전체를 조회하는 중…</span> <button class="ghost" id="retry" hidden>다시 조회</button><br><span id="drawsNote"></span></div>
 </main>
 
+<script>window.LOTTO_WIN_MANUAL=true</script>
+<script src="/lotto-win.js"></script>
 <script>
 /* ===== 설정 ===== */
 const TEST_MODE = false;   // true = 테스트 버전(1일 20게임 제한 미적용), false = 배포 버전
@@ -382,8 +392,9 @@ async function loadState(){
 async function saveRun(made,modeLabel){
   if(LOCAL){ const j=await api("api/save",{mode:modeLabel,games:made}); fromServer(j); return }
   S.runs++; S.games.push(...made); S.history.push(...made.map(g=>g.nums.join(",")));
-  const recs=load(KEY+"records")||[], tm=new Date().toTimeString().slice(0,8);
-  made.forEach((g,i)=>recs.push({date:S.date,time:tm,run:S.runs,game:"ABCDE"[i]||String(i+1),mode:modeLabel,nums:g.nums,tag:g.tag}));
+  const recs=load(KEY+"records")||[], now=new Date(), tm=now.toTimeString().slice(0,8);
+  const drawNo=window.LottoWin?LottoWin.drawFor(now.getTime()):undefined;   // 이 번호가 참여하는 회차 (그 회차와만 대조)
+  made.forEach((g,i)=>recs.push({date:S.date,time:tm,ts:now.getTime(),drawNo:g.drawNo||drawNo,run:S.runs,game:"ABCDE"[i]||String(i+1),mode:modeLabel,nums:g.nums,tag:g.tag}));
   store(KEY+"records",recs);
   store(KEY+"usage",{date:S.date,runs:S.runs,games:S.games,last:made}); store(KEY+"history",S.history);
 }
@@ -425,7 +436,8 @@ function renderGames(animate){
     g.innerHTML='<div class="empty"><div class="ghostballs"><i></i><i></i><i></i><i></i><i></i><i></i></div>[번호 생성]을 누르면 5게임이 여기에 나옵니다.</div>';
     $("copy").hidden=true; $("resTitle").innerHTML="생성 번호";
   } else {
-    $("resTitle").innerHTML=`생성 번호<small>${u.runs}회차</small>`;
+    const dn=u.last[0].drawNo||(window.LottoWin?LottoWin.drawFor(Date.now()):0);
+    $("resTitle").innerHTML=`생성 번호<small>${u.runs}회차${dn?` · 제${dn}회(${LottoWin.drawDate(dn).slice(5).replace("-","/")} 추첨) 대상`:""}</small>`;
     g.innerHTML=u.last.map((x,i)=>{
       const s=x.nums.reduce((a,b)=>a+b,0), o=x.nums.filter(n=>n%2).length, l=x.nums.filter(n=>n<=22).length;
       return `<div class="game"><div class="lbl">${String.fromCharCode(65+i)}</div>
@@ -458,7 +470,8 @@ $("go").onclick=async()=>{
     if(bad.length){ toast("검사에서 제외 조합이 발견되어 다시 생성해 주세요"); return }
     await deepAnalysis(manual);
     const label=manual.length?`일부 수동(${manual.join(",")})`:"전부 자동";
-    try{ await saveRun(made,label); S.last=made }
+    if(window.LottoWin){ const dn=LottoWin.drawFor(Date.now()); made.forEach(g=>g.drawNo=dn) }
+    try{ await saveRun(made,label); S.last=made; checkWins(false) }
     catch(e){
       if(e.data&&e.data.date) fromServer(e.data);
       if(e.data&&e.data.error==="limit") toast("오늘 생성 한도(20게임)를 모두 사용했습니다");
@@ -518,8 +531,14 @@ function renderLogs(){
   if(!rows.length){$("logList").innerHTML=`<div class="logempty">${logDate===today()?"오늘":"이 날짜에"} 생성한 번호가 없습니다.</div>`;return}
   $("logList").innerHTML=runs.map(rn=>{
     const rs=rows.filter(r=>r.run===rn);
-    return `<div class="runhead"><b>${rn}회차</b><span>${rs[0].time||""}</span><span class="pill">${rs[0].mode||""}</span></div>`+
-      rs.map(r=>`<div class="lrow"><div class="lbl">${r.game}</div><div class="balls">${r.nums.map(n=>ballHTML(n,(r.tag||{})[n])).join("")}</div></div>`).join("");
+    const dn=window.LottoWin?LottoWin.recDraw(rs[0]):0;
+    return `<div class="runhead"><b>${rn}회차</b><span>${rs[0].time||""}</span><span class="pill">${rs[0].mode||""}</span>${dn?`<span class="draw">제${dn}회 대상</span>`:""}</div>`+
+      rs.map(r=>{
+        const w=WIN.get(wkey(r));
+        const badge=w?`<span class="res r${w.rank}">${w.rank?w.rank+"등":w.match+"개 일치"}</span>`
+          :(dn&&!LottoWin.isDrawn(LottoWin.recDraw(r))?`<span class="res wait">추첨 전</span>`:"");
+        return `<div class="lrow${w?" chk":badge?" wt":""}"><div class="lbl">${r.game}</div><div class="balls">${r.nums.map(n=>{const h=ballHTML(n,(r.tag||{})[n]);return w&&(w.hit.includes(n)||(w.rank===2&&n===w.win.bonus))?h.replace('class="ball','class="ball hit'):h}).join("")}</div>${badge}</div>`;
+      }).join("");
   }).join("");
 }
 $("logOpen").onclick=async()=>{
@@ -537,12 +556,43 @@ $("logCopy").onclick=()=>{
 };
 async function refreshLogsIfOpen(){ if(!$("logCard").hidden){ await loadLogs(); renderLogs() } }
 
+/* ===== 주간 당첨 확인 =====
+   기록마다 "생성 시각에 판매 중이던 회차" 하나의 당첨번호와만 대조합니다(lotto-win.js). */
+let WIN=new Map();
+const wkey=r=>[r.date,r.time,r.run,r.game,r.nums.join(",")].join("|");
+function inSiteFrame(){ try{ return window.top!==window && window.top.location.host===location.host }catch(e){ return false } }
+async function checkWins(popup){
+  if(!window.LottoWin) return;
+  let recs=[];
+  if(LOCAL){ try{ recs=(await api("api/records")).records||[] }catch(e){} } else recs=load(KEY+"records")||[];
+  const res=await LottoWin.check(recs).catch(()=>[]);
+  WIN=new Map(res.map(w=>[wkey(w.rec),w]));
+  renderWinNote(recs,res);
+  if(!$("logCard").hidden) renderLogs();
+  if(popup && !inSiteFrame()) LottoWin.celebrate(res);   // 홈 화면 안에 열렸으면 홈 화면이 안내함
+}
+function renderWinNote(recs,res){
+  const el=$("winNote"); if(!recs.length){el.hidden=true;return}
+  const now=LottoWin.drawFor(Date.now()), md=n=>LottoWin.drawDate(n).slice(5).replace("-","/");
+  const cur=recs.filter(r=>LottoWin.recDraw(r)===now).length;
+  let html=`이번 주 <b>제${now}회</b>(${md(now)} 추첨) 대상 번호 <b>${cur}</b>게임 · 추첨이 끝나면 그 회차 당첨번호와 자동으로 맞춰 봅니다.`;
+  const last=Math.max(0,...res.map(w=>w.drawNo));
+  if(last){
+    const rs=res.filter(w=>w.drawNo===last), cnt={};
+    rs.forEach(w=>{const k=w.rank?w.rank+"등":"낙첨";cnt[k]=(cnt[k]||0)+1});
+    const parts=["1등","2등","3등","4등","5등","낙첨"].filter(k=>cnt[k]).map(k=>`<b class="${/^[123]등/.test(k)?"big":""}">${k} ${cnt[k]}</b>`);
+    html+=`<br>지난 추첨 <b>제${last}회</b>(${md(last)}) 결과: ${parts.join(" · ")}게임`;
+  }
+  el.innerHTML=html; el.hidden=false;
+}
+
 $("openFolder").onclick=()=>api("api/open",{}).catch(()=>toast("폴더를 열지 못했습니다"));
 
 (async()=>{
   renderBoard();renderHint();renderGames();$("go").disabled=true;
   await loadState(); renderHist(); renderGames();
   await updateOnce(); analyze(); renderGames();
+  checkWins(true);
   $("retry").onclick=async()=>{ $("retry").disabled=true; await updateOnce(); analyze(); renderGames(); $("retry").disabled=false };
   if(LOCAL) setInterval(()=>api("api/ping").catch(()=>{}),30000);   // 화면이 열려 있는 동안 실행기 유지
 })();
