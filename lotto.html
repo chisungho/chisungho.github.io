@@ -695,7 +695,7 @@ $("openFolder").onclick=()=>api("api/open",{}).catch(()=>toast("폴더를 열지
   fetch('/lotto-news.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(j){
     var it=j&&j.items||[];if(!it.length)return;
     document.getElementById('newsList').innerHTML=it.map(function(n){var t=esc(n.text);if(n.link)t='<a href="'+esc(n.link)+'" target="_top">'+t+'</a>';return '<li><b>'+esc(n.tag)+'</b><span>'+t+'</span></li>';}).join('');
-    document.getElementById('newsUpd').textContent=j.updated?j.updated+' 업데이트':'';
+    document.getElementById('newsUpd').textContent=j.updated?j.updated+' 업데이트 · 매일 아침 6시 갱신':'';
     document.getElementById('news').classList.add('on');
   }).catch(function(){});
 })();
