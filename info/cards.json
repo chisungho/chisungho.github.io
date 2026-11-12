@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 23:08",
+ "updated": "2026-11-13 01:53",
  "items": [
   {
    "id": "p_hp_1112-hp1",
@@ -32,6 +32,74 @@
     {
      "label": "틱톡 채널",
      "url": "https://www.tiktok.com/@hochi285"
+    }
+   ]
+  },
+  {
+   "id": "p_1112_search-p1",
+   "date": "2026-11-12 19:01",
+   "title": "정보 검색 잘하는 법, 습관 5가지",
+   "imgs": [
+    "info/img/p_1112_search-p1/card1.webp",
+    "info/img/p_1112_search-p1/card2.webp",
+    "info/img/p_1112_search-p1/card3.webp",
+    "info/img/p_1112_search-p1/card4.webp",
+    "info/img/p_1112_search-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/58"
+    },
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    }
+   ]
+  },
+  {
+   "id": "p_1112_write-p1",
+   "date": "2026-11-12 18:40",
+   "title": "글쓰기 방법, 결론부터 쓰면 풀린다",
+   "imgs": [
+    "info/img/p_1112_write-p1/card1.webp",
+    "info/img/p_1112_write-p1/card2.webp",
+    "info/img/p_1112_write-p1/card3.webp",
+    "info/img/p_1112_write-p1/card4.webp",
+    "info/img/p_1112_write-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    },
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528"
     }
    ]
   },
@@ -194,6 +262,40 @@
     {
      "label": "유튜브 게시물 탭",
      "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    },
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528"
+    }
+   ]
+  },
+  {
+   "id": "p_catch_1111-p_catch_1111_0100",
+   "date": "2026-11-11 01:21",
+   "title": "두 종목이 코스피의 42%다",
+   "imgs": [
+    "info/img/p_catch_1111-p_catch_1111_0100/card1.webp",
+    "info/img/p_catch_1111-p_catch_1111_0100/card2.webp",
+    "info/img/p_catch_1111-p_catch_1111_0100/card3.webp",
+    "info/img/p_catch_1111-p_catch_1111_0100/card4.webp",
+    "info/img/p_catch_1111-p_catch_1111_0100/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "유튜브 게시물",
+     "url": "https://www.youtube.com/post/UgkxPVbnc5OMU1BodDzizl0BiFBN4Tf4ShSd"
+    },
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
     },
     {
      "label": "틱톡 채널",
