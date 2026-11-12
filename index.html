@@ -224,6 +224,15 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 
 
 
+/* info bar under the notice bar */
+.infobar{background:rgba(7,17,31,.6);border-bottom:1px solid rgba(148,190,224,.12)}
+.infobar .wrap{display:flex;justify-content:flex-start;padding-top:8px;padding-bottom:8px}
+.infobar .ib{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(34,211,238,.16),rgba(99,102,241,.16));border:1px solid rgba(103,232,249,.35);border-radius:99px;padding:7px 16px 7px 12px;color:#e7f0ff;font-size:14.5px;transition:.2s}
+.infobar .ib:hover{border-color:#67e8f9;transform:translateY(-1px)}
+.infobar .ib b{font-weight:800}
+.infobar .cnt{font-size:12.5px;color:#9db7d0}
+.infobar .arr{color:#67e8f9;font-weight:800}
+@media(max-width:560px){.infobar .cnt{display:none}}
 /* notice bar */
 .ntc{display:none;border-top:1px solid rgba(148,190,224,.16);background:rgba(15,31,52,.92)}
 .ntc.on{display:block}
@@ -279,13 +288,14 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 
 <nav><div class="wrap">
   <a class="logo" href="/"><i>新</i>새로운 도전을 위하여</a>
-  <ul><li><a href="/timer" id="twNav">타임워치</a></li><li><a href="/fin" data-open="pgFin">은행금리비교</a></li><li><a href="/saju" data-open="pgSaju">사주팔자보기</a></li><li><a href="/dream" data-open="pgDream">꿈해몽</a></li><li><a href="/lotto" id="ltNav">로또번호</a></li><li><a href="#guide">도구 안내</a></li><li><a href="/board">게시판</a></li><li><a href="#channels">채널</a></li><li><a href="#about">소개</a></li></ul>
+  <ul><li><a href="/timer" id="twNav">타임워치</a></li><li><a href="/fin" data-open="pgFin">은행금리비교</a></li><li><a href="/saju" data-open="pgSaju">사주팔자보기</a></li><li><a href="/dream" data-open="pgDream">꿈해몽</a></li><li><a href="/lotto" id="ltNav">로또번호</a></li><li><a href="#guide">도구 안내</a></li><li><a href="/info">좋은 정보</a></li><li><a href="/board">게시판</a></li><li><a href="#channels">채널</a></li><li><a href="#about">소개</a></li></ul>
 </div>
 <div class="ntc" id="ntc" role="region" aria-label="알림"><div class="wrap"><span class="tg">알림</span><span class="tx" id="ntcTx" aria-live="polite"></span><span class="ct" id="ntcCt"></span></div></div>
 </nav>
+<div class="infobar"><div class="wrap"><a class="ib" href="/info"><span class="ico" aria-hidden="true">📚</span><b>좋은 정보 보기</b><span class="cnt" id="ibCnt">좋은 정보글 · 카드뉴스</span><span class="arr" aria-hidden="true">→</span></a></div></div>
 
 <header class="hero"><div class="wrap">
-  <h1 class="hero-title">생활도구</h1>
+  <h1 class="hero-title">미래를 보는 눈</h1>
   <p class="hero-sub">설치·회원가입 없이 바로 쓰는 무료 생활도구 모음</p>
 
   <div class="app-grid">
@@ -580,5 +590,12 @@ document.querySelectorAll('nav a[data-open]').forEach(function(a){a.addEventList
 </script>
 <!-- 로또 번호 생성기: 이 기기에 기록된 번호를 그 주 회차 결과와 대조, 3등 이상이면 축하 안내 -->
 <script src="/lotto-win.js" defer></script>
+<script>
+(function(){
+  var el=document.getElementById('ibCnt');if(!el)return;
+  function n(u){return fetch(u+'?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():{items:[]};}).then(function(j){return (j.items||[]).length;}).catch(function(){return 0;});}
+  Promise.all([n('/info/posts.json'),n('/info/cards.json')]).then(function(c){if(c[0]||c[1])el.textContent='좋은 정보글 '+c[0]+' · 카드뉴스 '+c[1];});
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>좋은 정보 보기 | 경제·생활 정보글과 카드뉴스 - 새로운 도전을 위하여</title>
+<meta name="description" content="경제·금융·생활 정보를 정리한 좋은 정보글(네이버 블로그·구글 블로그)과 SNS 카드뉴스를 한곳에서 모아 봅니다.">
+<link rel="canonical" href="https://csh2020.com/info">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="새로운 도전을 위하여">
+<meta property="og:title" content="좋은 정보 보기 | 정보글과 카드뉴스">
+<meta property="og:url" content="https://csh2020.com/info">
+<meta property="og:image" content="https://csh2020.com/og.png">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#07111f">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+a{color:inherit;text-decoration:none}
+body{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:radial-gradient(900px 500px at 90% 0%,rgba(34,211,238,.08),transparent 65%),#07111f;color:#e7f0ff;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:10;background:rgba(7,17,31,.86);backdrop-filter:blur(12px);border-bottom:1px solid rgba(148,190,224,.16)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:900;font-size:17px;display:flex;align-items:center;gap:8px}
+.logo i{font-style:normal;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,#22d3ee,#6366f1);color:#fff;font-size:15px}
+nav .home{font-size:14px;font-weight:700;color:#c6d7ec}
+nav .home:hover{color:#67e8f9}
+header{padding:40px 0 18px;text-align:center}
+header small{color:#22d3ee;font-weight:800;letter-spacing:.12em;font-size:13px}
+header h1{font-size:clamp(26px,4vw,34px);font-weight:900;letter-spacing:-.02em;color:#dff7ff;margin-top:4px}
+header p{color:#9aacc3;margin-top:6px;font-size:15px}
+.tabs{display:flex;gap:8px;justify-content:center;margin:6px 0 22px}
+.tabs button{font:inherit;font-weight:800;font-size:15.5px;border:1px solid rgba(148,190,224,.25);background:rgba(15,31,52,.72);color:#c6d7ec;border-radius:99px;padding:11px 22px;cursor:pointer}
+.tabs button[aria-selected=true]{background:#22d3ee;color:#04202b;border-color:#22d3ee}
+.tabs .n{font-size:12px;font-weight:700;opacity:.8;margin-left:4px}
+.panel{display:none;padding-bottom:70px}
+.panel.on{display:block}
+.posts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.post{background:rgba(15,31,52,.72);border:1px solid rgba(148,190,224,.16);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.post img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block;background:#0f1f34}
+.post .bd{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.post .dt{font-size:12.5px;color:#9aacc3}
+.post h2{font-size:17px;font-weight:800;line-height:1.45;color:#f1f7ff}
+.post p{font-size:14px;color:#c6d7ec}
+.post .g{font-size:13.5px;color:#9db7d0;border-top:1px dashed rgba(148,190,224,.2);padding-top:8px}
+.post .g b{color:#e7f0ff}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.btns a{font-weight:800;font-size:13.5px;border-radius:99px;padding:8px 14px;display:inline-flex;align-items:center;gap:6px}
+.nv{background:#03c75a;color:#fff}
+.gg{background:#f57c00;color:#fff}
+.sns{background:rgba(148,190,224,.12);color:#e7f0ff;border:1px solid rgba(148,190,224,.28)}
+.sns.ch{opacity:.8}
+.cards{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
+.cn{min-width:0;overflow:hidden;background:rgba(15,31,52,.72);border:1px solid rgba(148,190,224,.16);border-radius:18px;padding:16px 18px}
+.cn h2{font-size:17px;font-weight:800;margin-bottom:2px}
+.cn .dt{font-size:12.5px;color:#9aacc3;margin-bottom:12px}
+.strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+.strip img{flex:none;width:min(240px,62vw);height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:12px;scroll-snap-align:start;background:#0f1f34;cursor:zoom-in}
+.em{text-align:center;color:#9aacc3;padding:30px}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.lb.on{display:flex}
+.lb img{max-width:100%;max-height:100%;border-radius:12px}
+.lb button{position:absolute;top:14px;right:14px;font:inherit;font-weight:800;background:#fff;color:#111;border:0;border-radius:99px;padding:8px 14px;cursor:pointer}
+footer{border-top:1px solid rgba(148,190,224,.12);padding:26px 0;text-align:center;font-size:13px;color:#9aacc3}
+footer a{color:#67e8f9}
+@media(max-width:720px){.posts{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:560px){.tabs button{padding:10px 16px;font-size:14.5px}.cn{padding:14px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="/"><i>新</i>새로운 도전을 위하여</a>
+  <a class="home" href="/">← 홈으로</a>
+</div></nav>
+
+<main class="wrap">
+  <header><small>GOOD INFO</small><h1>좋은 정보 보기</h1><p>경제·생활 정보를 정리한 글과 카드뉴스를 모았습니다</p></header>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tPosts" aria-selected="true" aria-controls="posts">좋은 정보글<span class="n" id="nPosts"></span></button>
+    <button role="tab" id="tCards" aria-selected="false" aria-controls="cards">카드뉴스<span class="n" id="nCards"></span></button>
+  </div>
+  <section class="panel on" id="posts" role="tabpanel" aria-labelledby="tPosts"><div class="posts" id="postList"><p class="em">불러오는 중...</p></div></section>
+  <section class="panel" id="cards" role="tabpanel" aria-labelledby="tCards"><div class="cards" id="cardList"><p class="em">불러오는 중...</p></div></section>
+</main>
+
+<div class="lb" id="lb" role="dialog" aria-label="카드 크게 보기"><button type="button" id="lbClose">닫기 ✕</button><img id="lbImg" alt=""></div>
+
+<footer><div class="wrap"><b>새로운 도전을 위하여</b> · csh2020.com · <a href="/board">게시판</a> · <a href="/privacy">개인정보처리방침</a></div></footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function safe(u){u=String(u||'');return /^https:\/\//.test(u)?u:'';}
+  function get(u){return fetch(u+'?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():{items:[]};}).catch(function(){return {items:[]};});}
+  function tab(which){
+    var p=which==='cards';
+    $('tPosts').setAttribute('aria-selected',!p);$('tCards').setAttribute('aria-selected',p);
+    $('posts').classList.toggle('on',!p);$('cards').classList.toggle('on',p);
+    if(location.hash!=='#'+which)history.replaceState(null,'','#'+which);
+  }
+  $('tPosts').onclick=function(){tab('posts');};$('tCards').onclick=function(){tab('cards');};
+  if(location.hash==='#cards')tab('cards');
+
+  get('/info/posts.json').then(function(j){
+    var it=j.items||[];$('nPosts').textContent=it.length||'';
+    if(!it.length){$('postList').innerHTML='<p class="em">아직 올라온 정보글이 없습니다.</p>';return;}
+    $('postList').innerHTML=it.map(function(n){
+      return '<article class="post">'+(n.img?'<img src="/'+esc(n.img)+'" alt="'+esc(n.title)+'" loading="lazy" width="800" height="450">':'')+
+        '<div class="bd"><span class="dt">'+esc(n.date)+'</span><h2>'+esc(n.title)+'</h2><p>'+esc(n.desc)+'</p>'+
+        (n.gtitle?'<div class="g">구글 블로그 함께 읽기 · <b>'+esc(n.gtitle)+'</b></div>':'')+
+        '<div class="btns"><a class="nv" href="'+esc(safe(n.naver))+'" target="_blank" rel="noopener">N 네이버 블로그</a><a class="gg" href="'+esc(safe(n.google))+'" target="_blank" rel="noopener">B 구글 블로그</a></div></div></article>';
+    }).join('');
+  });
+
+  get('/info/cards.json').then(function(j){
+    var it=j.items||[];$('nCards').textContent=it.length||'';
+    if(!it.length){$('cardList').innerHTML='<p class="em">아직 올라온 카드뉴스가 없습니다.</p>';return;}
+    $('cardList').innerHTML=it.map(function(n){
+      var imgs=(n.imgs||[]).map(function(s,i){return '<img src="/'+esc(s)+'" alt="'+esc(n.title)+' 카드 '+(i+1)+'" loading="lazy" width="720" height="900">';}).join('');
+      var links=(n.links||[]).filter(function(l){return safe(l.url);}).map(function(l){var ch=/채널|탭$/.test(l.label);return '<a class="sns'+(ch?' ch':'')+'" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+esc(l.label)+' ↗</a>';}).join('');
+      return '<article class="cn"><h2>'+esc(n.title)+'</h2><div class="dt">'+esc(n.date)+'</div><div class="strip">'+imgs+'</div><div class="btns">'+links+'</div></article>';
+    }).join('');
+    $('cardList').querySelectorAll('.strip img').forEach(function(im){im.onclick=function(){$('lbImg').src=im.src;$('lbImg').alt=im.alt;$('lb').classList.add('on');};});
+  });
+  function close(){$('lb').classList.remove('on');}
+  $('lbClose').onclick=close;$('lb').onclick=function(e){if(e.target===$('lb'))close();};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+})();
+</script>
+</body>
+</html>
