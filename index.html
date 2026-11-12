@@ -226,7 +226,10 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 
 /* info bar under the notice bar */
 .infobar{background:rgba(7,17,31,.6);border-bottom:1px solid rgba(148,190,224,.12)}
-.infobar .wrap{display:flex;justify-content:flex-start;padding-top:8px;padding-bottom:8px}
+.infobar .wrap{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+.infobar .shop{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#fbbf24,#f97316);color:#2a1a00;border-radius:99px;padding:7px 16px 7px 13px;font-size:14.5px;font-weight:800;box-shadow:0 4px 14px rgba(249,115,22,.25);transition:.2s}
+.infobar .shop:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(249,115,22,.4)}
+.infobar .shop small{font-size:12px;font-weight:700;opacity:.75}
 .infobar .ib{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(34,211,238,.16),rgba(99,102,241,.16));border:1px solid rgba(103,232,249,.35);border-radius:99px;padding:7px 16px 7px 12px;color:#e7f0ff;font-size:14.5px;transition:.2s}
 .infobar .ib:hover{border-color:#67e8f9;transform:translateY(-1px)}
 .infobar .ib b{font-weight:800}
@@ -292,7 +295,7 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
 </div>
 <div class="ntc" id="ntc" role="region" aria-label="알림"><div class="wrap"><span class="tg">알림</span><span class="tx" id="ntcTx" aria-live="polite"></span><span class="ct" id="ntcCt"></span></div></div>
 </nav>
-<div class="infobar"><div class="wrap"><a class="ib" href="/info"><span class="ico" aria-hidden="true">📚</span><b>좋은 정보 보기</b><span class="cnt" id="ibCnt">좋은 정보글 · 카드뉴스</span><span class="arr" aria-hidden="true">→</span></a></div></div>
+<div class="infobar"><div class="wrap"><a class="ib" href="/info"><span class="ico" aria-hidden="true">📚</span><b>좋은 정보 보기</b><span class="cnt" id="ibCnt">좋은 정보글 · 카드뉴스</span><span class="arr" aria-hidden="true">→</span></a><a class="shop" href="/shop" target="_blank" rel="noopener"><span aria-hidden="true">🛍</span>상품 쇼핑하러 가기<small id="shopCnt">광고</small><span aria-hidden="true">↗</span></a></div></div>
 
 <header class="hero"><div class="wrap">
   <h1 class="hero-title">미래를 보는 눈</h1>
@@ -594,6 +597,7 @@ document.querySelectorAll('nav a[data-open]').forEach(function(a){a.addEventList
 (function(){
   var el=document.getElementById('ibCnt');if(!el)return;
   function n(u){return fetch(u+'?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():{items:[]};}).then(function(j){return (j.items||[]).length;}).catch(function(){return 0;});}
+  n('/shop/products.json').then(function(c){var s=document.getElementById('shopCnt');if(c&&s)s.textContent='상품 '+c+'개 · 광고';});
   Promise.all([n('/info/posts.json'),n('/info/cards.json')]).then(function(c){if(c[0]||c[1])el.textContent='좋은 정보글 '+c[0]+' · 카드뉴스 '+c[1];});
 })();
 </script>

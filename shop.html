@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>상품 쇼핑하러 가기 | 추천 상품 번호별 모음 - 새로운 도전을 위하여</title>
+<meta name="description" content="생활용품·주방·육아·여행 추천 상품을 번호별로 한곳에 모았습니다. 쿠팡·네이버 쇼핑·여행 상품을 검색하고 바로 구경하세요(광고 포함).">
+<link rel="canonical" href="https://csh2020.com/shop">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="새로운 도전을 위하여">
+<meta property="og:title" content="상품 쇼핑하러 가기 | 추천 상품 번호별 모음">
+<meta property="og:url" content="https://csh2020.com/shop">
+<meta property="og:image" content="https://csh2020.com/og.png">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#07111f">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+a{color:inherit;text-decoration:none}
+body{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:radial-gradient(900px 500px at 90% 0%,rgba(251,191,36,.08),transparent 65%),#07111f;color:#e7f0ff;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:10;background:rgba(7,17,31,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(148,190,224,.16)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-weight:900;font-size:17px;display:flex;align-items:center;gap:8px}
+.logo i{font-style:normal;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,#22d3ee,#6366f1);color:#fff;font-size:15px}
+nav .home{font-size:14px;font-weight:700;color:#c6d7ec}
+nav .home:hover{color:#fcd34d}
+header{padding:36px 0 14px;text-align:center}
+header small{color:#fbbf24;font-weight:800;letter-spacing:.12em;font-size:13px}
+header h1{font-size:clamp(26px,4vw,34px);font-weight:900;letter-spacing:-.02em;color:#fff7e0;margin-top:4px}
+header p{color:#9aacc3;margin-top:6px;font-size:15px}
+.disc{max-width:760px;margin:14px auto 0;font-size:13px;color:#c9b98f;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.28);border-radius:12px;padding:10px 14px}
+.tools{position:sticky;top:60px;z-index:5;background:rgba(7,17,31,.92);backdrop-filter:blur(10px);padding:12px 0;margin-bottom:14px;border-bottom:1px solid rgba(148,190,224,.1)}
+.tools .wrap{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.q{flex:1 1 260px;min-width:0;font:inherit;font-size:15px;background:rgba(15,31,52,.9);color:#e7f0ff;border:1px solid rgba(148,190,224,.3);border-radius:99px;padding:10px 16px}
+.q:focus{outline:2px solid #fbbf24;outline-offset:1px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{font:inherit;font-weight:800;font-size:14px;border:1px solid rgba(148,190,224,.25);background:rgba(15,31,52,.72);color:#c6d7ec;border-radius:99px;padding:8px 14px;cursor:pointer}
+.chips button[aria-pressed=true]{background:#fbbf24;color:#2a1a00;border-color:#fbbf24}
+.chips .n{font-size:12px;font-weight:700;opacity:.75;margin-left:3px}
+.count{font-size:13.5px;color:#9aacc3;margin-left:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;padding-bottom:40px}
+.it{background:rgba(15,31,52,.78);border:1px solid rgba(148,190,224,.16);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:.18s;min-width:0}
+.it:hover{border-color:#fbbf24;transform:translateY(-2px)}
+.ph{position:relative;aspect-ratio:1/1;background:#fff}
+.ph img{width:100%;height:100%;object-fit:contain;display:block}
+.no{position:absolute;top:8px;left:8px;background:#0b1626;color:#fcd34d;font-weight:900;font-size:13px;border-radius:8px;padding:3px 8px}
+.ad{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:11.5px;font-weight:700;border-radius:6px;padding:2px 6px}
+.bd{padding:11px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.tag{font-size:12px;font-weight:800;align-self:flex-start;border-radius:99px;padding:2px 9px}
+.t-coupang{background:rgba(239,68,68,.16);color:#fca5a5}
+.t-naver{background:rgba(3,199,90,.16);color:#6ee7a8}
+.t-travel{background:rgba(56,189,248,.16);color:#7dd3fc}
+.t-etc{background:rgba(148,163,184,.16);color:#cbd5e1}
+.nm{font-size:14.5px;font-weight:700;color:#f1f7ff;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;word-break:keep-all;overflow-wrap:anywhere}
+.go{margin-top:auto;text-align:center;font-weight:800;font-size:14px;background:#fbbf24;color:#2a1a00;border-radius:10px;padding:9px}
+.sec{font-size:18px;font-weight:900;margin:8px 0 12px;color:#fff7e0}
+.em{text-align:center;color:#9aacc3;padding:40px;grid-column:1/-1}
+.more{display:block;margin:0 auto 60px;font:inherit;font-weight:800;background:transparent;color:#fcd34d;border:1px solid rgba(251,191,36,.5);border-radius:99px;padding:11px 26px;cursor:pointer}
+footer{border-top:1px solid rgba(148,190,224,.12);padding:26px 0;text-align:center;font-size:13px;color:#9aacc3}
+footer a{color:#fcd34d}
+@media(max-width:560px){.wrap{padding:0 14px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.nm{font-size:13.5px}.count{width:100%;margin-left:0}.chips button{padding:7px 11px;font-size:13px}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="/"><i>新</i>새로운 도전을 위하여</a>
+  <a class="home" href="/">← 홈으로</a>
+</div></nav>
+
+<header class="wrap">
+  <small>SHOPPING</small><h1>🛍 상품 쇼핑하러 가기</h1>
+  <p>인포크링크에 번호로 올린 추천 상품을 한 화면에 모두 모았습니다</p>
+  <p class="disc">이 페이지의 상품은 모두 <b>광고</b>입니다. 쿠팡 파트너스 활동의 일환으로 이에 따른 일정액의 수수료를 제공받으며, 네이버 쇼핑·여행 커넥트 상품도 구매·예약 시 수수료를 받을 수 있습니다. 가격·재고는 판매처에서 확인하세요.</p>
+</header>
+
+<div class="tools"><div class="wrap">
+  <input class="q" id="q" type="search" placeholder="상품 이름이나 번호로 찾기 (예: 물티슈, 120)" aria-label="상품 검색">
+  <div class="chips" id="chips" role="group" aria-label="판매처">
+    <button type="button" data-s="all" aria-pressed="true">전체<span class="n"></span></button>
+    <button type="button" data-s="coupang" aria-pressed="false">쿠팡<span class="n"></span></button>
+    <button type="button" data-s="naver" aria-pressed="false">네이버 쇼핑<span class="n"></span></button>
+    <button type="button" data-s="travel" aria-pressed="false">여행<span class="n"></span></button>
+  </div>
+  <span class="count" id="count"></span>
+</div></div>
+
+<main class="wrap">
+  <div class="grid" id="grid"><p class="em">상품을 불러오는 중...</p></div>
+  <button type="button" class="more" id="more" hidden>더 보기</button>
+</main>
+
+<footer><div class="wrap"><b>새로운 도전을 위하여</b> · csh2020.com · <a href="https://link.inpock.co.kr/hgy671001" target="_blank" rel="noopener">인포크링크 원본</a> · <a href="/info">좋은 정보 보기</a> · <a href="/privacy">개인정보처리방침</a><br><span id="upd"></span></div></footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function safe(u){u=String(u||'');return /^https:\/\//.test(u)?u:'';}
+  var all=[],src='all',q='',shown=0,PAGE=60,list=[];
+  function card(n){
+    return '<a class="it" href="'+esc(safe(n.url))+'" target="_blank" rel="sponsored noopener">'+
+      '<div class="ph">'+(n.img?'<img src="'+esc(safe(n.img))+'" alt="'+esc(n.name)+'" loading="lazy" referrerpolicy="no-referrer">':'')+
+      (n.no?'<span class="no">'+n.no+'번</span>':'')+'<span class="ad">광고</span></div>'+
+      '<div class="bd"><span class="tag t-'+esc(n.src)+'">'+esc(n.srcName)+'</span><span class="nm">'+esc(n.name)+'</span>'+
+      '<span class="go">구경하러 가기 ↗</span></div></a>';
+  }
+  function filter(){
+    var k=q.trim().toLowerCase();
+    list=all.filter(function(n){
+      if(src!=='all'&&n.src!==src)return false;
+      if(!k)return true;
+      return (n.no!=null&&String(n.no)===k)||n.name.toLowerCase().indexOf(k)>=0;
+    });
+    shown=0;$('grid').innerHTML='';more();
+    $('count').textContent='상품 '+list.length+'개';
+    if(!list.length)$('grid').innerHTML='<p class="em">찾는 상품이 없습니다.</p>';
+  }
+  function more(){
+    var next=list.slice(shown,shown+PAGE);shown+=next.length;
+    $('grid').insertAdjacentHTML('beforeend',next.map(card).join(''));
+    $('more').hidden=shown>=list.length;
+    $('more').textContent='더 보기 ('+(list.length-shown)+'개 남음)';
+  }
+  $('more').onclick=more;
+  var t;$('q').oninput=function(){clearTimeout(t);var v=this.value;t=setTimeout(function(){q=v;filter();},150);};
+  $('chips').onclick=function(e){
+    var b=e.target.closest('button');if(!b)return;src=b.dataset.s;
+    [].forEach.call(this.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',x===b);});filter();
+  };
+  // show every product at once when the list is small enough to scroll comfortably
+  if('IntersectionObserver' in window){new IntersectionObserver(function(es){if(es[0].isIntersecting&&!$('more').hidden)more();},{rootMargin:'600px'}).observe($('more'));}
+  fetch('/shop/products.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():{items:[]};}).catch(function(){return {items:[]};}).then(function(j){
+    all=j.items||[];
+    var c={all:all.length,coupang:0,naver:0,travel:0};all.forEach(function(n){if(c[n.src]!=null)c[n.src]++;});
+    [].forEach.call($('chips').querySelectorAll('button'),function(b){b.querySelector('.n').textContent=c[b.dataset.s]||'';if(b.dataset.s!=='all'&&!c[b.dataset.s])b.hidden=true;});
+    if(j.updated)$('upd').textContent='상품 목록 갱신: '+j.updated;
+    if(!all.length){$('grid').innerHTML='<p class="em">상품 목록을 불러오지 못했습니다. <a href="https://link.inpock.co.kr/hgy671001" target="_blank" rel="noopener" style="color:#fcd34d">인포크링크에서 보기 ↗</a></p>';return;}
+    filter();
+  });
+})();
+</script>
+</body>
+</html>
