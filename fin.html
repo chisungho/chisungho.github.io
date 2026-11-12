@@ -831,7 +831,7 @@ chartInstance: null
 };
 const RATES_API = 'https://script.google.com/macros/s/AKfycbx9Jf-wKeOwKCc7jlYqv27MAZrY_vBFdHXj-dIHYZJFzIGr4rzWRcH45ZbXDEAbWKbq/exec?a=rates';
 let liveInfo = { updated: null, fxDate: null, productsDate: null };
-// 매일 오전 9시 서버에서 갱신한 환율·예적금 금리를 반영 (실패하면 기본 데이터 유지)
+// 매일 0시 1분 서버에서 갱신한 환율·예적금 금리를 반영 (실패하면 기본 데이터 유지)
 function loadLiveRates() {
 return fetch(RATES_API + '&t=' + Date.now()).then(r => r.json()).then(d => {
 if (!d || !d.ok) return false;
@@ -890,7 +890,7 @@ const day = String(now.getDate()).padStart(2, '0');
 const hours = String(now.getHours()).padStart(2, '0');
 const minutes = String(now.getMinutes()).padStart(2, '0');
 const seconds = String(now.getSeconds()).padStart(2, '0');
-document.getElementById('lastUpdated').textContent = liveInfo.updated ? `${liveInfo.updated} (매일 오전 9시 갱신)` : `${year}.${month}.${day} 기본 데이터`;
+document.getElementById('lastUpdated').textContent = liveInfo.updated ? `${liveInfo.updated} (매일 0시 1분 갱신)` : `${year}.${month}.${day} 기본 데이터`;
 }
 function showToast(message) {
 const toast = document.getElementById('toastMessage');
@@ -913,7 +913,7 @@ renderFXSection();
 updateTrendChart(state.selectedCurrencyForChart);
 calculateExchange();
 icon.classList.remove('fa-spin');
-showToast(ok ? `오늘 오전 9시 기준 데이터입니다 (${liveInfo.updated}).` : '데이터 서버에 연결하지 못해 기본 데이터를 보여 줍니다.');
+showToast(ok ? `오늘 0시 1분 기준 데이터입니다 (${liveInfo.updated}).` : '데이터 서버에 연결하지 못해 기본 데이터를 보여 줍니다.');
 });
 }
 function renderRateTable() {

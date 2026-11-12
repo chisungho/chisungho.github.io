@@ -168,7 +168,7 @@ function updateRates() {
 // 처음 한 번 실행: 매일 오전 9시 자동 갱신 예약
 function installDailyRates() {
   ScriptApp.getProjectTriggers().forEach(function (t) { if (t.getHandlerFunction() === 'updateRates') ScriptApp.deleteTrigger(t); });
-  ScriptApp.newTrigger('updateRates').timeBased().atHour(9).nearMinute(0).everyDays(1).inTimezone('Asia/Seoul').create();
+  ScriptApp.newTrigger('updateRates').timeBased().atHour(0).nearMinute(1).everyDays(1).inTimezone('Asia/Seoul').create();
   updateRates();
 }
 
