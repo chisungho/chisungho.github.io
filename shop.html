@@ -78,7 +78,7 @@ footer a{color:#fcd34d}
 </header>
 
 <div class="tools"><div class="wrap">
-  <input class="q" id="q" type="search" placeholder="상품 이름이나 번호로 찾기 (예: 물티슈, 120)" aria-label="상품 검색">
+  <input class="q" id="q" type="search" placeholder="🔍 상품명 또는 번호로 검색 (예: 물티슈, 120번)" aria-label="상품 검색">
   <div class="chips" id="chips" role="group" aria-label="판매처">
     <button type="button" data-s="all" aria-pressed="true">전체<span class="n"></span></button>
     <button type="button" data-s="coupang" aria-pressed="false">쿠팡<span class="n"></span></button>
@@ -109,11 +109,15 @@ footer a{color:#fcd34d}
       '<span class="go">구경하러 가기 ↗</span></div></a>';
   }
   function filter(){
-    var k=q.trim().toLowerCase();
+    // number search: "120", "120번", "#120" -> that product; name search: every word must appear (spaces ignored)
+    var k=q.trim().toLowerCase(),num=k.replace(/^#|번$/g,'').trim();
+    var words=k.split(/\s+/).filter(Boolean);
     list=all.filter(function(n){
       if(src!=='all'&&n.src!==src)return false;
       if(!k)return true;
-      return (n.no!=null&&String(n.no)===k)||n.name.toLowerCase().indexOf(k)>=0;
+      if(/^\d+$/.test(num))return n.no!=null&&String(n.no)===String(+num);
+      var nm=n.name.toLowerCase(),flat=nm.replace(/\s+/g,'');
+      return words.every(function(w){return nm.indexOf(w)>=0||flat.indexOf(w)>=0;});
     });
     shown=0;$('grid').innerHTML='';more();
     $('count').textContent='상품 '+list.length+'개';
