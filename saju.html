@@ -180,6 +180,10 @@ input[type=text]{font:inherit;font-size:16px;color:var(--ink);background:var(--b
 .btn2{font:inherit;font-weight:600;font-size:15px;background:var(--paper);color:var(--ink);border:1px solid var(--ink);border-radius:10px;padding:10px 16px;min-height:44px;cursor:pointer}
 .install{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;font-size:14px}
 .install p{margin:0;min-width:0;flex:1 1 220px}
+.jq{border-collapse:collapse;width:100%;min-width:420px;font-size:14px}
+.jq th,.jq td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;white-space:nowrap}
+.jq tr.jie td:first-child{font-weight:700}
+.jq tr.now{background:rgba(200,160,60,.14)}
 .guide details{border-top:1px solid var(--line);padding:10px 0}
 .guide details:first-of-type{border-top:0;padding-top:0}
 .guide summary{color:var(--ink);font-size:14.5px}
@@ -363,6 +367,13 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <h2>세운 <span class="sub">歲運 · 해마다의 운</span></h2>
       <div class="scroll"><div class="luck" id="seun"></div></div>
     </div>
+  </section>
+
+  <section class="card" id="jieqi">
+    <h2>24절기 표 <span class="sub">二十四節氣 · 한국 시각</span></h2>
+    <p class="mini" style="margin:-4px 0 10px">사주의 달(월주)은 음력 1일이 아니라 <b>절(節)</b>이 드는 시각에 바뀝니다. 굵은 글씨가 달이 바뀌는 절입니다. 생일이 절기 날 전후라면 태어난 시각까지 꼭 넣어 주세요.</p>
+    <label style="font-size:14px">연도 <select id="jqYear" aria-label="절기 표 연도"></select></label>
+    <div class="scroll" style="margin-top:10px"><table class="jq" id="jqTable"></table></div>
   </section>
 
   <section class="card guide" id="guide">
@@ -777,5 +788,22 @@ const last=store.get(LAST,null);if(last){writeForm(last);syncMode();run(false,tr
 </script>
 
 <a id="homeBtn" href="https://csh2020.com/" target="_top" style="position:fixed;left:14px;bottom:14px;z-index:60;background:#16a34a;color:#fff;font-weight:700;font-size:13px;padding:9px 14px;border-radius:12px;box-shadow:0 8px 20px -8px #0008;text-decoration:none">&larr; 홈으로</a>
+<script>
+(function(){try{
+const KO={'立春':'입춘','雨水':'우수','驚蟄':'경칩','惊蛰':'경칩','春分':'춘분','清明':'청명','穀雨':'곡우','谷雨':'곡우','立夏':'입하','小滿':'소만','小满':'소만','芒種':'망종','芒种':'망종','夏至':'하지','小暑':'소서','大暑':'대서','立秋':'입추','處暑':'처서','处暑':'처서','白露':'백로','秋分':'추분','寒露':'한로','霜降':'상강','立冬':'입동','小雪':'소설','大雪':'대설','冬至':'동지','小寒':'소한','大寒':'대한'};
+const JIE={'입춘':'인월(寅) 시작 · 새해 띠 바뀜','경칩':'묘월(卯) 시작','청명':'진월(辰) 시작','입하':'사월(巳) 시작','망종':'오월(午) 시작','소서':'미월(未) 시작','입추':'신월(申) 시작','백로':'유월(酉) 시작','한로':'술월(戌) 시작','입동':'해월(亥) 시작','대설':'자월(子) 시작','소한':'축월(丑) 시작'};
+const sel=document.getElementById('jqYear'),tb=document.getElementById('jqTable');if(!sel||!tb||typeof Lunar==='undefined')return;
+const now=new Date(),cy=now.getFullYear(),p2=n=>String(n).padStart(2,'0'),W='일월화수목금토';
+for(let y=cy-5;y<=cy+5;y++){const o=document.createElement('option');o.value=y;o.textContent=y+'년';if(y===cy)o.selected=true;sel.appendChild(o);}
+function draw(){const y=+sel.value,seen={},rows=[];
+ [y,y+1].forEach(yy=>{const t=Lunar.fromYmd(yy,1,1).getJieQiTable();for(const k in t){const name=KO[k];if(!name)continue;const so=t[k];
+  // 라이브러리 시각은 UTC+8 → 한국(UTC+9)으로 1시간 더함
+  const d=new Date(Date.UTC(so.getYear(),so.getMonth()-1,so.getDay(),so.getHour()-8,so.getMinute(),so.getSecond()));
+  const kd=new Date(d.getTime()+9*3600e3);if(kd.getUTCFullYear()!==y)continue;const key=name+kd.getUTCMonth();if(seen[key])continue;seen[key]=1;rows.push({name,d,kd});}});
+ rows.sort((a,b)=>a.d-b.d);let cur=-1;rows.forEach((r,i)=>{if(r.d<=now)cur=i;});
+ tb.innerHTML='<thead><tr><th scope="col">절기</th><th scope="col">날짜·시각</th><th scope="col">사주에서</th></tr></thead><tbody>'+rows.map((r,i)=>{const k=r.kd;return `<tr class="${JIE[r.name]?'jie':''}${i===cur&&y===cy?' now':''}"><td>${r.name}</td><td>${k.getUTCMonth()+1}월 ${k.getUTCDate()}일(${W[k.getUTCDay()]}) ${p2(k.getUTCHours())}:${p2(k.getUTCMinutes())}</td><td>${JIE[r.name]||'중기(달은 그대로)'}</td></tr>`;}).join('')+'</tbody>';}
+sel.addEventListener('change',draw);draw();
+}catch(e){console.warn('jieqi',e);}})();
+</script>
 <script>if(window.self!==window.top){document.getElementById('homeBtn').style.display='none';}</script>
 </body></html>
