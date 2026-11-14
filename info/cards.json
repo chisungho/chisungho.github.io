@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14 18:39",
+ "updated": "2026-11-15 00:10",
  "items": [
   {
    "id": "p_1114_1800-p1",
@@ -206,6 +206,40 @@
    ]
   },
   {
+   "id": "p_1113_tax-p1",
+   "date": "2026-11-13 02:47",
+   "title": "카드 공제 한도 400만 원으로 늘었다",
+   "imgs": [
+    "info/img/p_1113_tax-p1/card1.webp",
+    "info/img/p_1113_tax-p1/card2.webp",
+    "info/img/p_1113_tax-p1/card3.webp",
+    "info/img/p_1113_tax-p1/card4.webp",
+    "info/img/p_1113_tax-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    },
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528"
+    }
+   ]
+  },
+  {
    "id": "p_hp_1112-hp1",
    "date": "2026-11-12 22:56",
    "title": "생활도구가 '미래를 보는 눈'이 됐다",
@@ -286,6 +320,10 @@
    ],
    "links": [
     {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/66"
+    },
+    {
      "label": "인스타그램 채널",
      "url": "https://www.instagram.com/jiseungho7/"
     },
@@ -300,10 +338,6 @@
     {
      "label": "틱톡 채널",
      "url": "https://www.tiktok.com/@hochi285"
-    },
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528"
     }
    ]
   },
