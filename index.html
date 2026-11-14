@@ -602,5 +602,47 @@ document.querySelectorAll('nav a[data-open]').forEach(function(a){a.addEventList
   Promise.all([n('/info/posts.json'),n('/info/cards.json')]).then(function(c){if(c[0]||c[1])el.textContent='좋은 정보글 '+c[0]+' · 카드뉴스 '+c[1];});
 })();
 </script>
+<style id="lightTheme">
+/* 2026-11-14 light theme + daily wallpaper (bg/wall.webp, redrawn by wallpaper.py at every 00:01 upgrade) */
+:root{--ink:#0f172a;--mute:#475569;--line:rgba(15,23,42,.10);--bg:#f8fafc}
+body{background:#f8fafc;color:#0f172a}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:#f8fafc var(--wall,url(/bg/wall.webp)) center/cover no-repeat}
+nav{background:rgba(255,255,255,.80)!important;border-bottom:1px solid rgba(15,23,42,.08)!important;box-shadow:0 6px 20px rgba(15,23,42,.06)!important}
+nav ul{color:#334155!important}nav ul a:hover{color:#0e7490!important}
+.logo{color:#0f172a}
+.ntc{background:rgba(255,255,255,.72)!important;border-top:1px solid rgba(15,23,42,.06)!important}
+.ntc .tx{color:#1e293b!important}.ntc .ct{color:#64748b!important}
+.hero{background:transparent!important;color:#0f172a!important}
+.hero h1{color:#0f172a!important;text-shadow:none!important}
+.hero .hero-sub,.hero p{color:#334155!important}
+.hero .badge{background:rgba(255,255,255,.8)!important;border-color:rgba(15,23,42,.1)!important;color:#0e7490!important}
+.hero .app-grid .twbar{background:rgba(255,255,255,.86)!important;border:1px solid rgba(15,23,42,.08)!important;box-shadow:0 12px 30px -16px rgba(15,23,42,.35)!important;backdrop-filter:blur(10px)}
+.hero .app-grid .twbar:hover{border-color:#67e8f9!important;box-shadow:0 18px 36px -16px rgba(14,116,144,.45)!important}
+.hero .app-grid .twbar .nm{color:#0f172a!important}
+.hero .app-grid .twbar .ico{background:linear-gradient(135deg,#22d3ee,#6366f1)!important;color:#fff!important}
+.hero .app-grid .twbar .go{background:#dcfce7!important;color:#047857!important}
+.hero .btn.s{background:rgba(255,255,255,.85)!important;border-color:rgba(15,23,42,.12)!important;color:#334155!important}
+.vc{background:rgba(255,255,255,.85)!important;border-color:rgba(15,23,42,.10)!important;box-shadow:0 10px 26px -14px rgba(15,23,42,.3)!important}
+.vc small{color:#475569!important}.vc b{color:#0e7490!important}.vc div:last-child b{color:#16a34a!important}.vc div+div{border-color:rgba(15,23,42,.08)!important}
+#topics,#guide,#board,#faq,#channels,#about{background:rgba(255,255,255,.20)!important;border-top:1px solid rgba(255,255,255,.6)!important;border-bottom:0!important}
+section .head small{color:#0e7490!important}section .head h2{color:#0f172a!important}section .head p{color:#475569!important}
+.topic,.ch,.faq .qa{background:rgba(255,255,255,.88)!important;border:1px solid rgba(15,23,42,.08)!important;box-shadow:0 10px 26px -16px rgba(15,23,42,.3)!important}
+.topic:hover,.ch:hover{border-color:#67e8f9!important}
+.topic h3,.faq h3,.ch b,.about h2{color:#0f172a!important}
+.topic p,.faq p,.ch span,.about p{color:#475569!important}
+table{background:rgba(255,255,255,.9)!important;color:#1e293b!important;border-color:rgba(15,23,42,.1)!important}
+th,td{border-color:rgba(15,23,42,.08)!important}
+#about th{background:linear-gradient(135deg,#ecfeff,#eef2ff)!important;color:#0e4a5a!important}
+.about td a{color:#0e7490!important}
+#board .bi{background:rgba(255,255,255,.9)!important;border:1px solid rgba(15,23,42,.08)!important;box-shadow:0 8px 22px -14px rgba(15,23,42,.3)}
+#board .bi *{color:#1e293b}#board .bi time,#board .bi small{color:#64748b}
+#board,#board p,#board li,#board span{color:#334155}
+#board a:not(.btn){color:#0f172a}
+footer{background:rgba(255,255,255,.75)!important;color:#475569!important;border-top:1px solid rgba(15,23,42,.08)!important}
+footer b{color:#0f172a!important}footer .sub{color:#64748b!important}footer a{color:#0e7490}
+</style>
+<script>
+fetch('/bg/wall.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(j&&j.v)document.documentElement.style.setProperty('--wall','url(/bg/wall.webp?v='+j.v+')')}).catch(function(){});
+</script>
 </body>
 </html>
