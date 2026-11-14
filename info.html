@@ -111,8 +111,7 @@ footer a{color:#67e8f9}
     $('postList').innerHTML=it.map(function(n){
       return '<article class="post">'+(n.img?'<img src="/'+esc(n.img)+'" alt="'+esc(n.title)+'" loading="lazy" width="800" height="450">':'')+
         '<div class="bd"><span class="dt">'+esc(n.date)+'</span><h2>'+esc(n.title)+'</h2><p>'+esc(n.desc)+'</p>'+
-        (n.gtitle?'<div class="g">구글 블로그 함께 읽기 · <b>'+esc(n.gtitle)+'</b></div>':'')+
-        '<div class="btns"><a class="nv" href="'+esc(safe(n.naver))+'" target="_blank" rel="noopener">N 네이버 블로그</a><a class="gg" href="'+esc(safe(n.google))+'" target="_blank" rel="noopener">B 구글 블로그</a></div></div></article>';
+        '<div class="btns"><a class="nv" href="'+esc(safe(n.naver))+'" target="_blank" rel="noopener">N 네이버 블로그</a></div></div></article>';
     }).join('');
   });
 
