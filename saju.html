@@ -359,6 +359,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="elNote"></p>
     </div>
     <div class="card">
+      <h2>십신 풀이 <span class="sub">十神 · 일간과의 관계</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">일간(나)을 기준으로 나머지 글자(천간과 지지 본기)가 나와 어떤 관계인지 나눈 것입니다. 많고 적음은 성향을 보는 참고 자료일 뿐 좋고 나쁨이 아닙니다.</p>
+      <div id="ssBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="ssNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -416,6 +422,19 @@ const DAYGAN=[
  '신금(辛金) 일간 — 다듬어진 보석. 예민하고 깔끔하며 자기 기준과 품위를 중시합니다.',
  '임수(壬水) 일간 — 큰 강과 바다. 생각의 폭이 넓고 지혜로우며 흐름을 읽는 데 능합니다.',
  '계수(癸水) 일간 — 비와 이슬. 감수성과 직관이 뛰어나고 조용히 스며드는 영향력이 있습니다.'];
+const SS_ORDER=['비견','겁재','식신','상관','편재','정재','편관','정관','편인','정인'];
+const SS_INFO={
+ 비견:['比肩','나와 오행도 음양도 같은 글자. 자립심과 주체성, 형제·동료를 뜻합니다. 많으면 고집과 경쟁심이 강해집니다.'],
+ 겁재:['劫財','나와 오행은 같고 음양이 다른 글자. 승부욕과 추진력, 경쟁자를 뜻합니다. 많으면 재물이 흩어지기 쉽다고 봅니다.'],
+ 식신:['食神','내가 낳는 오행 중 음양이 같은 글자. 먹을 복과 여유, 꾸준한 재능·표현력을 뜻합니다.'],
+ 상관:['傷官','내가 낳는 오행 중 음양이 다른 글자. 재치와 말솜씨, 창의성을 뜻합니다. 많으면 틀과 윗사람에 맞서기 쉽습니다.'],
+ 편재:['偏財','내가 다스리는 오행 중 음양이 같은 글자. 사업·투자처럼 움직이는 큰 재물과 활동성, 넓은 인맥을 뜻합니다.'],
+ 정재:['正財','내가 다스리는 오행 중 음양이 다른 글자. 월급처럼 꾸준한 재물, 성실함과 알뜰함을 뜻합니다.'],
+ 편관:['偏官','나를 누르는 오행 중 음양이 같은 글자. 칠살이라고도 하며 압박과 책임, 결단력·카리스마를 뜻합니다.'],
+ 정관:['正官','나를 누르는 오행 중 음양이 다른 글자. 규칙과 명예, 직장·직위, 반듯한 태도를 뜻합니다.'],
+ 편인:['偏印','나를 낳는 오행 중 음양이 같은 글자. 직관과 눈치, 특수한 분야의 공부·기술을 뜻합니다.'],
+ 정인:['正印','나를 낳는 오행 중 음양이 다른 글자. 학문과 자격, 어머니·윗사람의 도움과 보살핌을 뜻합니다.']};
+const SS_GROUP={비겁:'자립·경쟁',식상:'표현·재능',재성:'재물·현실 감각',관성:'책임·명예',인성:'배움·수용'};
 const DST=[['1948-06-01','1948-09-13'],['1949-04-03','1949-09-11'],['1950-04-01','1950-09-10'],['1951-05-06','1951-09-09'],
  ['1955-05-05','1955-09-09'],['1956-05-20','1956-09-30'],['1957-05-05','1957-09-22'],['1958-05-04','1958-09-21'],
  ['1959-05-03','1959-09-20'],['1960-05-01','1960-09-18'],['1987-05-10','1987-10-11'],['1988-05-08','1988-10-09']];
@@ -515,6 +534,17 @@ function render(r){
   const zero=cnt.map((c,i)=>c===0?EL[i]:null).filter(Boolean), many=cnt.map((c,i)=>c>=3?EL[i]:null).filter(Boolean);
   const own=GEL[dg];
   $('elNote').innerHTML=`일간 오행은 <b>${EL[own]}(${ELH[own]})</b>입니다.`+(many.length?` <b>${many.join('·')}</b> 기운이 강하고`:'')+(zero.length?` <b>${zero.join('·')}</b> 기운이 없습니다.`:many.length?' 나머지는 고르게 있습니다.':' 다섯 기운이 비교적 고르게 분포합니다.');
+
+  // 십신 풀이
+  const ssMap={};
+  cols.slice().reverse().forEach(([name,k])=>{const p=P[k];if(!p)return;
+    if(k!=='d'){const s=sipsin(dg,p[0]);(ssMap[s]=ssMap[s]||[]).push(name.replace('주','간'));}
+    const s2=sipsin(dg,ZMAIN[p[1]]);(ssMap[s2]=ssMap[s2]||[]).push(name.replace('주','지'));});
+  const ssGroups=[0,0,0,0,0];
+  $('ssBox').innerHTML=SS_ORDER.map((s,i)=>{const pos=ssMap[s];if(!pos)return '';ssGroups[i>>1]+=pos.length;
+    return `<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${s}</b> <span class="mini">${SS_INFO[s][0]} · ${REL[i>>1]} · ${pos.length}개 (${pos.join('·')})</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${SS_INFO[s][1]}</div></div>`;}).join('');
+  const ssNone=REL.filter((_,i)=>!ssGroups[i]), ssTop=Math.max(...ssGroups), ssMany=REL.filter((_,i)=>ssGroups[i]===ssTop&&ssTop>=3);
+  $('ssNote').innerHTML=(ssMany.length?`<b>${ssMany.join('·')}</b>이(가) ${ssTop}개로 가장 많아 ${ssMany.map(n=>SS_GROUP[n]).join(', ')} 쪽 성향이 두드러집니다. `:'십신이 한쪽으로 크게 치우치지 않았습니다. ')+(ssNone.length?`원국에 <b>${ssNone.join('·')}</b>은(는) 드러나 있지 않으며, 대운·세운에서 그 기운이 들어올 때 해당 분야의 변화가 생기기 쉽다고 봅니다.`:'다섯 갈래가 모두 들어 있습니다.');
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
