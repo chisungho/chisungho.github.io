@@ -326,7 +326,12 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
     <span class="go">전체 화면 ⤢</span>
   </div></button></div>
   <div class="cta">
-    <a class="btn p" href="https://blog.naver.com/csh2020" target="_blank">블로그 바로가기 →</a>
+    <a class="btn p" id="blogBtn" href="https://blog.naver.com/csh2020" target="_blank" aria-haspopup="true" aria-expanded="false" aria-controls="blogPick">블로그 바로가기 →</a>
+    <div class="blogpick" id="blogPick" role="menu" aria-label="어느 블로그로 갈까요" hidden>
+      <p>어느 블로그로 갈까요?</p>
+      <a role="menuitem" class="bp nv" href="https://blog.naver.com/csh2020" target="_blank" rel="noopener"><i>N</i><span><b>네이버 블로그</b><small>새로운 도전을 위하여</small></span></a>
+      <a role="menuitem" class="bp gg" href="https://everyknowledgetv.blogspot.com/" target="_blank" rel="noopener"><i>B</i><span><b>구글 블로그</b><small>세상의 모든 지식</small></span></a>
+    </div>
 
   </div>
   <div class="vc" aria-label="방문자 수"><div><small class="lbl"><i class="dot"></i>오늘 방문</small><b id="vcToday">-</b></div><div><small>누적 방문</small><b id="vcTotal">-</b></div></div>
@@ -643,6 +648,27 @@ footer b{color:#0f172a!important}footer .sub{color:#64748b!important}footer a{co
 </style>
 <script>
 fetch('/bg/wall.json',{cache:'no-store'}).then(function(r){return r.json()}).then(function(j){if(j&&j.v)document.documentElement.style.setProperty('--wall','url(/bg/wall.webp?v='+j.v+')')}).catch(function(){});
+</script>
+<style id="blogPickCss">
+.hero .cta{position:relative;display:flex!important;flex-direction:column!important;align-items:center!important}
+.blogpick{position:relative;margin:12px auto 0;z-index:30;width:min(360px,calc(100vw - 32px));background:#fff;border:1px solid rgba(15,23,42,.1);border-radius:18px;box-shadow:0 22px 50px -18px rgba(15,23,42,.45);padding:14px;text-align:left}
+.blogpick[hidden]{display:none}
+.blogpick p{font-size:14px;font-weight:800;color:#0f172a;margin:2px 4px 10px}
+.blogpick .bp{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;border:1px solid rgba(15,23,42,.08);color:#0f172a;transition:.15s}
+.blogpick .bp+.bp{margin-top:8px}
+.blogpick .bp:hover,.blogpick .bp:focus-visible{background:#f8fafc;border-color:#67e8f9}
+.blogpick .bp i{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#fff;font-style:normal;font-weight:900;font-size:17px}
+.blogpick .nv i{background:#03c75a}.blogpick .gg i{background:#f57c00}
+.blogpick b{display:block;font-size:15.5px;color:#0f172a}
+.blogpick small{display:block;font-size:12.5px;color:#64748b}
+</style>
+<script>
+(function(){var b=document.getElementById('blogBtn'),m=document.getElementById('blogPick');if(!b||!m)return;
+function close(){m.hidden=true;b.setAttribute('aria-expanded','false')}
+b.addEventListener('click',function(e){e.preventDefault();var o=m.hidden;m.hidden=!o;b.setAttribute('aria-expanded',String(o));if(o)m.querySelector('a').focus()});
+document.addEventListener('click',function(e){if(!m.hidden&&!m.contains(e.target)&&e.target!==b)close()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!m.hidden){close();b.focus()}});
+m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close)});})();
 </script>
 </body>
 </html>
