@@ -1,6 +1,40 @@
 {
- "updated": "2026-11-14 06:55",
+ "updated": "2026-11-14 10:52",
  "items": [
+  {
+   "id": "p_1114_1000-p1",
+   "date": "2026-11-14 10:37",
+   "title": "비트코인 급락, 2조가 강제청산됐다",
+   "imgs": [
+    "info/img/p_1114_1000-p1/card1.webp",
+    "info/img/p_1114_1000-p1/card2.webp",
+    "info/img/p_1114_1000-p1/card3.webp",
+    "info/img/p_1114_1000-p1/card4.webp",
+    "info/img/p_1114_1000-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    },
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528"
+    }
+   ]
+  },
   {
    "id": "p_1114_0600-p1",
    "date": "2026-11-14 06:36",
