@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14 15:18",
+ "updated": "2026-11-14 15:24",
  "items": [
   {
    "id": "p_1114_1400-p1",
@@ -14,16 +14,16 @@
    ],
    "links": [
     {
+     "label": "유튜브 게시물",
+     "url": "https://www.youtube.com/post/UgkxXpbGWBosmXwIEiw1x2JeWZtdqbL1P2Zf"
+    },
+    {
      "label": "인스타그램 채널",
      "url": "https://www.instagram.com/jiseungho7/"
     },
     {
      "label": "페이스북 채널",
      "url": "https://www.facebook.com/profile.php?id=61595527151362"
-    },
-    {
-     "label": "유튜브 게시물 탭",
-     "url": "https://www.youtube.com/@hochi9126/posts"
     },
     {
      "label": "틱톡 채널",
