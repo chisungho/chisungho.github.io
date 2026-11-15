@@ -1,7 +1,172 @@
 {
- "updated": "2026-11-15 11:40",
+ "updated": "2026-11-15 12:41",
  "source": "https://link.inpock.co.kr/hgy671001",
  "items": [
+  {
+   "id": 8370911,
+   "no": 1240,
+   "name": "햇반 찰잡곡밥, 210g, 36개",
+   "url": "https://link.coupang.com/a/iGPWX1S5tY",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794714032783.webp?w=400",
+   "src": "coupang",
+   "srcName": "쿠팡",
+   "note": "쿠팡 파트너스 활동으로 일정액의 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370910,
+   "no": 1239,
+   "name": "햇반 백미밥 작은 공기, 130g, 36개",
+   "url": "https://link.coupang.com/a/iGPV3otQpo",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794714023897.webp?w=400",
+   "src": "coupang",
+   "srcName": "쿠팡",
+   "note": "쿠팡 파트너스 활동으로 일정액의 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370908,
+   "no": 1238,
+   "name": "양반 100밥 현미밥, 130g, 24개",
+   "url": "https://link.coupang.com/a/iGPVrsHFjE",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794714012119.webp?w=400",
+   "src": "coupang",
+   "srcName": "쿠팡",
+   "note": "쿠팡 파트너스 활동으로 일정액의 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370906,
+   "no": 1237,
+   "name": "농심 멸치 칼국수, 98g, 5개",
+   "url": "https://link.coupang.com/a/iGPUEULKE0",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794714003937.webp?w=400",
+   "src": "coupang",
+   "srcName": "쿠팡",
+   "note": "쿠팡 파트너스 활동으로 일정액의 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370903,
+   "no": 1235,
+   "name": "신라면 건면 97g, 5개",
+   "url": "https://link.coupang.com/a/iGPS2c6qWq",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713980317.webp?w=400",
+   "src": "coupang",
+   "srcName": "쿠팡",
+   "note": "쿠팡 파트너스 활동으로 일정액의 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370900,
+   "no": 1233,
+   "name": "오뚜기 오동통면 120g, 5개",
+   "url": "https://link.coupang.com/a/iGPOtVNuyi",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713918377.webp?w=400",
+   "src": "coupang",
+   "srcName": "쿠팡",
+   "note": "쿠팡 파트너스 활동으로 일정액의 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370898,
+   "no": 1232,
+   "name": "고급형 2세대 욕실 미끄럼방지매트 재단가능 화장실 바닥 매트",
+   "url": "https://naver.me/Fet8cSGe",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713911146.webp?w=400",
+   "src": "naver",
+   "srcName": "네이버 쇼핑",
+   "note": "네이버 쇼핑 커넥트 활동으로, 판매 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370896,
+   "no": 1230,
+   "name": "그레이북 캐시미어 극세사 발매트 욕실 화장실 미스데이지",
+   "url": "https://naver.me/Gmp6XkdB",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713887820.webp?w=400",
+   "src": "naver",
+   "srcName": "네이버 쇼핑",
+   "note": "네이버 쇼핑 커넥트 활동으로, 판매 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370881,
+   "no": 1229,
+   "name": "곰곰 소중한 우리쌀밥, 210g, 36개",
+   "url": "https://link.coupang.com/a/iGPK81DFaC",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713873565.webp?w=400",
+   "src": "coupang",
+   "srcName": "쿠팡",
+   "note": "쿠팡 파트너스 활동으로 일정액의 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370874,
+   "no": 1228,
+   "name": "아토세이프 집먼지 진드기 액체 세탁세제 2.5L, 4개",
+   "url": "https://naver.me/xnObisuw",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713830445.webp?w=400",
+   "src": "naver",
+   "srcName": "네이버 쇼핑",
+   "note": "네이버 쇼핑 커넥트 활동으로, 판매 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370873,
+   "no": 1227,
+   "name": "해표 카놀라유, 900ml, 1개",
+   "url": "https://link.coupang.com/a/iGPGFm6sLY",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713812091.webp?w=400",
+   "src": "coupang",
+   "srcName": "쿠팡",
+   "note": "쿠팡 파트너스 활동으로 일정액의 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370871,
+   "no": 1226,
+   "name": "쥬블릭 고농축 액체세제 3L 4개 수건쉰내 일반드럼겸용",
+   "url": "https://naver.me/GT4Nwd6I",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713806403.webp?w=400",
+   "src": "naver",
+   "srcName": "네이버 쇼핑",
+   "note": "네이버 쇼핑 커넥트 활동으로, 판매 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370870,
+   "no": 1225,
+   "name": "불닭볶음면 140g, 5개",
+   "url": "https://link.coupang.com/a/iGPFbqCIzQ",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713794559.webp?w=400",
+   "src": "coupang",
+   "srcName": "쿠팡",
+   "note": "쿠팡 파트너스 활동으로 일정액의 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370855,
+   "no": 1224,
+   "name": "포시엘라 빨아쓰는 규조토 발매트 3세대 욕실 주방 매트 북유럽 꽃반원 60x",
+   "url": "https://naver.me/xqbzEDSq",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713786335.webp?w=400",
+   "src": "naver",
+   "srcName": "네이버 쇼핑",
+   "note": "네이버 쇼핑 커넥트 활동으로, 판매 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8370851,
+   "no": 1222,
+   "name": "MARDA 마르다 3D 규조토 발매트 모던 M 화장실 매트 욕실 주방 발판매",
+   "url": "https://naver.me/IgMEvPpH",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/15/2026-11-15-1794713760520.webp?w=400",
+   "src": "naver",
+   "srcName": "네이버 쇼핑",
+   "note": "네이버 쇼핑 커넥트 활동으로, 판매 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
   {
    "id": 8370357,
    "no": 1221,
