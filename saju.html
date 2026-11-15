@@ -365,6 +365,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="ssNote"></p>
     </div>
     <div class="card">
+      <h2>신살 풀이 <span class="sub">神殺 · 도화·역마·화개·귀인</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">년지·일지(삼합)와 일간을 기준으로 원국의 지지에 들어 있는 대표 신살 다섯 가지를 찾습니다. 신살은 성향을 덧붙여 보는 참고 자료이며, 있고 없음이 좋고 나쁨을 정하지 않습니다.</p>
+      <div id="sinsalBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="sinsalNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -545,6 +551,21 @@ function render(r){
     return `<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${s}</b> <span class="mini">${SS_INFO[s][0]} · ${REL[i>>1]} · ${pos.length}개 (${pos.join('·')})</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${SS_INFO[s][1]}</div></div>`;}).join('');
   const ssNone=REL.filter((_,i)=>!ssGroups[i]), ssTop=Math.max(...ssGroups), ssMany=REL.filter((_,i)=>ssGroups[i]===ssTop&&ssTop>=3);
   $('ssNote').innerHTML=(ssMany.length?`<b>${ssMany.join('·')}</b>이(가) ${ssTop}개로 가장 많아 ${ssMany.map(n=>SS_GROUP[n]).join(', ')} 쪽 성향이 두드러집니다. `:'십신이 한쪽으로 크게 치우치지 않았습니다. ')+(ssNone.length?`원국에 <b>${ssNone.join('·')}</b>은(는) 드러나 있지 않으며, 대운·세운에서 그 기운이 들어올 때 해당 분야의 변화가 생기기 쉽다고 봅니다.`:'다섯 갈래가 모두 들어 있습니다.');
+
+  // 신살 풀이 (도화·역마·화개: 년지·일지 삼합 기준 / 천을·문창귀인: 일간 기준)
+  const ZN={y:'년지',m:'월지',d:'일지',h:'시지'}, KS=['y','m','d','h'].filter(k=>P[k]);
+  const byZhi=(tbl)=>{const out=[];['y','d'].forEach(b=>{const t=tbl[P[b][1]%4];KS.forEach(k=>{if(k!==b&&P[k][1]===t&&!out.includes(ZN[k]+' '+ZHI[t]))out.push(ZN[k]+' '+ZHI[t]);});});return out;};
+  const byGan=(list)=>KS.filter(k=>list.includes(P[k][1])).map(k=>ZN[k]+' '+ZHI[P[k][1]]);
+  const SINSAL=[
+    ['도화살','桃花殺',byZhi([9,6,3,0]),'사람의 눈길을 끄는 매력과 인기를 뜻합니다. 예전에는 조심할 기운으로 보았지만 요즘은 호감·표현력·대인 관계의 장점으로 풀이하는 경우가 많습니다.'],
+    ['역마살','驛馬殺',byZhi([2,11,8,5]),'움직임과 변화의 기운입니다. 이사·출장·여행·해외와 인연이 닿기 쉽고, 한곳에 머물기보다 활동 범위를 넓힐 때 힘을 낸다고 봅니다.'],
+    ['화개살','華蓋殺',byZhi([4,1,10,7]),'예술·학문·종교·사색과 가까운 기운입니다. 혼자 깊이 파고드는 힘이 있고, 재주를 갈고닦아 뒤늦게 빛을 보는 경우가 많다고 풀이합니다.'],
+    ['천을귀인','天乙貴人',byGan([[1,7],[0,8],[11,9],[11,9],[1,7],[0,8],[1,7],[6,2],[5,3],[5,3]][dg]),'가장 반기는 길신으로, 어려울 때 도와주는 사람이 나타나고 궂은일이 가볍게 지나간다고 봅니다.'],
+    ['문창귀인','文昌貴人',byGan([[5,6,8,9,8,9,11,0,2,3][dg]]),'글과 배움의 길신입니다. 이해력·표현력이 좋고 공부·시험·문서 일에 유리하다고 풀이합니다.']];
+  const ssHit=SINSAL.filter(s=>s[2].length);
+  $('sinsalBox').innerHTML=ssHit.map(s=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${s[0]}</b> <span class="mini">${s[1]} · ${s[2].join(' · ')}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${s[3]}</div></div>`).join('');
+  const ssMiss=SINSAL.filter(s=>!s[2].length).map(s=>s[0]);
+  $('sinsalNote').innerHTML=(ssHit.length?`원국에 <b>${ssHit.map(s=>s[0]).join('·')}</b>이(가) 들어 있습니다. `:'원국에는 이 다섯 가지 신살이 드러나 있지 않습니다. ')+(ssMiss.length?`${ssMiss.join('·')}은(는) 없으며, 대운·세운에서 해당 글자가 들어오는 시기에 그 기운이 나타난다고 봅니다.`:'')+(r.known?'':' 시간을 몰라 시지는 빼고 보았습니다.');
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
