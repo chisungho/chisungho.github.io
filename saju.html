@@ -371,6 +371,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="sinsalNote"></p>
     </div>
     <div class="card">
+      <h2>12운성 풀이 <span class="sub">十二運星 · 기운의 세기</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">일간(나)의 기운이 각 기둥의 지지에서 어느 단계에 있는지를 사람의 한살이(태어남→자람→한창→쉼)에 빗댄 것입니다. 단계마다 쓰임이 다를 뿐 좋고 나쁨을 가르는 것이 아닙니다.</p>
+      <div id="unBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="unNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -566,6 +572,26 @@ function render(r){
   $('sinsalBox').innerHTML=ssHit.map(s=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${s[0]}</b> <span class="mini">${s[1]} · ${s[2].join(' · ')}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${s[3]}</div></div>`).join('');
   const ssMiss=SINSAL.filter(s=>!s[2].length).map(s=>s[0]);
   $('sinsalNote').innerHTML=(ssHit.length?`원국에 <b>${ssHit.map(s=>s[0]).join('·')}</b>이(가) 들어 있습니다. `:'원국에는 이 다섯 가지 신살이 드러나 있지 않습니다. ')+(ssMiss.length?`${ssMiss.join('·')}은(는) 없으며, 대운·세운에서 해당 글자가 들어오는 시기에 그 기운이 나타난다고 봅니다.`:'')+(r.known?'':' 시간을 몰라 시지는 빼고 보았습니다.');
+
+  // 12운성 풀이 (일간 기준, 각 기둥 지지)
+  const UN_INFO={
+    장생:['長生','새로 태어나는 단계. 시작하는 힘과 배우려는 마음이 좋고, 주변의 도움을 받기 쉽다고 봅니다.',2],
+    목욕:['沐浴','갓 태어나 씻기는 단계. 호기심과 감수성이 크고 변화가 잦아, 멋과 유행에 밝다고 풀이합니다.',1],
+    관대:['冠帶','옷을 갖춰 입고 세상에 나서는 단계. 자신감과 의욕이 넘치며 앞에 서려는 기운이 있습니다.',2],
+    건록:['建祿','제 힘으로 녹을 받는 단계. 자립심이 강하고 성실하게 자기 몫을 일구는 기운입니다.',3],
+    제왕:['帝旺','기운이 가장 한창인 단계. 추진력과 주도권이 강하며, 고집이 세지지 않도록 살피라고 합니다.',3],
+    쇠:['衰','한창을 지나 차분해지는 단계. 경험에서 나오는 신중함과 안정감, 실속을 뜻합니다.',1],
+    병:['病','기운이 약해져 쉬는 단계. 남의 마음을 잘 헤아리는 섬세함과 상상력이 있다고 풀이합니다.',0],
+    사:['死','움직임이 멎고 고요해지는 단계. 생각이 깊고 한 가지를 끝까지 파고드는 집중력을 뜻합니다.',0],
+    묘:['墓','곳간에 갈무리하는 단계. 모으고 지키는 힘, 알뜰함과 꼼꼼함이 있다고 봅니다.',0],
+    절:['絶','기운이 끊겼다가 새로 이어지는 단계. 변화가 크고 전환이 빠르며, 새 판을 짜는 데 능하다고 합니다.',0],
+    태:['胎','새 기운이 잉태되는 단계. 구상과 계획, 가능성을 품은 때로 풀이합니다.',1],
+    양:['養','뱃속에서 길러지는 단계. 보살핌을 받으며 차근차근 준비하는 온화한 기운입니다.',1]};
+  const UN_POS={y:'년지(조상·어린 시절)',m:'월지(부모·사회)',d:'일지(나·배우자)',h:'시지(자녀·말년)'};
+  const unList=['y','m','d','h'].filter(k=>P[k]).map(k=>[k,unseong(dg,P[k][1])]);
+  $('unBox').innerHTML=unList.map(([k,u])=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${u}</b> <span class="mini">${UN_INFO[u][0]} · ${UN_POS[k]} ${ZHI[P[k][1]]}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${UN_INFO[u][1]}</div></div>`).join('');
+  const unStrong=unList.filter(([,u])=>UN_INFO[u][2]>=2).length, unDay=unList.find(([k])=>k==='d')[1];
+  $('unNote').innerHTML=`일지의 12운성은 <b>${unDay}</b>입니다. `+(unStrong>=unList.length/2+0.5?`${unList.length}개 중 ${unStrong}개가 장생·관대·건록·제왕처럼 힘이 실린 단계라 일간이 뿌리를 얻은 편으로 봅니다.`:unStrong===0?'힘이 실린 단계(장생·관대·건록·제왕)가 없어 일간이 지지에서 받는 힘은 약한 편이며, 그만큼 천간과 대운의 도움을 함께 살핍니다.':`힘이 실린 단계가 ${unList.length}개 중 ${unStrong}개로, 강약이 섞여 있습니다.`)+' 12운성은 오행·십신과 함께 보는 보조 자료입니다.'+(r.known?'':' 시간을 몰라 시지는 빼고 보았습니다.');
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
