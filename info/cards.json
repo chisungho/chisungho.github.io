@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17 14:51",
+ "updated": "2026-11-17 14:57",
  "items": [
   {
    "id": "p_1117_1400-p1",
@@ -14,6 +14,14 @@
    ],
    "links": [
     {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/70"
+    },
+    {
+     "label": "유튜브 게시물",
+     "url": "https://www.youtube.com/post/Ugkx_a7gLUNFC7OmsuaVKv3igjYc2N9sXGwP"
+    },
+    {
      "label": "인스타그램 채널",
      "url": "https://www.instagram.com/jiseungho7/"
     },
@@ -22,16 +30,8 @@
      "url": "https://www.facebook.com/profile.php?id=61595527151362"
     },
     {
-     "label": "유튜브 게시물 탭",
-     "url": "https://www.youtube.com/@hochi9126/posts"
-    },
-    {
      "label": "틱톡 채널",
      "url": "https://www.tiktok.com/@hochi285"
-    },
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528"
     }
    ]
   },
