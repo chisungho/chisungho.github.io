@@ -377,6 +377,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="unNote"></p>
     </div>
     <div class="card">
+      <h2>합·충 풀이 <span class="sub">合沖 · 글자끼리의 관계</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">원국의 천간끼리, 지지끼리 서로 끌어당기는 합(合)과 맞부딪치는 충(沖)을 찾습니다. 합은 묶임·인연·협력, 충은 움직임·변화·갈등의 기운으로 보며, 충이 있다고 나쁜 것은 아니고 변화의 계기로 풀이합니다.</p>
+      <div id="hcBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="hcNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -592,6 +598,21 @@ function render(r){
   $('unBox').innerHTML=unList.map(([k,u])=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${u}</b> <span class="mini">${UN_INFO[u][0]} · ${UN_POS[k]} ${ZHI[P[k][1]]}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${UN_INFO[u][1]}</div></div>`).join('');
   const unStrong=unList.filter(([,u])=>UN_INFO[u][2]>=2).length, unDay=unList.find(([k])=>k==='d')[1];
   $('unNote').innerHTML=`일지의 12운성은 <b>${unDay}</b>입니다. `+(unStrong>=unList.length/2+0.5?`${unList.length}개 중 ${unStrong}개가 장생·관대·건록·제왕처럼 힘이 실린 단계라 일간이 뿌리를 얻은 편으로 봅니다.`:unStrong===0?'힘이 실린 단계(장생·관대·건록·제왕)가 없어 일간이 지지에서 받는 힘은 약한 편이며, 그만큼 천간과 대운의 도움을 함께 살핍니다.':`힘이 실린 단계가 ${unList.length}개 중 ${unStrong}개로, 강약이 섞여 있습니다.`)+' 12운성은 오행·십신과 함께 보는 보조 자료입니다.'+(r.known?'':' 시간을 몰라 시지는 빼고 보았습니다.');
+
+  // 합·충 풀이 (천간합·천간충·지지 육합·지지충·삼합)
+  const HK=['y','m','d','h'].filter(k=>P[k]), GN={y:'년간',m:'월간',d:'일간',h:'시간'}, hcRows=[];
+  const hcNear=(a,b)=>Math.abs(HK.indexOf(a)-HK.indexOf(b))===1?'바로 옆 기둥이라 작용이 뚜렷한 편입니다.':'떨어진 기둥이라 작용은 약한 편입니다.';
+  for(let i=0;i<HK.length;i++)for(let j=i+1;j<HK.length;j++){const a=HK[i],b=HK[j],g1=P[a][0],g2=P[b][0],z1=P[a][1],z2=P[b][1];
+    if(Math.abs(g1-g2)===5)hcRows.push(['합','천간합',`${GN[a]} ${GAN[g1]} · ${GN[b]} ${GAN[g2]}`,`두 천간이 짝을 이루어 ${['토','금','수','목','화'][Math.min(g1,g2)]} 기운으로 묶이려는 관계입니다. 드러난 생각과 뜻이 서로 어울려 정이 깊고 협력이 잘된다고 보며, 한편으로는 묶여서 제 역할이 느슨해질 수 있다고도 풀이합니다. ${hcNear(a,b)}`]);
+    if(Math.abs(g1-g2)===6&&Math.min(g1,g2)<4)hcRows.push(['충','천간충',`${GN[a]} ${GAN[g1]} · ${GN[b]} ${GAN[g2]}`,`마주 보는 두 천간이 부딪치는 관계입니다. 생각과 방향이 엇갈려 겉으로 드러나는 변화·경쟁이 생기기 쉽고, 그만큼 결단과 추진의 계기가 된다고 봅니다. ${hcNear(a,b)}`]);
+    if((z1+z2)%12===1)hcRows.push(['합','지지 육합',`${ZN[a]} ${ZHI[z1]} · ${ZN[b]} ${ZHI[z2]}`,`두 지지가 짝을 이루는 육합(六合)입니다. 생활 속 인연과 화합, 안정감을 뜻하며 ${a==='d'||b==='d'?'일지가 들어 있어 가까운 사람·배우자와의 정이 두텁다고 풀이합니다.':'해당 자리의 사람·환경과 잘 어울린다고 풀이합니다.'} ${hcNear(a,b)}`]);
+    if(Math.abs(z1-z2)===6)hcRows.push(['충','지지충',`${ZN[a]} ${ZHI[z1]} · ${ZN[b]} ${ZHI[z2]}`,`정반대 방향의 두 지지가 맞부딪치는 충(沖)입니다. 이사·이직·관계 변화처럼 삶의 터전이 움직이는 일이 잦다고 보며, 묵은 것을 털고 새로 시작하는 힘으로도 풀이합니다. ${hcNear(a,b)}`]);}
+  [[8,0,4,'수'],[11,3,7,'목'],[2,6,10,'화'],[5,9,1,'금']].forEach(t=>{const has=t.slice(0,3).filter(z=>HK.some(k=>P[k][1]===z));
+    if(has.length===3)hcRows.push(['합','삼합',t.slice(0,3).map(z=>ZHI[z]).join('')+` (${t[3]}국)`,`세 지지가 모두 모여 ${t[3]} 기운의 큰 흐름을 이루는 삼합(三合)입니다. 한 방향으로 힘이 모여 그 오행의 성향이 뚜렷해지고, 사람들과 뜻을 모아 일을 이루는 힘이 있다고 봅니다.`]);
+    else if(has.length===2&&has.includes(t[1]))hcRows.push(['합','반합',has.map(z=>ZHI[z]).join('')+` (${t[3]} 기운)`,`삼합의 가운데 글자(${ZHI[t[1]]})를 낀 두 지지가 모인 반합(半合)입니다. 삼합보다 약하지만 ${t[3]} 기운 쪽으로 힘이 모이는 것으로 봅니다.`]);});
+  $('hcBox').innerHTML=hcRows.map(x=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${x[1]}</b> <span class="mini">${x[0]==='합'?'合':'沖'} · ${x[2]}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${x[3]}</div></div>`).join('');
+  const hcH=hcRows.filter(x=>x[0]==='합').length, hcC=hcRows.length-hcH;
+  $('hcNote').innerHTML=(hcRows.length?`원국에 합이 <b>${hcH}개</b>, 충이 <b>${hcC}개</b> 있습니다. `+(hcH>hcC?'합이 더 많아 사람·환경과 어울리며 안정을 찾는 쪽에 무게가 실립니다.':hcC>hcH?'충이 더 많아 변화와 이동이 잦고, 움직이면서 길을 여는 쪽에 무게가 실립니다.':'합과 충이 비슷해 안정과 변화가 번갈아 드는 편으로 봅니다.'):'원국의 글자끼리 뚜렷한 합·충이 없습니다. 글자들이 서로 크게 묶이거나 부딪치지 않아 흐름이 무난한 편으로 보며, 대운·세운의 글자가 원국과 합·충을 이루는 해에 변화가 나타난다고 풀이합니다.')+' 합·충은 오행·십신과 함께 보는 참고 자료입니다.'+(r.known?'':' 시간을 몰라 시주는 빼고 보았습니다.');
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
