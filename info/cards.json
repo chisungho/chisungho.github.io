@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-17 11:02",
+ "updated": "2026-11-17 11:31",
  "items": [
   {
    "id": "p_1117_1000-p1",
-   "date": "2026-11-17 10:43",
+   "date": "2026-11-17 11:10",
    "title": "카카오뱅크 애플페이, 12초면 끝",
    "imgs": [
     "info/img/p_1117_1000-p1/card1.webp",
@@ -13,6 +13,10 @@
     "info/img/p_1117_1000-p1/card5.webp"
    ],
    "links": [
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/69"
+    },
     {
      "label": "인스타그램 채널",
      "url": "https://www.instagram.com/jiseungho7/"
@@ -28,10 +32,6 @@
     {
      "label": "틱톡 채널",
      "url": "https://www.tiktok.com/@hochi285"
-    },
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528"
     }
    ]
   },
