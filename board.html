@@ -67,6 +67,16 @@ textarea{min-height:160px;resize:vertical}
 .pw{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap}
 .pw input{flex:1;min-width:160px}
 .em{text-align:center;color:#9aacc3;padding:30px}
+#picBox{display:grid;gap:8px;margin-top:4px}
+.picbtn{display:inline-flex;align-items:center;gap:8px;justify-self:start;background:#07111f;border:1px dashed #2a4566;border-radius:12px;padding:10px 14px;color:#e7f0ff;font-size:14.5px;font-weight:700;cursor:pointer}
+.picbtn:hover{border-color:#22d3ee}
+.pics{display:flex;gap:8px;flex-wrap:wrap}
+.pics figure{position:relative;margin:0;width:96px;height:96px;border-radius:10px;overflow:hidden;border:1px solid #2a4566;background:#07111f}
+.pics img{width:100%;height:100%;object-fit:cover}
+.pics button{position:absolute;top:3px;right:3px;width:24px;height:24px;border:0;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:15px;line-height:24px;cursor:pointer}
+.bimgs{display:grid;gap:10px;margin-top:12px;white-space:normal}
+.bimgs img{max-width:100%;max-height:640px;border-radius:10px;border:1px solid rgba(148,190,224,.18);display:block;cursor:zoom-in}
+.pic-ic{font-size:13px;margin-left:4px}
 footer{border-top:1px solid rgba(148,190,224,.12);padding:26px 0;text-align:center;font-size:13px;color:#9aacc3}
 footer a{color:#67e8f9}
 @media(max-width:560px){.two{grid-template-columns:1fr}.post .hd{padding:13px 14px;gap:9px}.tt{white-space:normal}.meta{display:none}.bd{padding:0 14px 16px}.card{padding:16px}}
@@ -95,6 +105,11 @@ footer a{color:#67e8f9}
     <label id="pwBox" hidden>비밀번호 (4자 이상, 내 글을 다시 볼 때 필요)<input type="password" id="fPw" maxlength="40" autocomplete="new-password"></label>
     <label>제목<input type="text" id="fTitle" maxlength="80" placeholder="예) 대출 이자 계산기가 있으면 좋겠어요"></label>
     <label>내용<textarea id="fBody" maxlength="3000" placeholder="필요한 도구 이름, 원하는 기능, 참고할 사이트 등을 적어 주세요."></textarea></label>
+    <div id="picBox"><span style="font-size:13px;font-weight:700;color:#9db7d0">사진 (선택, 최대 3장)</span>
+      <label class="picbtn" for="fPic">📷 사진 넣기</label><input type="file" id="fPic" accept="image/*" multiple hidden>
+      <div class="pics" id="pics"></div>
+      <span id="picMsg" style="font-size:12.5px;color:#9aacc3">사진은 올릴 때 자동으로 줄여서(긴 쪽 1280px) 올립니다. 얼굴·연락처 등 개인정보가 보이는 사진은 올리지 마세요.</span>
+    </div>
     <div class="hp" aria-hidden="true"><input type="text" id="fHp" tabindex="-1" autocomplete="off"></div>
     <p style="font-size:13px;color:#9aacc3">비공개 글은 글쓴이(비밀번호)와 관리자만 볼 수 있습니다. 연락처 등 개인정보는 공개 글에 적지 마세요.</p>
     <div class="row"><button class="btn" id="sendBtn" type="button">글 올리기</button><button class="btn s" id="closeW" type="button">취소</button></div>
@@ -121,23 +136,59 @@ footer a{color:#67e8f9}
     $('cnt').textContent=items.length?'전체 '+items.length+'개':'';
     if(!items.length){L.innerHTML='<p class="em">아직 게시글이 없습니다. 첫 글을 남겨 주세요.</p>';return;}
     L.innerHTML=items.map(function(n){
-      return '<article class="post'+(n.private?' lock':'')+'" id="'+esc(n.id)+'"><button class="hd" type="button" aria-expanded="false"><span class="tag'+(n.private?' lk':'')+'">'+(n.private?'🔒 비공개':'공개')+'</span><span class="tt">'+esc(n.title)+'</span><span class="meta">'+esc(n.author)+'<br>'+esc(n.date)+'</span></button>'+
-        '<div class="bd">'+(n.private?'<span>비밀번호를 입력하면 내용을 볼 수 있습니다.</span><div class="pw"><input type="password" placeholder="비밀번호" aria-label="비밀번호"><button class="btn s" type="button">확인</button></div><div class="msg"></div>':esc(n.body))+'</div></article>';
+      return '<article class="post'+(n.private?' lock':'')+'" id="'+esc(n.id)+'"><button class="hd" type="button" aria-expanded="false"><span class="tag'+(n.private?' lk':'')+'">'+(n.private?'🔒 비공개':'공개')+'</span><span class="tt">'+esc(n.title)+(n.imgs?'<span class="pic-ic" title="사진 '+n.imgs+'장">📷'+n.imgs+'</span>':'')+'</span><span class="meta">'+esc(n.author)+'<br>'+esc(n.date)+'</span></button>'+
+        '<div class="bd">'+(n.private?'<span>비밀번호를 입력하면 내용을 볼 수 있습니다.</span><div class="pw"><input type="password" placeholder="비밀번호" aria-label="비밀번호"><button class="btn s" type="button">확인</button></div><div class="msg"></div>':esc(n.body)+(n.imgs?'<div class="bimgs" data-n="'+n.imgs+'"><span style="font-size:13px;color:#9aacc3">사진을 불러오는 중...</span></div>':''))+'</div></article>';
     }).join('');
     L.querySelectorAll('.post').forEach(function(el){
       var hd=el.querySelector('.hd');
-      hd.onclick=function(){var o=el.classList.toggle('open');hd.setAttribute('aria-expanded',o);};
+      hd.onclick=function(){var o=el.classList.toggle('open');hd.setAttribute('aria-expanded',o);if(o)loadImgs(el);};
       var b=el.querySelector('.pw button');
       if(b){var inp=el.querySelector('.pw input'),m=el.querySelector('.bd .msg');
         var go=function(){if(!inp.value){m.textContent='비밀번호를 입력해 주세요.';m.className='msg err';return;}b.disabled=true;
           post({a:'view',id:el.id,pw:inp.value}).then(function(j){b.disabled=false;
-            if(j.ok){el.querySelector('.tt').textContent=j.item.title;el.classList.remove('lock');el.querySelector('.bd').textContent=j.item.body;}
+            if(j.ok){el.querySelector('.tt').textContent=j.item.title;el.classList.remove('lock');var bd=el.querySelector('.bd');bd.textContent=j.item.body;if(j.item.imgList&&j.item.imgList.length){var g=document.createElement('div');g.className='bimgs';showImgs(g,j.item.imgList);bd.appendChild(g);}}
             else{m.textContent=j.error||'볼 수 없습니다.';m.className='msg err';}}).catch(function(){b.disabled=false;m.textContent='연결하지 못했습니다.';m.className='msg err';});};
         b.onclick=go;inp.onkeydown=function(e){if(e.key==='Enter')go();};}
     });
     var h=decodeURIComponent(location.hash.slice(1));
-    if(h&&h!=='write'){var t=document.getElementById(h);if(t){t.classList.add('open');t.scrollIntoView();}}
+    if(h&&h!=='write'){var t=document.getElementById(h);if(t){t.classList.add('open');loadImgs(t);t.scrollIntoView();}}
   }
+  var IMG_RX=/^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/;
+  function showImgs(box,list){
+    box.innerHTML='';
+    list.forEach(function(u,i){if(!IMG_RX.test(u))return;var im=new Image();im.src=u;im.alt='첨부 사진 '+(i+1);im.loading='lazy';
+      im.onclick=function(){var w=window.open('');if(w){w.document.title='사진';w.document.body.style.cssText='margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100vh';var b=w.document.createElement('img');b.src=u;b.style.cssText='max-width:100%;max-height:100vh';w.document.body.appendChild(b);}};
+      box.appendChild(im);});
+  }
+  function loadImgs(el){
+    var box=el.querySelector('.bimgs[data-n]');if(!box||box.getAttribute('data-done'))return;box.setAttribute('data-done','1');
+    fetch(API+'?a=img&id='+encodeURIComponent(el.id)).then(function(r){return r.json();}).then(function(j){
+      if(j.ok&&j.imgs&&j.imgs.length)showImgs(box,j.imgs);else box.innerHTML='<span style="font-size:13px;color:#9aacc3">사진을 불러오지 못했습니다.</span>';
+    }).catch(function(){box.removeAttribute('data-done');box.innerHTML='<span style="font-size:13px;color:#9aacc3">사진을 불러오지 못했습니다. 다시 열어 주세요.</span>';});
+  }
+  // 사진 넣기: 브라우저에서 긴 쪽 1280px JPEG로 줄인 뒤 base64로 보냄(한 장 최대 약 650KB)
+  var pics=[];
+  function shrink(file){
+    return new Promise(function(ok,no){
+      var fr=new FileReader();fr.onerror=no;fr.onload=function(){var im=new Image();im.onerror=no;im.onload=function(){
+        var M=1280,w=im.naturalWidth,h=im.naturalHeight,k=Math.min(1,M/Math.max(w,h));
+        var c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*k));c.height=Math.max(1,Math.round(h*k));
+        var x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);
+        var q=.85,u=c.toDataURL('image/jpeg',q);
+        while(u.length>650000&&q>.45){q-=.1;u=c.toDataURL('image/jpeg',q);}
+        if(u.length>650000){var c2=document.createElement('canvas');c2.width=Math.round(c.width*.7);c2.height=Math.round(c.height*.7);c2.getContext('2d').drawImage(c,0,0,c2.width,c2.height);u=c2.toDataURL('image/jpeg',.7);}
+        ok(u);};im.src=fr.result;};fr.readAsDataURL(file);});
+  }
+  function drawPics(){
+    $('pics').innerHTML=pics.map(function(u,i){return '<figure><img src="'+u+'" alt="넣은 사진 '+(i+1)+'"><button type="button" data-i="'+i+'" aria-label="사진 '+(i+1)+' 빼기">×</button></figure>';}).join('');
+    $('pics').querySelectorAll('button').forEach(function(b){b.onclick=function(){pics.splice(+b.getAttribute('data-i'),1);drawPics();};});
+    document.querySelector('label[for=fPic]').style.display=pics.length>=3?'none':'';
+  }
+  $('fPic').onchange=function(){
+    var fs=[].slice.call(this.files||[]).filter(function(f){return /^image\//.test(f.type);});this.value='';
+    var room=3-pics.length;if(fs.length>room){$('picMsg').textContent='사진은 최대 3장까지 넣을 수 있습니다.';fs=fs.slice(0,room);}
+    fs.reduce(function(pr,f){return pr.then(function(){return shrink(f).then(function(u){pics.push(u);drawPics();}).catch(function(){$('picMsg').textContent='읽을 수 없는 사진이 있어 뺐습니다.';});});},Promise.resolve());
+  };
   function load(){
     return fetch(API+'?a=list&t='+Date.now()).then(function(r){return r.json();}).then(function(j){items=j.items||[];render();})
       .catch(function(){$('list').innerHTML='<p class="em">게시글을 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요.</p>';});
@@ -149,15 +200,15 @@ footer a{color:#67e8f9}
   document.querySelectorAll('input[name=mode]').forEach(function(r){r.onchange=function(){$('pwBox').hidden=document.querySelector('input[name=mode]:checked').value!=='priv';};});
   $('sendBtn').onclick=function(){
     var priv=document.querySelector('input[name=mode]:checked').value==='priv';
-    var o={a:'write',author:$('fAuthor').value.trim(),title:$('fTitle').value.trim(),body:$('fBody').value.trim(),private:priv,pw:$('fPw').value,hp:$('fHp').value};
+    var o={a:'write',author:$('fAuthor').value.trim(),title:$('fTitle').value.trim(),body:$('fBody').value.trim(),private:priv,pw:$('fPw').value,hp:$('fHp').value,images:pics.slice(0,3)};
     if(!o.title||!o.body){msg('제목과 내용을 입력해 주세요.');return;}
     if(priv&&o.pw.length<4){msg('비공개 글은 비밀번호를 4자 이상 넣어 주세요.');return;}
-    var b=$('sendBtn');b.disabled=true;msg('올리는 중...',true);
+    var b=$('sendBtn');b.disabled=true;msg(pics.length?'사진과 함께 올리는 중... (몇 초 걸릴 수 있습니다)':'올리는 중...',true);
     post(o).then(function(j){b.disabled=false;
       if(!j.ok){msg(j.error||'올리지 못했습니다.');return;}
-      ['fTitle','fBody','fPw'].forEach(function(k){$(k).value='';});
+      ['fTitle','fBody','fPw'].forEach(function(k){$(k).value='';});pics=[];drawPics();
       msg('글이 올라갔습니다. 고맙습니다!',true);
-      load().then(function(){setTimeout(closeW,1200);if(j.id){var t=document.getElementById(j.id);if(t){t.classList.add('open');}}});
+      load().then(function(){setTimeout(closeW,1200);if(j.id){var t=document.getElementById(j.id);if(t){t.classList.add('open');loadImgs(t);}}});
     }).catch(function(){b.disabled=false;msg('연결하지 못했습니다. 잠시 뒤 다시 시도해 주세요.');});
   };
   if(location.hash==='#write')openW();

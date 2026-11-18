@@ -74,7 +74,11 @@ function render(){
   var L=$('list');
   if(!v.length){L.innerHTML='<p class="em">해당하는 글이 없습니다.</p>';return;}
   L.innerHTML=v.map(function(n){return '<div class="it'+(n.ts>seen?' new':'')+'"><div class="top">'+(n.ts>seen?'<span class="badge nw">NEW</span>':'')+'<span class="badge '+(n.private?'priv':'pub')+'">'+(n.private?'비공개':'공개')+'</span><span class="t">'+esc(n.title)+'</span></div>'+
-    '<div class="m">'+esc(n.author)+' · '+esc(n.date)+'</div><div class="b">'+esc(n.body)+'</div><button class="d" data-id="'+esc(n.id)+'">삭제</button></div>';}).join('');
+    '<div class="m">'+esc(n.author)+' · '+esc(n.date)+'</div><div class="b">'+esc(n.body)+'</div>'+(n.imgs?'<div class="ai" data-pid="'+esc(n.id)+'"><button class="d" type="button" style="background:#0e7490">📷 사진 '+n.imgs+'장 보기</button></div>':'')+'<button class="d" data-id="'+esc(n.id)+'">삭제</button></div>';}).join('');
+  L.querySelectorAll('.ai button').forEach(function(b){b.onclick=function(){var box=b.parentNode;b.disabled=true;b.textContent='불러오는 중...';
+    post({a:'view',token:tok(),id:box.getAttribute('data-pid')}).then(function(j){var l=((j.ok&&j.item&&j.item.imgList)||[]).filter(function(u){return /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/.test(u);});
+      if(!l.length){b.disabled=false;b.textContent='사진을 불러오지 못했습니다';return;}
+      box.innerHTML=l.map(function(u){return '<img src="'+u+'" alt="첨부 사진" style="max-width:100%;max-height:420px;border-radius:8px;margin:6px 6px 0 0">';}).join('');}).catch(function(){b.disabled=false;b.textContent='다시 시도';});};});
   L.querySelectorAll('button[data-id]').forEach(function(b){b.onclick=function(){
     if(!confirm('이 글을 삭제할까요? 게시판에서 사라집니다.'))return;b.disabled=true;
     post({a:'del',token:tok(),id:b.getAttribute('data-id')}).then(function(j){if(j.ok)load(false);else{b.disabled=false;alert(j.error||'삭제하지 못했습니다.');}});

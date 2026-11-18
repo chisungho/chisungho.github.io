@@ -4,7 +4,9 @@
 var ADMIN_EMAIL = 'hgy671001@gmail.com';
 var REPO_API = 'https://api.github.com/repos/chisungho/chisungho.github.io';
 var SITE = 'https://csh2020.com';
-var HEAD = ['id', 'ts', 'date', 'title', 'body', 'author', 'private', 'salt', 'hash', 'deleted'];
+var HEAD = ['id', 'ts', 'date', 'title', 'body', 'author', 'private', 'salt', 'hash', 'deleted', 'imgs'];
+// 사진(2026-11-18): 시트 'images'에 [글 id, 순서, 조각 번호, base64 조각] 으로 나눠 저장 (셀 한도 5만 자)
+var IMG_MAX = 3, IMG_MAXLEN = 900000, IMG_CHUNK = 45000;
 
 function sheet_() {
   var props = PropertiesService.getScriptProperties();
@@ -17,7 +19,36 @@ function sheet_() {
     props.setProperty('SHEET_ID', ss.getId());
     ss.getSheets()[0].setName('posts').appendRow(HEAD);
   }
-  return ss.getSheetByName('posts');
+  var sh = ss.getSheetByName('posts');
+  if (sh.getLastColumn() < HEAD.length) sh.getRange(1, HEAD.length).setValue(HEAD[HEAD.length - 1]);
+  return sh;
+}
+
+function imgSheet_() {
+  var ss = sheet_().getParent();
+  return ss.getSheetByName('images') || ss.insertSheet('images');
+}
+
+function saveImgs_(id, list) {
+  var rows = [];
+  list.forEach(function (u, i) {
+    for (var k = 0, c = 0; k < u.length; k += IMG_CHUNK, c++) rows.push([id, i, c, "'" + u.slice(k, k + IMG_CHUNK)]);
+  });
+  if (!rows.length) return;
+  var sh = imgSheet_();
+  sh.getRange(sh.getLastRow() + 1, 1, rows.length, 4).setValues(rows);
+}
+
+function imgs_(id) {
+  var sh = imgSheet_();
+  if (!sh.getLastRow()) return [];
+  var cells = sh.getRange(1, 1, sh.getLastRow(), 1).createTextFinder(id).matchEntireCell(true).findAll();
+  if (!cells.length) return [];
+  var parts = cells.map(function (c) { return sh.getRange(c.getRow(), 1, 1, 4).getValues()[0]; });
+  parts.sort(function (a, b) { return a[1] - b[1] || a[2] - b[2]; });
+  var out = [];
+  parts.forEach(function (r) { out[r[1]] = (out[r[1]] || '') + String(r[3]); });
+  return out.filter(function (u) { return u; });
 }
 
 function out_(o) {
@@ -62,7 +93,7 @@ function isAdmin_(token) {
 }
 
 function pub_(p, full) {
-  var o = { id: p.id, ts: Number(p.ts), date: Utilities.formatDate(new Date(Number(p.ts)), 'Asia/Seoul', 'yyyy-MM-dd HH:mm'), private: p.private };
+  var o = { id: p.id, ts: Number(p.ts), date: Utilities.formatDate(new Date(Number(p.ts)), 'Asia/Seoul', 'yyyy-MM-dd HH:mm'), private: p.private, imgs: Number(p.imgs) || 0 };
   if (p.private && !full) {
     o.title = '비공개 글입니다';
     o.author = maskName_(p.author);
@@ -75,6 +106,11 @@ function pub_(p, full) {
 function doGet(e) {
   var a = (e.parameter || {}).a || 'list';
   if (a === 'list') return out_({ ok: true, items: rows_().map(function (p) { return pub_(p, false); }) });
+  if (a === 'img') {
+    var p = find_(String(e.parameter.id || ''));
+    if (!p || p.private) return out_({ ok: false, error: '사진을 볼 수 없습니다.' });
+    return out_({ ok: true, imgs: imgs_(p.id) });
+  }
   if (a === 'rates') {
     var r = loadRates_();
     return out_(r.ok ? r : { ok: false });
@@ -190,6 +226,10 @@ function write_(d) {
   var priv = !!d.private, pw = String(d.pw || '');
   if (!title || !body) return { ok: false, error: '제목과 내용을 입력해 주세요.' };
   if (priv && pw.length < 4) return { ok: false, error: '비공개 글은 비밀번호를 4자 이상 넣어 주세요.' };
+  var pics = (Array.isArray(d.images) ? d.images : []).slice(0, IMG_MAX).filter(function (u) {
+    return typeof u === 'string' && u.length <= IMG_MAXLEN && /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/.test(u);
+  });
+  if (Array.isArray(d.images) && pics.length !== Math.min(d.images.length, IMG_MAX)) return { ok: false, error: '사진을 올리지 못했습니다. 다른 사진으로 다시 시도해 주세요.' };
   var cache = CacheService.getScriptCache();
   var n = Number(cache.get('rate') || 0);
   if (n >= 10) return { ok: false, error: '잠시 뒤에 다시 올려 주세요.' };
@@ -201,7 +241,8 @@ function write_(d) {
   try {
     id = 'p' + now.getTime().toString(36) + Math.floor(Math.random() * 1296).toString(36);
     var salt = Utilities.getUuid(), h = priv ? hash_(salt, pw) : '';
-    sheet_().appendRow([id, now.getTime(), Utilities.formatDate(now, 'Asia/Seoul', 'yyyy-MM-dd HH:mm'), title, body, author, priv, priv ? salt : '', h, false]);
+    sheet_().appendRow([id, now.getTime(), Utilities.formatDate(now, 'Asia/Seoul', 'yyyy-MM-dd HH:mm'), title, body, author, priv, priv ? salt : '', h, false, pics.length]);
+    saveImgs_(id, pics);
   } finally { lock.releaseLock(); }
 
   try {
@@ -210,7 +251,7 @@ function write_(d) {
       to: ADMIN_EMAIL,
       subject: '[csh2020 게시판] ' + (priv ? '(비공개) ' : '') + title,
       htmlBody: '<p><b>' + esc(author) + '</b>님이 게시판에 ' + (priv ? '<b>비공개</b> ' : '') + '글을 올렸습니다.</p>' +
-        '<p><b>제목:</b> ' + esc(title) + '</p><div style="white-space:pre-line;border-left:3px solid #22d3ee;padding:8px 12px;background:#f1f5f9">' + esc(body) + '</div>' +
+        '<p><b>제목:</b> ' + esc(title) + (pics.length ? ' (사진 ' + pics.length + '장)' : '') + '</p><div style="white-space:pre-line;border-left:3px solid #22d3ee;padding:8px 12px;background:#f1f5f9">' + esc(body) + '</div>' +
         '<p><a href="' + SITE + '/board-admin">관리자 게시판에서 보기 →</a></p>'
     });
   } catch (x) {}
@@ -222,11 +263,12 @@ function find_(id) { return rows_().filter(function (p) { return p.id === id; })
 function view_(d) {
   var p = find_(String(d.id || ''));
   if (!p) return { ok: false, error: '글을 찾을 수 없습니다.' };
-  if (!p.private) return { ok: true, item: pub_(p, false) };
-  if (isAdmin_(d.token)) return { ok: true, item: pub_(p, true) };
+  var withImg = function (o) { if (Number(p.imgs) > 0) o.imgList = imgs_(p.id); return o; };
+  if (!p.private) return { ok: true, item: withImg(pub_(p, false)) };
+  if (isAdmin_(d.token)) return { ok: true, item: withImg(pub_(p, true)) };
   if (hash_(p.salt, String(d.pw || '')) !== p.hash) return { ok: false, error: '비밀번호가 맞지 않습니다.' };
   var o = pub_(p, true); o.author = maskName_(p.author);
-  return { ok: true, item: o };
+  return { ok: true, item: withImg(o) };
 }
 
 function admin_(d) {
