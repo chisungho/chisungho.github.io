@@ -2,6 +2,19 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
+<script>
+/* 방문자 수: 페이지를 여는 즉시(맨 위) 요청을 시작한다. 숫자는 받는 대로 표시, 그 전에는 이 기기에 저장된 마지막 숫자를 바로 보여 준다. */
+(function(){
+  var A='https://script.google.com/macros/s/AKfycbx9Jf-wKeOwKCc7jlYqv27MAZrY_vBFdHXj-dIHYZJFzIGr4rzWRcH45ZbXDEAbWKbq/exec';
+  var d=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date()).replace(/-/g,'');
+  var seen=false,last=null;try{seen=localStorage.getItem('vc_day')===d;last=JSON.parse(localStorage.getItem('vc_last')||'null');}catch(e){}
+  window.__vc={day:d,last:last,p:fetch(A+'?a=vc&op='+(seen?'get':'hit')).then(function(r){return r.json();}).then(function(j){
+    if(j&&j.ok){try{localStorage.setItem('vc_last',JSON.stringify({day:j.day,today:j.today,total:j.total}));if(!seen)localStorage.setItem('vc_day',d);}catch(e){}}
+    return j;})};
+})();
+</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>무료 생활도구 모음 | 세계시계·예금금리 비교·사주 만세력·꿈해몽·로또 - 새로운 도전을 위하여</title>
 <meta name="keywords" content="무료 생활도구, 세계시계, 스톱워치, 타이머, 예금금리 비교, 적금금리, 환율 계산기, 사주 만세력, 꿈해몽, 로또 번호 생성기">
@@ -334,7 +347,15 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
     </div>
 
   </div>
-  <div class="vc" aria-label="방문자 수"><div><small class="lbl"><i class="dot"></i>오늘 방문</small><b id="vcToday">-</b></div><div><small>누적 방문</small><b id="vcTotal">-</b></div></div>
+  <div class="vc" aria-label="방문자 수"><div><small class="lbl"><i class="dot"></i>오늘 방문</small><b id="vcToday">-</b></div><div><small>누적 방문</small><b id="vcTotal">-</b></div></div><script>
+(function(){
+  var V=window.__vc;if(!V)return;
+  function f(n){return Number(n||0).toLocaleString('ko-KR');}
+  function show(t,tot){document.getElementById('vcToday').textContent=f(t);document.getElementById('vcTotal').textContent=f(tot);}
+  var L=V.last;if(L)show(L.day===V.day?L.today:0,L.total);
+  V.p.then(function(j){if(j&&j.ok)show(j.today,j.total);}).catch(function(){});
+})();
+</script>
 </div></header>
 
 <section id="guide"><div class="wrap">
@@ -436,17 +457,6 @@ footer .sub{margin-top:8px;color:#6ee7b7aa;font-size:12.5px}
   document.getElementById('twNav').addEventListener('click',open);
   document.getElementById('twClose').addEventListener('click',close);
   document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
-})();
-</script>
-<script>
-(function(){
-  var B='https://abacus.jasoncameron.dev/',NS='csh2020kro';
-  var d=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul'}).format(new Date()).replace(/-/g,'');
-  var seen=false;try{seen=localStorage.getItem('vc_day')===d;}catch(e){}
-  var op=seen?'get':'hit';
-  function f(n){return Number(n||0).toLocaleString('ko-KR');}
-  function call(key,id){return fetch(B+op+'/'+NS+'/'+key).then(function(r){return r.ok?r.json():{value:0};}).then(function(j){document.getElementById(id).textContent=f(j.value);}).catch(function(){});}
-  Promise.all([call('day-'+d,'vcToday'),call('total','vcTotal')]).then(function(){if(!seen){try{localStorage.setItem('vc_day',d);}catch(e){}}});
 })();
 </script>
 <script>

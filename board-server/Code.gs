@@ -111,6 +111,7 @@ function doGet(e) {
     if (!p || p.private) return out_({ ok: false, error: '사진을 볼 수 없습니다.' });
     return out_({ ok: true, imgs: imgs_(p.id) });
   }
+  if (a === 'vc') return out_(visit_(String((e.parameter || {}).op || 'get')));
   if (a === 'rates') {
     var r = loadRates_();
     return out_(r.ok ? r : { ok: false });
@@ -289,4 +290,29 @@ function setup() {
   sheet_();
   MailApp.getRemainingDailyQuota();
   UrlFetchApp.fetch('https://api.github.com/zen', { muteHttpExceptions: true });
+}
+
+// ===== 방문자 수 (2026-11-18): 홈 화면 '오늘 방문·누적 방문' =====
+// 예전 외부 카운터(abacus)가 30초씩 멈춰 이 서버로 옮김. 날짜는 한국 시간, 값은 스크립트 속성에 저장.
+function visit_(op) {
+  var props = PropertiesService.getScriptProperties();
+  var day = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyyMMdd');
+  var read = function () {
+    var dd = props.getProperty('VC_DAY'), t = Number(props.getProperty('VC_TODAY') || 0);
+    return { ok: true, day: day, today: dd === day ? t : 0, total: Number(props.getProperty('VC_TOTAL') || 281) };
+  };
+  if (op !== 'hit') return read();
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(5000)) return read();
+  try {
+    var r = read();
+    r.today += 1; r.total += 1;
+    var hist = {};
+    try { hist = JSON.parse(props.getProperty('VC_HIST') || '{}'); } catch (x) {}
+    hist[day] = r.today;
+    var keys = Object.keys(hist).sort().slice(-90), kept = {};
+    keys.forEach(function (k) { kept[k] = hist[k]; });
+    props.setProperties({ VC_DAY: day, VC_TODAY: String(r.today), VC_TOTAL: String(r.total), VC_HIST: JSON.stringify(kept) });
+    return r;
+  } finally { lock.releaseLock(); }
 }
