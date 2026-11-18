@@ -102,7 +102,7 @@
   var games=[],meta={},prevFocus=null;
   var F=['w','h','ax','ay','lay','d17','d143','gab','mw','mh','dx','dy','rot'];
   function fill(){F.forEach(function(k){var e=$('lp_'+k);e.value=k==='rot'?String(+cfg.rot||0):cfg[k]})}
-  F.forEach(function(k){$('lp_'+k).addEventListener('change',function(){var v=this.value;if(k==='lay')cfg.lay=v;else if(k==='rot')cfg.rot=+v;else{var n=parseFloat(v);if(isFinite(n))cfg[k]=n;else this.value=cfg[k]}save()})});
+  F.forEach(function(k){$('lp_'+k).addEventListener('change',function(){var v=this.value;if(k==='lay')cfg.lay=v;else if(k==='rot')cfg.rot=+v;else{var n=parseFloat(v);if(isFinite(n))cfg[k]=n;else this.value=cfg[k]}save();if(window.LottoPrint&&LottoPrint.onchange)LottoPrint.onchange()})});
   $('lpReset').onclick=function(){cfg=JSON.parse(JSON.stringify(DEF));save();fill()};
   $('lpClose').onclick=close;
   dlg.addEventListener('click',function(e){if(e.target===dlg)close()});
@@ -147,14 +147,38 @@
     area.innerHTML='<div class="pg" style="width:190mm;padding:10mm;box-sizing:border-box;font-family:sans-serif;color:#000"><h1 style="font-size:6mm;margin:0 0 2mm">로또 6/45 번호표</h1><div style="font-size:3.2mm;margin-bottom:3mm">'+esc(meta.label||'')+' · 판매점 구매 용지의 같은 칸에 표시해 주세요 (5게임마다 용지 1장)</div>'+rows+'<p style="font-size:2.8mm;color:#555;margin-top:4mm">csh2020.com/lotto · 이 종이는 복권이 아닙니다.</p></div>';
     setPage('A4 portrait');go();
   }
+
+  // 화면 미리보기: 용지 그림 위에 번호 칸을 표시해 보여 준다(5게임마다 1장)
+  function previewHTML(list){
+    var W=cfg.w,H=cfg.h,out='';
+    function pc(v,t){return (v/t*100).toFixed(3)+'%'}
+    for(var s=0;s<list.length;s+=5){
+      var inner='',chunk=list.slice(s,s+5);
+      for(var g=0;g<5;g++){
+        var hx=cell(g,1)[0]-cfg.dx-1.8, hy=cell(g,1)[1]-cfg.dy-7.2;
+        inner+='<span style="position:absolute;left:'+pc(hx,W)+';top:'+pc(hy,H)+';width:'+pc(cfg.gab-3.5,W)+';height:'+pc(4.2,H)+';background:#ef5a4c;color:#fff;font:700 clamp(8px,1.6vw,12px)/1 sans-serif;display:flex;align-items:center;padding-left:3px;box-sizing:border-box">'+'ABCDE'[g]+'</span>';
+        var nums=chunk[g]||[];
+        for(var n=1;n<=45;n++){var p=cell(g,n),x=p[0]-cfg.dx,y=p[1]-cfg.dy,on=nums.indexOf(n)>=0;
+          inner+='<span style="position:absolute;left:'+pc(x-1.5,W)+';top:'+pc(y-1.9,H)+';width:'+pc(3,W)+';height:'+pc(3.8,H)+';box-sizing:border-box;border:1px solid '+(on?'#111':'#f2a49b')+';background:'+(on?'#111':'transparent')+';color:'+(on?'#fff':'#e46a5c')+';font:600 clamp(5px,1vw,8px)/1 sans-serif;display:flex;align-items:center;justify-content:center">'+n+'</span>'}
+      }
+      out+='<div style="position:relative;width:100%;aspect-ratio:'+W+'/'+H+';background:#fff;border:1px solid #e2e6ee;border-radius:6px;margin:8px 0;overflow:hidden">'+inner+'<span style="position:absolute;left:1.5%;top:4%;font:800 clamp(9px,2vw,14px) sans-serif;color:#ef5a4c">'+(Math.floor(s/5)+1)+'번째 용지</span></div>';
+    }
+    return out;
+  }
   $('lpSlip').onclick=printSlips;$('lpSheet').onclick=printSheet;$('lpTestPlain').onclick=testPlain;$('lpTestSlip').onclick=testSlip;
   window.addEventListener('afterprint',function(){area.innerHTML='';pageSt.textContent=''});
 
-  window.LottoPrint={open:function(list,info){
-    games=(list||[]).filter(function(a){return a&&a.length===6}).map(function(a){return a.slice().sort(function(x,y){return x-y})});
+  function setGames(list){games=(list||[]).filter(function(a){return a&&a.length===6}).map(function(a){return a.slice().sort(function(x,y){return x-y})})}
+  window.LottoPrint={
+  print:function(list){setGames(list);printSlips()},
+  preview:function(el,list){setGames(list);el.innerHTML=games.length?previewHTML(games):''},
+  settings:function(){games=[];$('lpSlip').parentNode.hidden=true;$('lpSum').innerHTML='용지 칸 위치 맞추기 · 시험 인쇄';fill();$('lpSet').open=true;prevFocus=document.activeElement;dlg.hidden=false;document.documentElement.style.overflow='hidden';$('lpClose').focus()},
+  onchange:null,
+  open:function(list,info){
+    setGames(list);
     meta=info||{};
     if(!games.length)return;
     $('lpSum').innerHTML='<b>'+games.length+'게임</b> · 구매 용지 <b>'+Math.ceil(games.length/5)+'장</b>'+(meta.label?' · '+esc(meta.label):'');
-    fill();prevFocus=document.activeElement;dlg.hidden=false;document.documentElement.style.overflow='hidden';$('lpSlip').focus();
+    fill();$('lpSlip').parentNode.hidden=false;prevFocus=document.activeElement;dlg.hidden=false;document.documentElement.style.overflow='hidden';$('lpSlip').focus();
   },config:function(){return JSON.parse(JSON.stringify(cfg))}};
 })();
