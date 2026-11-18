@@ -179,7 +179,7 @@ body{color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;-webk
   <div class="bar">
     <div class="brand">
       <div class="logo" aria-hidden="true"><i></i></div>
-      <div><h1>로또 번호 생성기</h1><p>로또 6/45 통계 조합</p></div>
+      <div><h1>로또 번호 생성기 <small style="font-size:.6em;font-weight:700;color:var(--accent)">(인쇄가능)</small></h1><p>로또 6/45 통계 조합</p></div>
     </div>
     <button class="qbtn" id="wqOpen" type="button" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>당첨 번호 조회</span></button>
     <span class="tag" id="verBadge">테스트 버전</span>
@@ -192,6 +192,11 @@ body{color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;-webk
       <div id="wqBody"></div>
       <p class="hint">이 기기에서 생성한 번호를 <b>생성할 때 판매 중이던 회차</b>의 당첨번호와만 맞춰 봅니다. 실제로 구입한 복권 용지와 꼭 함께 확인하세요.</p>
     </section>
+  </div>
+
+  <div id="printNotice" role="note" style="margin:0 0 12px;padding:12px 14px;border-radius:14px;background:#fff4ef;border:1px solid #ffc9b8;color:#141a26;font-size:14px;line-height:1.55">
+    <b style="color:#e5462a">🖨 로또 번호 자동 생성 후 [용지 인쇄] 버튼을 누르면 자동 인쇄됩니다.</b>
+    <span id="apState" style="display:block;font-size:12.5px;color:#55607a;margin-top:4px">PC: <a href="/lotto-autoprint-setup.bat" download style="color:#2f6bff;font-weight:700">자동 인쇄 설치 프로그램</a>을 한 번 실행하면 프린터를 찾아 연결·기본 프린터로 정하고, 바탕화면 아이콘으로 열면 인쇄 창 없이 바로 인쇄됩니다. · 휴대폰: 프린터와 같은 와이파이에 연결하면 인쇄할 때 프린터가 자동으로 나타납니다.</span>
   </div>
 
   <section class="news" id="news" aria-label="로또 최신 소식"><h2>로또 최신 소식 <span id="newsUpd"></span></h2><ul id="newsList"></ul></section>
@@ -533,6 +538,8 @@ $("copy").onclick=()=>{
   const txt=usage().last.map((g,i)=>`${String.fromCharCode(65+i)}: ${g.nums.join(" ")}`).join("\n");
   (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>toast("번호를 복사했습니다")).catch(()=>{const r=document.createRange();r.selectNodeContents($("games"));const s=getSelection();s.removeAllRanges();s.addRange(r);toast("선택된 번호를 Ctrl+C로 복사하세요")});
 };
+if(/[?&]ap=1/.test(location.search)){$("apState").innerHTML='<b style="color:#16a34a">● 자동 인쇄 모드</b> — 설치 때 정한 기본 프린터로 인쇄 창 없이 바로 인쇄됩니다. 프린터 전원과 연결을 확인해 주세요.'}
+else if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){$("apState").textContent='휴대폰: 프린터와 같은 와이파이에 연결해 두면 [용지 인쇄]를 눌렀을 때 인쇄 창에 프린터가 자동으로 나타납니다(안드로이드 기본 인쇄 서비스·아이폰 AirPrint). 프린터를 고르고 배율 100%로 인쇄하세요.'}
 if(!TEST_MODE){$("verBadge").textContent="v3.0";$("testNote").hidden=true}
 /* ===== 심층 분석 표시 (5초) ===== */
 function deepAnalysis(manual){
