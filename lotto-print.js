@@ -3,10 +3,10 @@
    - 칸 위치는 자로 잰 값으로 맞추고(이 기기에 저장), 일반 종이 시험 인쇄로 확인한다.
    - 웹페이지는 프린터를 고를 수 없어서 기기의 기본 프린터 + 용지 크기·여백 0·100% 를 미리 정해 인쇄 창을 연다. */
 (function(){
-  var KEY='lp_cfg_v2';
+  var KEY='lp_cfg_v3';
   // 기본값: 동행복권 로또 6/45 구매 용지 스캔(2026-11-18, A4 300dpi 상당)에서 잰 값. 용지 190.8×82.3mm, A게임 1번 칸 가운데 (41.3, 11.9)mm,
   // 칸 간격 가로 3.43mm(1→7번 20.6mm)·세로 6.38mm(1→43번 38.3mm), 게임 간격 27.5mm. 프린터마다 급지 위치가 달라 보정(dx·dy)은 시험 인쇄로 맞춘다.
-  var DEF={w:190.8,h:82.3,ax:41.3,ay:11.9,d17:20.6,d143:38.3,gab:27.5,lay:'row',mw:2.4,mh:3.0,dx:0,dy:0,rot:0};
+  var DEF={w:190.8,h:82.3,ax:41.3,ay:12.1,d17:20.6,d143:38.3,gab:27.5,lay:'row',mw:2.4,mh:3.0,dx:0,dy:0,rot:0};
   var cfg=load();
   function load(){try{var c=JSON.parse(localStorage.getItem(KEY));if(c&&typeof c==='object'){var o={};for(var k in DEF)o[k]=(k in c)?c[k]:DEF[k];return o}}catch(e){}return JSON.parse(JSON.stringify(DEF))}
   function save(){try{localStorage.setItem(KEY,JSON.stringify(cfg))}catch(e){}}
@@ -135,31 +135,12 @@
   var RED='#e8483b';
   function box(x,y,w,h,st){return '<i style="position:absolute;left:'+x.toFixed(2)+'mm;top:'+y.toFixed(2)+'mm;width:'+w.toFixed(2)+'mm;height:'+h.toFixed(2)+'mm;box-sizing:border-box;'+st+'"></i>'}
   function txt(x,y,t,st){return '<b style="position:absolute;left:'+x.toFixed(2)+'mm;top:'+y.toFixed(2)+'mm;white-space:nowrap;font-family:sans-serif;line-height:1;'+st+'">'+t+'</b>'}
+  var SLIP_IMG='/lotto-slip.jpg';
+  var slipImg=new Image();slipImg.src=SLIP_IMG;
   function formInner(list){
     var sdx=cfg.dx,sdy=cfg.dy;cfg.dx=0;cfg.dy=0;
-    var p1=cfg.d17/6,p2=cfg.d143/6,o='';
-    o+=box(0,0,cfg.w,cfg.h,'border:0.25mm dashed #999');                    // 자르는 선
-    o+=txt(6,8,'Lotto 6/45',"font-weight:800;font-size:5mm;color:"+RED+";transform:rotate(-90deg);transform-origin:0 0;top:62mm");
-    o+=txt(14,8,'번호 선택용 용지 (집에서 인쇄)',"font-weight:600;font-size:2.2mm;color:"+RED+";transform:rotate(-90deg);transform-origin:0 0;top:62mm");
-    for(var g=0;g<5;g++){
-      var a=cell(g,1),L=a[0]-1.4,T=a[1];
-      o+=box(L,T-9.4,23.7,75.6,'border:0.3mm solid '+RED);                  // 게임 테두리
-      o+=box(L,T-9.4,23.7,6.3,'background:'+RED);                            // 머리띠
-      o+=box(L,T-9.4,3.4,6.3,'background:#fff;border:0.3mm solid '+RED);
-      o+=txt(L+0.7,T-8.2,'ABCDE'[g],'font-size:3.6mm;color:'+RED+';font-weight:500');
-      o+=txt(L+8,T-8,'1,000원','font-size:3.4mm;color:#fff;font-weight:700');
-      for(var n=1;n<=45;n++){var c=cell(g,n);
-        o+=box(c[0]-1.5,c[1]-1.75,3,3.5,'border-left:0.25mm solid '+RED+';border-right:0.25mm solid '+RED+';border-top:0.25mm solid '+RED+';border-bottom:0.25mm solid '+RED+';clip-path:polygon(0 0,30% 0,30% 12%,70% 12%,70% 0,100% 0,100% 100%,70% 100%,70% 88%,30% 88%,30% 100%,0 100%)');
-        o+=txt(c[0]-1.5,c[1]-1.1,String(n),'width:3mm;text-align:center;font-size:2.2mm;font-weight:500;color:'+RED);}
-      o+=txt(L+1.2,T+55.6,'자동 및 반자동 선택','font-size:2.4mm;color:'+RED+';font-weight:700');
-      o+=box(a[0]+19,T+55.3,2.4,3.4,'border:0.25mm solid '+RED);
-      o+=txt(L+15,T+62,'취소','font-size:2.4mm;color:'+RED+';font-weight:700');
-      o+=box(a[0]+19,T+61.7,2.4,3.4,'border:0.25mm solid '+RED);
-    }
-    var a1=cell(0,1);
-    for(var k=0;k<41;k++)o+=box(a1[0]+k*p1-0.65,cfg.h-3.2,1.3,2.7,'background:#000');   // 아래 가장자리 표시
-    for(var r=1;r<=9;r++)o+=box(177.8,a1[1]+r*p2-1.6,1.5,3.2,'background:#000');        // 오른쪽 표시
-    o+=box(184.4,3,2.7,2.7,'background:#000');o+=box(184.4,75.8,2.7,2.7,'background:#000');
+    var o='<img src="'+SLIP_IMG+'" alt="" style="position:absolute;left:0;top:0;width:'+cfg.w+'mm;height:'+cfg.h+'mm">';
+    o+=box(0,0,cfg.w,cfg.h,'border:0.2mm dashed #999');                    // 자르는 선
     (list||[]).forEach(function(nums,g){nums.forEach(function(n){o+=mark(g,n)})});
     cfg.dx=sdx;cfg.dy=sdy;
     return o;
@@ -169,9 +150,12 @@
     var html='',left=((210-cfg.w)/2).toFixed(2);
     for(var i=0;i<chunks.length;i+=3){
       var pg='';chunks.slice(i,i+3).forEach(function(c,j){pg+='<div style="position:absolute;left:'+left+'mm;top:'+(10+j*(cfg.h+8)).toFixed(2)+'mm;width:'+cfg.w+'mm;height:'+cfg.h+'mm">'+formInner(c)+'</div>'});
-      html+='<div class="pg" style="width:210mm;height:296mm">'+pg+'<b style="position:absolute;left:'+left+'mm;bottom:6mm;font:500 2.6mm sans-serif;color:#666">점선을 따라 잘라 쓰세요 · 집에서 인쇄한 용지는 판매점 단말기가 읽지 못할 수 있습니다 · csh2020.com/lotto</b></div>';
+      html+='<div class="pg" style="width:210mm;height:296mm">'+pg+'<b style="position:absolute;left:'+left+'mm;bottom:6mm;font:500 2.6mm sans-serif;color:#666">점선을 따라 잘라 쓰세요 · 실물 크기(100%)로 인쇄하세요 · 집에서 인쇄한 용지는 판매점 단말기가 읽지 못할 수 있습니다</b></div>';
     }
-    area.innerHTML=html;setPage('A4 portrait');go();
+    area.innerHTML=html;setPage('A4 portrait');
+    var ims=area.querySelectorAll('img'),left=ims.length;if(!left){go();return}
+    var done=false,fin=function(){if(!done){done=true;go()}};
+    ims.forEach(function(im){if(im.complete)--left||fin();else{im.onload=im.onerror=function(){--left||fin()}}});setTimeout(fin,4000);
   }
   function testPlain(){
     var inner='<div style="position:absolute;inset:0;border:0.3mm solid #000;box-sizing:border-box"></div>';
@@ -199,14 +183,9 @@
     function pc(v,t){return (v/t*100).toFixed(3)+'%'}
     for(var s=0;s<list.length;s+=5){
       var inner='',chunk=list.slice(s,s+5);
-      for(var g=0;g<5;g++){
-        var hx=cell(g,1)[0]-cfg.dx-1.8, hy=cell(g,1)[1]-cfg.dy-7.2;
-        inner+='<span style="position:absolute;left:'+pc(hx,W)+';top:'+pc(hy,H)+';width:'+pc(cfg.gab-3.5,W)+';height:'+pc(4.2,H)+';background:#ef5a4c;color:#fff;font:700 clamp(8px,1.6vw,12px)/1 sans-serif;display:flex;align-items:center;padding-left:3px;box-sizing:border-box">'+'ABCDE'[g]+'</span>';
-        var nums=chunk[g]||[];
-        for(var n=1;n<=45;n++){var p=cell(g,n),x=p[0]-cfg.dx,y=p[1]-cfg.dy,on=nums.indexOf(n)>=0;
-          inner+='<span style="position:absolute;left:'+pc(x-1.5,W)+';top:'+pc(y-1.9,H)+';width:'+pc(3,W)+';height:'+pc(3.8,H)+';box-sizing:border-box;border:1px solid '+(on?'#111':'#f2a49b')+';background:'+(on?'#111':'transparent')+';color:'+(on?'#fff':'#e46a5c')+';font:600 clamp(5px,1vw,8px)/1 sans-serif;display:flex;align-items:center;justify-content:center">'+n+'</span>'}
-      }
-      out+='<div style="position:relative;width:100%;aspect-ratio:'+W+'/'+H+';background:#fff;border:1px solid #e2e6ee;border-radius:6px;margin:8px 0;overflow:hidden">'+inner+'<span style="position:absolute;left:1.5%;top:4%;font:800 clamp(9px,2vw,14px) sans-serif;color:#ef5a4c">'+(Math.floor(s/5)+1)+'번째 용지</span></div>';
+      chunk.forEach(function(nums,g){nums.forEach(function(n){var p=cell(g,n),x=p[0]-cfg.dx,y=p[1]-cfg.dy;
+        inner+='<span style="position:absolute;left:'+pc(x-cfg.mw/2,W)+';top:'+pc(y-cfg.mh/2,H)+';width:'+pc(cfg.mw,W)+';height:'+pc(cfg.mh,H)+';background:#111"></span>'})});
+      out+='<div style="position:relative;width:100%;aspect-ratio:'+W+'/'+H+';background:#fff url('+SLIP_IMG+') 0 0/100% 100% no-repeat;border:1px solid #e2e6ee;border-radius:4px;margin:8px 0;overflow:hidden">'+inner+'</div>'+(list.length>5?'<div style="font-size:12px;color:#6b7487;margin:-4px 0 6px">'+(Math.floor(s/5)+1)+'번째 용지</div>':'');
     }
     return out;
   }

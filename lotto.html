@@ -227,8 +227,8 @@ body{color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5;-webk
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><b style="font-size:15px">구매 용지 마킹 미리보기</b><button class="ghost" id="lpSetBtn" type="button">용지 맞추기</button></div>
       <div id="lpPrev"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="go" id="lpBtn" type="button" style="flex:1 1 200px;margin:0">용지 인쇄</button><button class="go" id="lpAll" type="button" hidden style="flex:1 1 200px;margin:0;background:#334155">오늘 생성 번호 전부 인쇄</button></div>
-      <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:10px;font-size:13px"><label style="display:flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" id="lpForm"> 용지 양식까지 함께 인쇄 (일반 A4 종이)</label><button class="ghost" id="lpBlankBtn" type="button">빈 용지 양식 인쇄</button></div>
-      <p class="hint" style="margin-top:8px">판매점 로또 6/45 구매 용지를 프린터 수동 급지대에 넣고 누르면, 위 번호가 용지 칸에 그대로 찍힙니다(5게임마다 1장). '용지 양식까지 함께 인쇄'를 켜면 일반 A4 종이에 용지 양식과 번호가 함께 찍힙니다(한 장에 용지 3장). 처음 한 번은 '용지 맞추기'에서 시험 인쇄로 위치를 확인하세요.</p>
+      <div style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:10px;font-size:13px"><label style="display:flex;gap:6px;align-items:center;cursor:pointer"><input type="checkbox" id="lpForm"> 실물 용지 그림째 인쇄 (일반 A4 종이)</label><button class="ghost" id="lpBlankBtn" type="button">빈 용지 양식 인쇄</button></div>
+      <p class="hint" style="margin-top:8px">판매점 로또 6/45 구매 용지를 프린터 수동 급지대에 넣고 누르면, 위 번호가 용지 칸에 그대로 찍힙니다(5게임마다 1장). '실물 용지 그림째 인쇄'(기본으로 켜짐)는 위 미리보기처럼 실물 용지 그림에 번호를 칠한 채로 일반 A4 종이에 인쇄합니다(한 장에 용지 3장, 실제 크기). 끄면 판매점 용지를 프린터에 넣어 번호만 찍습니다. 처음 한 번은 '용지 맞추기'에서 시험 인쇄로 위치를 확인하세요.</p>
     </div>
   </section>
 
@@ -521,7 +521,7 @@ function lpRender(){const u=usage();if(!window.LottoPrint||!u.last.length){$("lp
   const n=u.games.length;$("lpAll").hidden=n<=u.last.length;$("lpAll").textContent=`오늘 생성 번호 전부 인쇄 (${n}게임 · 용지 ${Math.ceil(n/5)}장)`;
   $("lpBtn").textContent=`용지 인쇄 (${u.last.length}게임 · 용지 ${Math.ceil(u.last.length/5)}장)`}
 const lpOpt=()=>({form:$("lpForm").checked});
-try{$("lpForm").checked=localStorage.getItem("lp_form")==="1"}catch(e){}
+$("lpForm").checked=true;try{$("lpForm").checked=localStorage.getItem("lp_form")!=="0"}catch(e){}
 $("lpForm").onchange=()=>{try{localStorage.setItem("lp_form",$("lpForm").checked?"1":"0")}catch(e){}};
 $("lpBlankBtn").onclick=()=>LottoPrint.blank();
 $("lpBtn").onclick=()=>LottoPrint.print(usage().last.map(g=>g.nums),lpOpt());
