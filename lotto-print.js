@@ -79,6 +79,7 @@
  <label for="lp_dy">프린터 보정 → 아래(+)/위(−)</label><input id="lp_dy" type="number" step="0.1">
  <label for="lp_rot">용지 넣는 방향</label><select id="lp_rot"><option value="0">가로로 눕혀 넣음</option><option value="90">세로 · 로고 쪽 먼저</option><option value="270">세로 · E게임 쪽 먼저</option></select>
 </div>
+<div class="row2"><button id="lpBlank" type="button">빈 용지 양식 인쇄 (A4)</button></div>
 <div class="row2"><button id="lpTestPlain" type="button">시험 인쇄 (일반 종이)</button><button id="lpTestSlip" type="button">시험 인쇄 (구매 용지)</button><button id="lpReset" type="button">처음 값으로</button></div>
 <ol style="font-size:13px">
  <li><b>일반 종이 시험</b>: 용지 크기로 칸 위치(+ 표시와 번호)가 찍힙니다. 찍힌 종이 위에 구매 용지를 겹쳐 창문 빛에 비춰 보고, 어긋난 만큼 위 값을 고칩니다.</li>
@@ -128,6 +129,50 @@
     }
     area.innerHTML=html;setPage(slipSize());go();
   }
+
+  /* 용지 양식 그리기(일반 A4 종이용): 스캔한 로또 6/45 구매 용지의 칸·머리띠·자동/취소 칸·가장자리 검은 표시를 같은 위치에 그린다.
+     로고·발행 기관 문구는 넣지 않는다. 위치(mm)는 스캔에서 잰 값(A게임 1번 칸 가운데 기준). */
+  var RED='#e8483b';
+  function box(x,y,w,h,st){return '<i style="position:absolute;left:'+x.toFixed(2)+'mm;top:'+y.toFixed(2)+'mm;width:'+w.toFixed(2)+'mm;height:'+h.toFixed(2)+'mm;box-sizing:border-box;'+st+'"></i>'}
+  function txt(x,y,t,st){return '<b style="position:absolute;left:'+x.toFixed(2)+'mm;top:'+y.toFixed(2)+'mm;white-space:nowrap;font-family:sans-serif;line-height:1;'+st+'">'+t+'</b>'}
+  function formInner(list){
+    var sdx=cfg.dx,sdy=cfg.dy;cfg.dx=0;cfg.dy=0;
+    var p1=cfg.d17/6,p2=cfg.d143/6,o='';
+    o+=box(0,0,cfg.w,cfg.h,'border:0.25mm dashed #999');                    // 자르는 선
+    o+=txt(6,8,'Lotto 6/45',"font-weight:800;font-size:5mm;color:"+RED+";transform:rotate(-90deg);transform-origin:0 0;top:62mm");
+    o+=txt(14,8,'번호 선택용 용지 (집에서 인쇄)',"font-weight:600;font-size:2.2mm;color:"+RED+";transform:rotate(-90deg);transform-origin:0 0;top:62mm");
+    for(var g=0;g<5;g++){
+      var a=cell(g,1),L=a[0]-1.4,T=a[1];
+      o+=box(L,T-9.4,23.7,75.6,'border:0.3mm solid '+RED);                  // 게임 테두리
+      o+=box(L,T-9.4,23.7,6.3,'background:'+RED);                            // 머리띠
+      o+=box(L,T-9.4,3.4,6.3,'background:#fff;border:0.3mm solid '+RED);
+      o+=txt(L+0.7,T-8.2,'ABCDE'[g],'font-size:3.6mm;color:'+RED+';font-weight:500');
+      o+=txt(L+8,T-8,'1,000원','font-size:3.4mm;color:#fff;font-weight:700');
+      for(var n=1;n<=45;n++){var c=cell(g,n);
+        o+=box(c[0]-1.5,c[1]-1.75,3,3.5,'border-left:0.25mm solid '+RED+';border-right:0.25mm solid '+RED+';border-top:0.25mm solid '+RED+';border-bottom:0.25mm solid '+RED+';clip-path:polygon(0 0,30% 0,30% 12%,70% 12%,70% 0,100% 0,100% 100%,70% 100%,70% 88%,30% 88%,30% 100%,0 100%)');
+        o+=txt(c[0]-1.5,c[1]-1.1,String(n),'width:3mm;text-align:center;font-size:2.2mm;font-weight:500;color:'+RED);}
+      o+=txt(L+1.2,T+55.6,'자동 및 반자동 선택','font-size:2.4mm;color:'+RED+';font-weight:700');
+      o+=box(a[0]+19,T+55.3,2.4,3.4,'border:0.25mm solid '+RED);
+      o+=txt(L+15,T+62,'취소','font-size:2.4mm;color:'+RED+';font-weight:700');
+      o+=box(a[0]+19,T+61.7,2.4,3.4,'border:0.25mm solid '+RED);
+    }
+    var a1=cell(0,1);
+    for(var k=0;k<41;k++)o+=box(a1[0]+k*p1-0.65,cfg.h-3.2,1.3,2.7,'background:#000');   // 아래 가장자리 표시
+    for(var r=1;r<=9;r++)o+=box(177.8,a1[1]+r*p2-1.6,1.5,3.2,'background:#000');        // 오른쪽 표시
+    o+=box(184.4,3,2.7,2.7,'background:#000');o+=box(184.4,75.8,2.7,2.7,'background:#000');
+    (list||[]).forEach(function(nums,g){nums.forEach(function(n){o+=mark(g,n)})});
+    cfg.dx=sdx;cfg.dy=sdy;
+    return o;
+  }
+  function printForms(list){
+    var chunks=[];if(!list||!list.length)chunks=[[]];else for(var s=0;s<list.length;s+=5)chunks.push(list.slice(s,s+5));
+    var html='',left=((210-cfg.w)/2).toFixed(2);
+    for(var i=0;i<chunks.length;i+=3){
+      var pg='';chunks.slice(i,i+3).forEach(function(c,j){pg+='<div style="position:absolute;left:'+left+'mm;top:'+(10+j*(cfg.h+8)).toFixed(2)+'mm;width:'+cfg.w+'mm;height:'+cfg.h+'mm">'+formInner(c)+'</div>'});
+      html+='<div class="pg" style="width:210mm;height:296mm">'+pg+'<b style="position:absolute;left:'+left+'mm;bottom:6mm;font:500 2.6mm sans-serif;color:#666">점선을 따라 잘라 쓰세요 · 집에서 인쇄한 용지는 판매점 단말기가 읽지 못할 수 있습니다 · csh2020.com/lotto</b></div>';
+    }
+    area.innerHTML=html;setPage('A4 portrait');go();
+  }
   function testPlain(){
     var inner='<div style="position:absolute;inset:0;border:0.3mm solid #000;box-sizing:border-box"></div>';
     for(var g=0;g<5;g++)for(var n=1;n<=45;n++){var p=cell(g,n);
@@ -165,12 +210,13 @@
     }
     return out;
   }
-  $('lpSlip').onclick=printSlips;$('lpSheet').onclick=printSheet;$('lpTestPlain').onclick=testPlain;$('lpTestSlip').onclick=testSlip;
+  $('lpSlip').onclick=printSlips;$('lpBlank').onclick=function(){printForms([])};$('lpSheet').onclick=printSheet;$('lpTestPlain').onclick=testPlain;$('lpTestSlip').onclick=testSlip;
   window.addEventListener('afterprint',function(){area.innerHTML='';pageSt.textContent=''});
 
   function setGames(list){games=(list||[]).filter(function(a){return a&&a.length===6}).map(function(a){return a.slice().sort(function(x,y){return x-y})})}
   window.LottoPrint={
-  print:function(list){setGames(list);printSlips()},
+  print:function(list,o){setGames(list);if(o&&o.form)printForms(games);else printSlips()},
+  blank:function(){printForms([])},
   preview:function(el,list){setGames(list);el.innerHTML=games.length?previewHTML(games):''},
   settings:function(){games=[];$('lpSlip').parentNode.hidden=true;$('lpSum').innerHTML='용지 칸 위치 맞추기 · 시험 인쇄';fill();$('lpSet').open=true;prevFocus=document.activeElement;dlg.hidden=false;document.documentElement.style.overflow='hidden';$('lpClose').focus()},
   onchange:null,
