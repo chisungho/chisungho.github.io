@@ -77,7 +77,7 @@ footer a{color:#67e8f9}
 </div></nav>
 
 <main class="wrap">
-  <header><small>GOOD INFO</small><h1>좋은 정보 보기</h1><p>경제·생활 정보를 정리한 글과 카드뉴스를 모았습니다</p></header>
+  <header><small>GOOD INFO</small><h1>좋은 정보 보기</h1><p>최신 경제·생활 뉴스를 네이버·구글 블로그 글과 카드뉴스로 모았습니다</p></header>
   <div class="tabs" role="tablist">
     <button role="tab" id="tPosts" aria-selected="true" aria-controls="posts">좋은 정보글<span class="n" id="nPosts"></span></button>
     <button role="tab" id="tCards" aria-selected="false" aria-controls="cards">카드뉴스<span class="n" id="nCards"></span></button>
@@ -110,8 +110,8 @@ footer a{color:#67e8f9}
     if(!it.length){$('postList').innerHTML='<p class="em">아직 올라온 정보글이 없습니다.</p>';return;}
     $('postList').innerHTML=it.map(function(n){
       return '<article class="post">'+(n.img?'<img src="/'+esc(n.img)+'" alt="'+esc(n.title)+'" loading="lazy" width="800" height="450">':'')+
-        '<div class="bd"><span class="dt">'+esc(n.date)+'</span><h2>'+esc(n.title)+'</h2><p>'+esc(n.desc)+'</p>'+
-        '<div class="btns"><a class="nv" href="'+esc(safe(n.naver))+'" target="_blank" rel="noopener">N 네이버 블로그</a></div></div></article>';
+        '<div class="bd"><span class="dt">'+esc(n.date)+(n.src==='google'?' · 구글 블로그':' · 네이버 블로그')+'</span><h2>'+esc(n.title)+'</h2><p>'+esc(n.desc)+'</p>'+
+        '<div class="btns">'+(n.src==='google'&&n.google?'<a class="gg" href="'+esc(safe(n.google))+'" target="_blank" rel="noopener">B 구글 블로그</a>':'<a class="nv" href="'+esc(safe(n.naver))+'" target="_blank" rel="noopener">N 네이버 블로그</a>')+'</div></div></article>';
     }).join('');
   });
 
