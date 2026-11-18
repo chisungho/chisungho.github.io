@@ -383,6 +383,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="hcNote"></p>
     </div>
     <div class="card">
+      <h2>지장간·통근 풀이 <span class="sub">支藏干 · 通根 · 透出</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">지지 속에 숨어 있는 천간을 지장간(支藏干)이라 합니다. 겉으로 드러나지 않은 속마음·잠재된 기운으로 보며, 일간과 같은 오행이 지지에 숨어 있으면 뿌리를 내렸다(통근), 숨은 천간이 원국 천간에 그대로 올라와 있으면 겉으로 드러났다(투출)고 풀이합니다.</p>
+      <div id="jjBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="jjNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -613,6 +619,15 @@ function render(r){
   $('hcBox').innerHTML=hcRows.map(x=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${x[1]}</b> <span class="mini">${x[0]==='합'?'合':'沖'} · ${x[2]}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${x[3]}</div></div>`).join('');
   const hcH=hcRows.filter(x=>x[0]==='합').length, hcC=hcRows.length-hcH;
   $('hcNote').innerHTML=(hcRows.length?`원국에 합이 <b>${hcH}개</b>, 충이 <b>${hcC}개</b> 있습니다. `+(hcH>hcC?'합이 더 많아 사람·환경과 어울리며 안정을 찾는 쪽에 무게가 실립니다.':hcC>hcH?'충이 더 많아 변화와 이동이 잦고, 움직이면서 길을 여는 쪽에 무게가 실립니다.':'합과 충이 비슷해 안정과 변화가 번갈아 드는 편으로 봅니다.'):'원국의 글자끼리 뚜렷한 합·충이 없습니다. 글자들이 서로 크게 묶이거나 부딪치지 않아 흐름이 무난한 편으로 보며, 대운·세운의 글자가 원국과 합·충을 이루는 해에 변화가 나타난다고 풀이합니다.')+' 합·충은 오행·십신과 함께 보는 참고 자료입니다.'+(r.known?'':' 시간을 몰라 시주는 빼고 보았습니다.');
+
+  // 지장간·통근 풀이 (여기·중기·정기, 일간 기준 십신, 통근·투출)
+  const jjRoot=[], jjOut=[];
+  $('jjBox').innerHTML=HK.map(k=>{const z=P[k][1], hs=HIDE[z], nm=hs.length===3?['여기','중기','정기']:['여기','정기'];
+    if(hs.some(g=>GEL[g]===GEL[dg]))jjRoot.push(ZN[k]+' '+ZHI[z]);
+    const parts=hs.map((g,i)=>{const out=HK.some(x=>P[x][0]===g);if(out&&!jjOut.includes(GAN[g]))jjOut.push(GAN[g]);
+      return `<span style="display:inline-block;margin:2px 10px 2px 0"><span class="mini">${nm[i]}</span> <b class="hz e${GEL[g]}">${GAN[g]}</b> ${GK[g]}${EL[GEL[g]]} · ${sipsin(dg,g)}${out?' <span class="mini">(투출)</span>':''}</span>`;}).join('');
+    return `<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${ZN[k]} ${ZHI[z]}</b> <span class="mini">${ZK[z]} · 숨은 천간 ${hs.length}개</span><div style="margin-top:4px;font-size:14px;line-height:1.7">${parts}</div></div>`;}).join('');
+  $('jjNote').innerHTML=`일간 <b class="hz">${GAN[dg]}</b>(${EL[GEL[dg]]})은 `+(jjRoot.length?`<b>${jjRoot.join('·')}</b> ${jjRoot.length}곳의 지장간에 같은 ${EL[GEL[dg]]} 기운이 있어 뿌리를 내렸습니다(통근). ${jjRoot.length>=2?'뿌리가 여럿이라 스스로 버티는 힘이 있는 편으로 봅니다.':'뿌리가 한 곳이라 그 자리(기둥)의 사람·환경이 든든한 버팀목이 된다고 봅니다.'}`:`지지 어디에도 같은 ${EL[GEL[dg]]} 기운이 숨어 있지 않아 뿌리가 약한 편입니다. 그만큼 인성·비겁이 들어오는 대운과 세운의 도움을 함께 살핍니다.`)+(jjOut.length?` 지장간 가운데 <b class="hz">${jjOut.join('·')}</b>은(는) 천간에도 올라와 있어(투출), 속에 품은 기운이 겉으로도 드러나 실제 삶에서 힘을 쓴다고 풀이합니다.`:' 지장간이 천간으로 올라온 것은 없어, 속에 품은 기운이 겉으로는 잘 드러나지 않는 편입니다.');
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
