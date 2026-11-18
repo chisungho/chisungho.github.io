@@ -3,9 +3,10 @@
    - 칸 위치는 자로 잰 값으로 맞추고(이 기기에 저장), 일반 종이 시험 인쇄로 확인한다.
    - 웹페이지는 프린터를 고를 수 없어서 기기의 기본 프린터 + 용지 크기·여백 0·100% 를 미리 정해 인쇄 창을 연다. */
 (function(){
-  var KEY='lp_cfg_v1';
-  // 기본값은 추정치다. 실제 용지를 자로 재서 고친다.
-  var DEF={w:190,h:82.5,ax:27,ay:19,d17:26.4,d143:38.4,gab:32.5,lay:'row',mw:2.2,mh:3.4,dx:0,dy:0,rot:false};
+  var KEY='lp_cfg_v2';
+  // 기본값: 동행복권 로또 6/45 구매 용지 스캔(2026-11-18, A4 300dpi 상당)에서 잰 값. 용지 190.8×82.3mm, A게임 1번 칸 가운데 (41.3, 11.9)mm,
+  // 칸 간격 가로 3.43mm(1→7번 20.6mm)·세로 6.38mm(1→43번 38.3mm), 게임 간격 27.5mm. 프린터마다 급지 위치가 달라 보정(dx·dy)은 시험 인쇄로 맞춘다.
+  var DEF={w:190.8,h:82.3,ax:41.3,ay:11.9,d17:20.6,d143:38.3,gab:27.5,lay:'row',mw:2.4,mh:3.0,dx:0,dy:0,rot:0};
   var cfg=load();
   function load(){try{var c=JSON.parse(localStorage.getItem(KEY));if(c&&typeof c==='object'){var o={};for(var k in DEF)o[k]=(k in c)?c[k]:DEF[k];return o}}catch(e){}return JSON.parse(JSON.stringify(DEF))}
   function save(){try{localStorage.setItem(KEY,JSON.stringify(cfg))}catch(e){}}
@@ -76,7 +77,7 @@
  <label for="lp_mh">표시 세로 크기</label><input id="lp_mh" type="number" step="0.1">
  <label for="lp_dx">프린터 보정 → 오른쪽(+)/왼쪽(−)</label><input id="lp_dx" type="number" step="0.1">
  <label for="lp_dy">프린터 보정 → 아래(+)/위(−)</label><input id="lp_dy" type="number" step="0.1">
- <label for="lp_rot">용지를 세로로 세워 넣음(90° 돌려 인쇄)</label><select id="lp_rot"><option value="0">아니요</option><option value="1">예</option></select>
+ <label for="lp_rot">용지 넣는 방향</label><select id="lp_rot"><option value="0">가로로 눕혀 넣음</option><option value="90">세로 · 로고 쪽 먼저</option><option value="270">세로 · E게임 쪽 먼저</option></select>
 </div>
 <div class="row2"><button id="lpTestPlain" type="button">시험 인쇄 (일반 종이)</button><button id="lpTestSlip" type="button">시험 인쇄 (구매 용지)</button><button id="lpReset" type="button">처음 값으로</button></div>
 <ol style="font-size:13px">
@@ -84,7 +85,7 @@
  <li><b>구매 용지 시험</b>: 실제 용지에 A~E게임의 1·7·43·45번 칸만 찍습니다. 네 귀퉁이가 칸 안에 들어오면 맞춘 것입니다.</li>
  <li>전체가 한쪽으로 밀리면 <b>프린터 보정</b>만 고치면 됩니다(급지대가 용지를 가운데로 맞추는 프린터가 많습니다).</li>
 </ol>
-<p style="font-size:12px;color:#6b7487">처음 값은 일반적인 용지 크기를 바탕으로 한 추정치라 그대로는 맞지 않을 수 있습니다.</p>
+<p style="font-size:12px;color:#6b7487">처음 값은 동행복권 로또 6/45 구매 용지(190.8×82.3mm)를 스캔해 잰 값입니다. 프린터가 용지를 잡는 위치만 다르므로 보통 '프린터 보정'만 고치면 됩니다.</p>
 </details>
 <details><summary>프린터 연결·설정 (PC·휴대폰)</summary>
 <p style="font-size:13px">인쇄 버튼을 누르면 이 페이지가 <b>용지 크기, 여백 0, 실제 크기(100%)</b>를 미리 정해 인쇄 창을 엽니다. 프린터는 기기에 연결된 <b>기본 프린터</b>가 자동으로 고릅니다. 인쇄 창에서 아래만 확인하세요.</p>
@@ -100,8 +101,8 @@
   document.body.appendChild(dlg);
   var games=[],meta={},prevFocus=null;
   var F=['w','h','ax','ay','lay','d17','d143','gab','mw','mh','dx','dy','rot'];
-  function fill(){F.forEach(function(k){var e=$('lp_'+k);e.value=k==='rot'?(cfg.rot?'1':'0'):cfg[k]})}
-  F.forEach(function(k){$('lp_'+k).addEventListener('change',function(){var v=this.value;if(k==='lay')cfg.lay=v;else if(k==='rot')cfg.rot=v==='1';else{var n=parseFloat(v);if(isFinite(n))cfg[k]=n;else this.value=cfg[k]}save()})});
+  function fill(){F.forEach(function(k){var e=$('lp_'+k);e.value=k==='rot'?String(+cfg.rot||0):cfg[k]})}
+  F.forEach(function(k){$('lp_'+k).addEventListener('change',function(){var v=this.value;if(k==='lay')cfg.lay=v;else if(k==='rot')cfg.rot=+v;else{var n=parseFloat(v);if(isFinite(n))cfg[k]=n;else this.value=cfg[k]}save()})});
   $('lpReset').onclick=function(){cfg=JSON.parse(JSON.stringify(DEF));save();fill()};
   $('lpClose').onclick=close;
   dlg.addEventListener('click',function(e){if(e.target===dlg)close()});
@@ -110,12 +111,12 @@
 
   function slipPage(inner){
     var W=cfg.w,H=cfg.h;
-    var tf=cfg.rot?'transform-origin:0 0;transform:translateX('+H+'mm) rotate(90deg);':'';
-    return '<div class="pg" style="width:'+(cfg.rot?H:W)+'mm;height:'+(cfg.rot?W:H)+'mm"><div style="position:absolute;left:0;top:0;width:'+W+'mm;height:'+H+'mm;'+tf+'">'+inner+'</div></div>';
+    var r=+cfg.rot||0,tf=r===90?'transform-origin:0 0;transform:translateX('+H+'mm) rotate(90deg);':r===270?'transform-origin:0 0;transform:translateY('+W+'mm) rotate(-90deg);':'';
+    return '<div class="pg" style="width:'+(r?H:W)+'mm;height:'+(r?W:H)+'mm"><div style="position:absolute;left:0;top:0;width:'+W+'mm;height:'+H+'mm;'+tf+'">'+inner+'</div></div>';
   }
   function mark(g,n){var p=cell(g,n);return '<i style="position:absolute;left:'+(p[0]-cfg.mw/2).toFixed(2)+'mm;top:'+(p[1]-cfg.mh/2).toFixed(2)+'mm;width:'+cfg.mw+'mm;height:'+cfg.mh+'mm;background:#000"></i>'}
   function setPage(size){pageSt.textContent='@page{size:'+size+';margin:0}'}
-  function slipSize(){return cfg.rot?(cfg.h+'mm '+cfg.w+'mm'):(cfg.w+'mm '+cfg.h+'mm')}
+  function slipSize(){return +cfg.rot?(cfg.h+'mm '+cfg.w+'mm'):(cfg.w+'mm '+cfg.h+'mm')}
   function go(){setTimeout(function(){window.print()},60)}
 
   function printSlips(){
