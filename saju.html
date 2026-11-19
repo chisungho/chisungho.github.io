@@ -389,6 +389,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="jjNote"></p>
     </div>
     <div class="card">
+      <h2>공망 풀이 <span class="sub">空亡 · 비어 있는 자리</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">60갑자를 열 개씩 묶으면 천간 10개와 짝을 이루지 못하고 남는 지지가 둘씩 생깁니다. 이 두 글자를 공망(空亡)이라 하며, 일주를 기준으로 찾습니다. 원국이나 그해의 지지가 공망에 들면 그 자리의 기운이 비어 있다, 애써도 결과가 늦게 찬다고 풀이하지만, 흉한 글자가 공망이면 오히려 나쁜 작용이 줄어든다고도 봅니다.</p>
+      <div id="kmBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="kmNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -628,6 +634,18 @@ function render(r){
       return `<span style="display:inline-block;margin:2px 10px 2px 0"><span class="mini">${nm[i]}</span> <b class="hz e${GEL[g]}">${GAN[g]}</b> ${GK[g]}${EL[GEL[g]]} · ${sipsin(dg,g)}${out?' <span class="mini">(투출)</span>':''}</span>`;}).join('');
     return `<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${ZN[k]} ${ZHI[z]}</b> <span class="mini">${ZK[z]} · 숨은 천간 ${hs.length}개</span><div style="margin-top:4px;font-size:14px;line-height:1.7">${parts}</div></div>`;}).join('');
   $('jjNote').innerHTML=`일간 <b class="hz">${GAN[dg]}</b>(${EL[GEL[dg]]})은 `+(jjRoot.length?`<b>${jjRoot.join('·')}</b> ${jjRoot.length}곳의 지장간에 같은 ${EL[GEL[dg]]} 기운이 있어 뿌리를 내렸습니다(통근). ${jjRoot.length>=2?'뿌리가 여럿이라 스스로 버티는 힘이 있는 편으로 봅니다.':'뿌리가 한 곳이라 그 자리(기둥)의 사람·환경이 든든한 버팀목이 된다고 봅니다.'}`:`지지 어디에도 같은 ${EL[GEL[dg]]} 기운이 숨어 있지 않아 뿌리가 약한 편입니다. 그만큼 인성·비겁이 들어오는 대운과 세운의 도움을 함께 살핍니다.`)+(jjOut.length?` 지장간 가운데 <b class="hz">${jjOut.join('·')}</b>은(는) 천간에도 올라와 있어(투출), 속에 품은 기운이 겉으로도 드러나 실제 삶에서 힘을 쓴다고 풀이합니다.`:' 지장간이 천간으로 올라온 것은 없어, 속에 품은 기운이 겉으로는 잘 드러나지 않는 편입니다.');
+
+  // 공망 풀이 (일주 기준, 원국 자리별 + 다가오는 공망 해)
+  {const kg=gz60(P.d[0],P.d[1]), kxs=kg-kg%10, kmZ=[(kxs%12+10)%12,(kxs%12+11)%12];
+   const KM_POS={y:['년지','조상·어린 시절','집안의 도움이 생각보다 적거나 일찍 독립하는 흐름으로 봅니다. 스스로 터전을 일구는 힘이 길러진다고도 풀이합니다.'],
+     m:['월지','부모·형제·사회','부모·형제 덕이나 직장 인연이 약하게 느껴질 수 있다고 봅니다. 대신 정해진 틀에 매이지 않고 자기 길을 찾는 경우가 많습니다.'],
+     h:['시지','자녀·말년','자녀와 떨어져 지내거나 말년에 정신적·종교적인 데 마음을 두는 흐름으로 봅니다. 노후 준비를 미리 챙기라는 뜻으로 읽습니다.']};
+   const kmHit=['y','m','h'].filter(k=>P[k]&&kmZ.includes(P[k][1]));
+   const kmYears=[],nowY0=new Date().getFullYear();for(let yy=nowY0;yy<nowY0+12&&kmYears.length<4;yy++){const bz=((yy-4)%12+12)%12;if(kmZ.includes(bz))kmYears.push(`${yy}년(${ZHI[bz]})`);}
+   $('kmBox').innerHTML=`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>공망 글자</b> <span class="mini">일주 ${GAN[P.d[0]]}${ZHI[P.d[1]]} 기준</span><div style="margin-top:4px;font-size:14px;line-height:1.6"><b class="hz">${ZHI[kmZ[0]]}</b> ${ZK[kmZ[0]]} · <b class="hz">${ZHI[kmZ[1]]}</b> ${ZK[kmZ[1]]}</div></div>`+
+     (kmHit.length?kmHit.map(k=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${KM_POS[k][0]} ${ZHI[P[k][1]]} 공망</b> <span class="mini">${KM_POS[k][1]}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${KM_POS[k][2]}</div></div>`).join(''):'');
+   $('kmNote').innerHTML=(kmHit.length?`원국에서 <b>${kmHit.map(k=>KM_POS[k][0]).join('·')}</b>가 공망에 들었습니다. `:'원국의 년지·월지·시지 가운데 공망에 든 자리는 없어, 공망의 영향은 크지 않은 편으로 봅니다. ')+
+     (kmYears.length?`앞으로 공망 글자가 들어오는 해는 <b>${kmYears.join(', ')}</b>입니다. 이런 해에는 큰 확장보다 내실을 다지고, 계약·투자는 한 번 더 확인하라고 풀이합니다.`:'')+' 공망은 참고용 해석이며, 원국 전체의 흐름과 함께 보세요.';}
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
