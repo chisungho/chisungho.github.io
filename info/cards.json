@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-19 09:51",
+ "updated": "2026-11-19 10:11",
  "items": [
   {
    "id": "p_1119_0900-p1",
-   "date": "2026-11-19 09:37",
+   "date": "2026-11-19 10:00",
    "title": "FOMC 의사록, 빅스텝이 다시 나왔다",
    "imgs": [
     "info/img/p_1119_0900-p1/card1.webp",
@@ -13,6 +13,10 @@
     "info/img/p_1119_0900-p1/card5.webp"
    ],
    "links": [
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/81"
+    },
     {
      "label": "인스타그램 채널",
      "url": "https://www.instagram.com/jiseungho7/"
@@ -28,10 +32,6 @@
     {
      "label": "틱톡 채널",
      "url": "https://www.tiktok.com/@hochi285"
-    },
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528"
     }
    ]
   },
