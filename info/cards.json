@@ -1,9 +1,9 @@
 {
- "updated": "2026-11-20 00:10",
+ "updated": "2026-11-20 07:01",
  "items": [
   {
    "id": "p_1119_1500-p1",
-   "date": "2026-11-19 15:28",
+   "date": "2026-11-20 06:45",
    "title": "수도계량기 동파방지, 절반이 복도였다",
    "imgs": [
     "info/img/p_1119_1500-p1/card1.webp",
@@ -13,6 +13,10 @@
     "info/img/p_1119_1500-p1/card5.webp"
    ],
    "links": [
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/84"
+    },
     {
      "label": "인스타그램 채널",
      "url": "https://www.instagram.com/jiseungho7/"
@@ -28,10 +32,6 @@
     {
      "label": "틱톡 채널",
      "url": "https://www.tiktok.com/@hochi285"
-    },
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528"
     }
    ]
   },
