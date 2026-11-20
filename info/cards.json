@@ -1,6 +1,40 @@
 {
- "updated": "2026-11-20 09:54",
+ "updated": "2026-11-20 12:49",
  "items": [
+  {
+   "id": "p_1120_1200-p1",
+   "date": "2026-11-20 12:36",
+   "title": "사이드카 뜻, 올해만 59번째다",
+   "imgs": [
+    "info/img/p_1120_1200-p1/card1.webp",
+    "info/img/p_1120_1200-p1/card2.webp",
+    "info/img/p_1120_1200-p1/card3.webp",
+    "info/img/p_1120_1200-p1/card4.webp",
+    "info/img/p_1120_1200-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/87"
+    },
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    }
+   ]
+  },
   {
    "id": "p_1120_0900-p1",
    "date": "2026-11-20 09:34",
@@ -968,40 +1002,6 @@
     {
      "label": "밴드 페이지",
      "url": "https://band.us/page/104755528/post/60"
-    },
-    {
-     "label": "인스타그램 채널",
-     "url": "https://www.instagram.com/jiseungho7/"
-    },
-    {
-     "label": "페이스북 채널",
-     "url": "https://www.facebook.com/profile.php?id=61595527151362"
-    },
-    {
-     "label": "유튜브 게시물 탭",
-     "url": "https://www.youtube.com/@hochi9126/posts"
-    },
-    {
-     "label": "틱톡 채널",
-     "url": "https://www.tiktok.com/@hochi285"
-    }
-   ]
-  },
-  {
-   "id": "p_1112_search-p1",
-   "date": "2026-11-12 19:01",
-   "title": "정보 검색 잘하는 법, 습관 5가지",
-   "imgs": [
-    "info/img/p_1112_search-p1/card1.webp",
-    "info/img/p_1112_search-p1/card2.webp",
-    "info/img/p_1112_search-p1/card3.webp",
-    "info/img/p_1112_search-p1/card4.webp",
-    "info/img/p_1112_search-p1/card5.webp"
-   ],
-   "links": [
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528/post/58"
     },
     {
      "label": "인스타그램 채널",
