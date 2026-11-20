@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-20 20:03",
+ "updated": "2026-11-21 05:43",
  "source": "https://link.inpock.co.kr/hgy671001",
  "items": [
   {
@@ -22762,17 +22762,6 @@
    "group": "numbered"
   },
   {
-   "id": 8336854,
-   "no": 191,
-   "name": "[청주출발노옵션다낭/호이안] 5성 호텔 29만원 상당 혜택 포함 호이안 야경",
-   "url": "https://naver.me/GKI0hkLM",
-   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/12/2026-11-12-1794480442248.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
    "id": 8336848,
    "no": 190,
    "name": "브라이튼 브이 여행용 확장형 캐리어 20인치 24인치 28인치",
@@ -24610,6 +24599,94 @@
    "group": "numbered"
   },
   {
+   "id": 8458525,
+   "no": null,
+   "name": "T193 [광고] [슬림][관광1일+자유3일] 특급 힐튼 가든 인 <시티뷰> 하와이 6일",
+   "url": "https://naver.me/5Qsgc5nl",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8458524,
+   "no": null,
+   "name": "T192 [광고] [출발확정] [유류세고정] [베스트셀러] 시드니 일주 6일 (전일정4성)",
+   "url": "https://naver.me/x6JSxFOv",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/20/2026-11-20-1795206039495.webp?w=400",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8458523,
+   "no": null,
+   "name": "T191 [광고] 시드니/뉴캐슬/포트스테판 7일 노옵션 사막투어 크루즈2회 마지막2석 남자룸조",
+   "url": "https://naver.me/GbyLVtaC",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8458522,
+   "no": null,
+   "name": "T190 [광고] [행복소비] 동유럽 3개국 9일 체오헝 / A380탑승 / 2대야경쇤브룬,벨",
+   "url": "https://naver.me/xpjJuMby",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8458521,
+   "no": null,
+   "name": "T189 [광고] [청주출발노옵션다낭/호이안] 5성호텔 35만원 상당 혜택 포함 호이안야경 전",
+   "url": "https://naver.me/GKI0hkLM",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/20/2026-11-20-1795205996078.webp?w=400",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8458520,
+   "no": null,
+   "name": "T188 [광고] [슈퍼위크][출발확정][4성->5성호텔 무료UP] 다낭/바나힐/호이안 3박5",
+   "url": "https://naver.me/5nhKuQ5G",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8458519,
+   "no": null,
+   "name": "T187 [광고] [출발확정][온세일, 사가] 일본 3대 미인온천/사가/유후인 3일 (온천호텔",
+   "url": "https://naver.me/G5kMNeoR",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8458516,
+   "no": null,
+   "name": "T186 [광고] [출발확정] 타이베이/예류/스펀/지우펀/단수이 3박 5일 베스트셀러 시먼딩",
+   "url": "https://naver.me/G0pt6sKz",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
    "id": 8444793,
    "no": null,
    "name": "T185 [광고] [출발확정] [저녁출발] 괌 5일 힐튼 프리미어타워 오션뷰룸 NEW시내관광",
@@ -24681,17 +24758,6 @@
    "name": "T179 [광고] [출발확정] [스마트초이스] 시드니 업그레이드 올인원 7일 오페라하우스 내부",
    "url": "https://naver.me/xdM64LDn",
    "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/18/2026-11-18-1795033759219.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
-   "id": 8429595,
-   "no": null,
-   "name": "T178 [광고] 시드니/뉴캐슬/포트스테판 7일 노옵션 사막투어 오페라내부 4명이상 예약시",
-   "url": "https://naver.me/GbyLVtaC",
-   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/18/2026-11-18-1795033594869.webp?w=400",
    "src": "travel",
    "srcName": "여행",
    "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
@@ -24808,17 +24874,6 @@
    "group": "numbered"
   },
   {
-   "id": 8412863,
-   "no": null,
-   "name": "T167 [광고] [여행핫딜] [출발확정] [유류세고정] [베스트셀러] 시드니 일주 6일 (전",
-   "url": "https://naver.me/x6JSxFOv",
-   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/17/2026-11-17-1794947052888.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
    "id": 8412859,
    "no": null,
    "name": "T165 [광고] /크리스마스마켓/출발확정/동유럽3국 9일 [오/헝/체]/프라하2연박 /할슈타",
@@ -24863,28 +24918,6 @@
    "group": "numbered"
   },
   {
-   "id": 8412855,
-   "no": null,
-   "name": "T161 [광고] 출발확정/조인행사[홍콩디즈니랜드] 디즈니랜드 + 시티투어 3박 5일",
-   "url": "https://naver.me/Ix0MZpgD",
-   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/17/2026-11-17-1794946997719.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
-   "id": 8412854,
-   "no": null,
-   "name": "T160 [광고] [출발확정] 오사카/교토 4일 1일자유 오사카+교토숙박 기온의밤 교토산책 힐",
-   "url": "https://naver.me/G9UGFaJ4",
-   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/17/2026-11-17-1794946993628.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
    "id": 8412853,
    "no": null,
    "name": "T159 [광고] [3박 청주노팁/노옵션나트랑/달랏] 5성 호텔 42만원 상당 혜택 포함 무제",
@@ -24912,17 +24945,6 @@
    "name": "T157 [광고] [슈퍼위크][출발확정][온천in큐슈] 후쿠오카/구마모토/유후인/벳부/아소 3",
    "url": "https://naver.me/G0ptkMX5",
    "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/17/2026-11-17-1794946974438.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
-   "id": 8397029,
-   "no": null,
-   "name": "T156 [광고] [마감임박] [고객만족 BEST] 뉴질랜드 남북섬 9일",
-   "url": "https://naver.me/FHOWOYcx",
-   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/16/2026-11-16-1794860706584.webp?w=400",
    "src": "travel",
    "srcName": "여행",
    "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
@@ -25033,17 +25055,6 @@
    "name": "T140 [광고] X-MAS [명불허전] 동유럽 3개국 9일 체오헝 / 직항 / 프라하 야경",
    "url": "https://naver.me/GfrA4wdz",
    "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/16/2026-11-16-1794860575493.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
-   "id": 8397011,
-   "no": null,
-   "name": "T141 [광고] [오전출발] [노옵션다낭/호이안] 5성 호텔 29만원 상당 혜택 포함 호이안",
-   "url": "https://naver.me/GB3a6tcG",
-   "img": "",
    "src": "travel",
    "srcName": "여행",
    "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
@@ -25253,6 +25264,17 @@
    "name": "T107 [광고] [햇살 너머 설산까지] 이탈리아+스위스 2국 9일 이탈리아핵심일주 융프라우",
    "url": "https://naver.me/xm0ozI5p",
    "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8341575,
+   "no": null,
+   "name": "T104 [광고] 출발확정/오전출발[노옵션다낭/호이안] 5성 호텔 29만원 상당 혜택 호이안",
+   "url": "https://naver.me/GB3a6tcG",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/12/2026-11-12-1794514255511.webp?w=400",
    "src": "travel",
    "srcName": "여행",
    "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
