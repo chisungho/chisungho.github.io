@@ -395,6 +395,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="kmNote"></p>
     </div>
     <div class="card">
+      <h2>조후 풀이 <span class="sub">調候 · 차고 더운 기운의 균형</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">조후(調候)는 태어난 계절의 온도와 습도를 맞추는 일입니다. 한겨울에 난 사주는 불(火)로 데워 주고, 한여름에 난 사주는 물(水)로 식혀 주어야 기운이 제대로 돈다고 봅니다. 태어난 달(월지)의 계절과 원국의 불·물 글자 수를 함께 살폈습니다.</p>
+      <div id="jhBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="jhNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -646,6 +652,23 @@ function render(r){
      (kmHit.length?kmHit.map(k=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${KM_POS[k][0]} ${ZHI[P[k][1]]} 공망</b> <span class="mini">${KM_POS[k][1]}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${KM_POS[k][2]}</div></div>`).join(''):'');
    $('kmNote').innerHTML=(kmHit.length?`원국에서 <b>${kmHit.map(k=>KM_POS[k][0]).join('·')}</b>가 공망에 들었습니다. `:'원국의 년지·월지·시지 가운데 공망에 든 자리는 없어, 공망의 영향은 크지 않은 편으로 봅니다. ')+
      (kmYears.length?`앞으로 공망 글자가 들어오는 해는 <b>${kmYears.join(', ')}</b>입니다. 이런 해에는 큰 확장보다 내실을 다지고, 계약·투자는 한 번 더 확인하라고 풀이합니다.`:'')+' 공망은 참고용 해석이며, 원국 전체의 흐름과 함께 보세요.';}
+
+  // 조후 풀이 (월지 계절 + 원국의 화·수 개수)
+  {const mz=P.m[1], SEA={2:'봄',3:'봄',4:'봄',5:'여름',6:'여름',7:'여름',8:'가을',9:'가을',10:'가을',11:'겨울',0:'겨울',1:'겨울'};
+   const sea=SEA[mz]; let fire=0,water=0;
+   ['y','m','d','h'].filter(k=>P[k]).forEach(k=>{const g=GEL[P[k][0]],z=ZEL[P[k][1]];if(g===1)fire++;if(g===4)water++;if(z===1)fire++;if(z===4)water++;});
+   const JH={봄:['따뜻해지는 계절','나무가 자라는 때라 햇볕(火)과 알맞은 물(水)이 함께 있어야 잘 큰다고 봅니다. 초봄(寅월)은 아직 쌀쌀해 불을 조금 더 반깁니다.'],
+     여름:['뜨겁고 마른 계절','열기가 넘치기 쉬워 물(水)로 식히고 적셔 주는 것이 가장 먼저라고 봅니다. 물이 있으면 재능이 타 버리지 않고 오래 간다고 풀이합니다.'],
+     가을:['서늘하고 메마른 계절','쇠(金)의 기운이 강해지는 때라 물로 적시고, 늦가을(戌월)부터는 불로 온기를 더해 주면 좋다고 봅니다.'],
+     겨울:['춥고 언 계절','얼어붙은 기운을 녹이는 불(火)이 가장 귀하다고 봅니다. 불이 있으면 움츠렸던 재능이 풀려 움직이기 시작한다고 풀이합니다.']};
+   let need,have;
+   if(sea==='겨울'||(sea==='봄'&&mz===2)){need='화(火)';have=fire;}
+   else if(sea==='여름'){need='수(水)';have=water;}
+   else {need='수(水)·화(火)';have=Math.min(fire,water);}
+   const lv=sea==='봄'&&mz!==2?(fire&&water?'좋음':'보통'):sea==='가을'?(water&&fire?'좋음':(water||fire)?'보통':'부족'):(have>=2?'좋음':have===1?'보통':'부족');
+   $('jhBox').innerHTML=`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${sea} 태생</b> <span class="mini">월지 ${ZHI[mz]} · ${JH[sea][0]}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${JH[sea][1]}</div></div>`+
+     `<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>원국의 불·물</b> <span class="mini">천간·지지 본기 기준</span><div style="margin-top:4px;font-size:14px;line-height:1.6">화(火) <b>${fire}</b>개 · 수(水) <b>${water}</b>개 → 조후 <b>${lv}</b></div></div>`;
+   $('jhNote').innerHTML=(lv==='좋음'?`이 계절에 필요한 ${need} 기운이 원국에 갖춰져 있어, 차고 더운 균형이 잘 맞는 편으로 봅니다.`:lv==='보통'?`필요한 ${need} 기운이 조금 있어 균형은 무난한 편입니다. 그 기운이 들어오는 대운·세운에 일이 더 잘 풀린다고 봅니다.`:`이 계절에 필요한 ${need} 기운이 원국에 드러나 있지 않습니다. 그 기운이 들어오는 대운·세운을 좋은 때로 보고, 생활에서는 ${need.includes('火')?'햇볕·운동·밝은 색':'휴식·물가·차분한 색'}으로 채우라고 풀이합니다.`)+' 조후는 억부(강약)와 함께 보는 참고 자료입니다.'+(r.known?'':' 시간을 몰라 시주는 빼고 보았습니다.');}
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
