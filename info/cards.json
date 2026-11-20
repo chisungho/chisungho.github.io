@@ -1,6 +1,40 @@
 {
- "updated": "2026-11-20 07:37",
+ "updated": "2026-11-20 09:54",
  "items": [
+  {
+   "id": "p_1120_0900-p1",
+   "date": "2026-11-20 09:34",
+   "title": "앤트로픽 상장, 첫날 17% 올랐다",
+   "imgs": [
+    "info/img/p_1120_0900-p1/card1.webp",
+    "info/img/p_1120_0900-p1/card2.webp",
+    "info/img/p_1120_0900-p1/card3.webp",
+    "info/img/p_1120_0900-p1/card4.webp",
+    "info/img/p_1120_0900-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/86"
+    },
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    }
+   ]
+  },
   {
    "id": "p_1120_0600-p1",
    "date": "2026-11-20 07:09",
@@ -968,40 +1002,6 @@
     {
      "label": "밴드 페이지",
      "url": "https://band.us/page/104755528/post/58"
-    },
-    {
-     "label": "인스타그램 채널",
-     "url": "https://www.instagram.com/jiseungho7/"
-    },
-    {
-     "label": "페이스북 채널",
-     "url": "https://www.facebook.com/profile.php?id=61595527151362"
-    },
-    {
-     "label": "유튜브 게시물 탭",
-     "url": "https://www.youtube.com/@hochi9126/posts"
-    },
-    {
-     "label": "틱톡 채널",
-     "url": "https://www.tiktok.com/@hochi285"
-    }
-   ]
-  },
-  {
-   "id": "p_1112_write-p1",
-   "date": "2026-11-12 18:40",
-   "title": "글쓰기 방법, 결론부터 쓰면 풀린다",
-   "imgs": [
-    "info/img/p_1112_write-p1/card1.webp",
-    "info/img/p_1112_write-p1/card2.webp",
-    "info/img/p_1112_write-p1/card3.webp",
-    "info/img/p_1112_write-p1/card4.webp",
-    "info/img/p_1112_write-p1/card5.webp"
-   ],
-   "links": [
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528/post/66"
     },
     {
      "label": "인스타그램 채널",
