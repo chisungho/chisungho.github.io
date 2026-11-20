@@ -1,6 +1,40 @@
 {
- "updated": "2026-11-21 00:09",
+ "updated": "2026-11-21 06:56",
  "items": [
+  {
+   "id": "p_1121_0600-p1",
+   "date": "2026-11-21 06:34",
+   "title": "코스피 폭락 원인, 반도체가 7% 빠졌다",
+   "imgs": [
+    "info/img/p_1121_0600-p1/card1.webp",
+    "info/img/p_1121_0600-p1/card2.webp",
+    "info/img/p_1121_0600-p1/card3.webp",
+    "info/img/p_1121_0600-p1/card4.webp",
+    "info/img/p_1121_0600-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/88"
+    },
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    }
+   ]
+  },
   {
    "id": "p_1120_1500-p1",
    "date": "2026-11-20 15:49",
@@ -984,40 +1018,6 @@
     {
      "label": "틱톡 채널",
      "url": "https://www.tiktok.com/@hochi285"
-    }
-   ]
-  },
-  {
-   "id": "p_1113_tax-p1",
-   "date": "2026-11-13 02:47",
-   "title": "카드 공제 한도 400만 원으로 늘었다",
-   "imgs": [
-    "info/img/p_1113_tax-p1/card1.webp",
-    "info/img/p_1113_tax-p1/card2.webp",
-    "info/img/p_1113_tax-p1/card3.webp",
-    "info/img/p_1113_tax-p1/card4.webp",
-    "info/img/p_1113_tax-p1/card5.webp"
-   ],
-   "links": [
-    {
-     "label": "인스타그램 채널",
-     "url": "https://www.instagram.com/jiseungho7/"
-    },
-    {
-     "label": "페이스북 채널",
-     "url": "https://www.facebook.com/profile.php?id=61595527151362"
-    },
-    {
-     "label": "유튜브 게시물 탭",
-     "url": "https://www.youtube.com/@hochi9126/posts"
-    },
-    {
-     "label": "틱톡 채널",
-     "url": "https://www.tiktok.com/@hochi285"
-    },
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528"
     }
    ]
   }
