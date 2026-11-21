@@ -1,6 +1,40 @@
 {
- "updated": "2026-11-21 18:40",
+ "updated": "2026-11-21 21:34",
  "items": [
+  {
+   "id": "p_1121_2100-p1",
+   "date": "2026-11-21 21:32",
+   "title": "금시세, 고점보다 37% 내려왔다",
+   "imgs": [
+    "info/img/p_1121_2100-p1/card1.webp",
+    "info/img/p_1121_2100-p1/card2.webp",
+    "info/img/p_1121_2100-p1/card3.webp",
+    "info/img/p_1121_2100-p1/card4.webp",
+    "info/img/p_1121_2100-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    },
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528"
+    }
+   ]
+  },
   {
    "id": "p_1121_1800-p1",
    "date": "2026-11-21 18:33",
@@ -984,40 +1018,6 @@
     {
      "label": "틱톡 채널",
      "url": "https://www.tiktok.com/@hochi285"
-    }
-   ]
-  },
-  {
-   "id": "p_1114_1400-p1",
-   "date": "2026-11-14 15:04",
-   "title": "엔화 환율, 18년 만에 최저다",
-   "imgs": [
-    "info/img/p_1114_1400-p1/card1.webp",
-    "info/img/p_1114_1400-p1/card2.webp",
-    "info/img/p_1114_1400-p1/card3.webp",
-    "info/img/p_1114_1400-p1/card4.webp",
-    "info/img/p_1114_1400-p1/card5.webp"
-   ],
-   "links": [
-    {
-     "label": "유튜브 게시물",
-     "url": "https://www.youtube.com/post/UgkxXpbGWBosmXwIEiw1x2JeWZtdqbL1P2Zf"
-    },
-    {
-     "label": "인스타그램 채널",
-     "url": "https://www.instagram.com/jiseungho7/"
-    },
-    {
-     "label": "페이스북 채널",
-     "url": "https://www.facebook.com/profile.php?id=61595527151362"
-    },
-    {
-     "label": "틱톡 채널",
-     "url": "https://www.tiktok.com/@hochi285"
-    },
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528"
     }
    ]
   }
