@@ -401,6 +401,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="jhNote"></p>
     </div>
     <div class="card">
+      <h2>신강·신약 풀이 <span class="sub">身强身弱 · 억부(抑扶)</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">일간(나)을 돕는 기운(비겁·인성)과 힘을 빼는 기운(식상·재성·관성)을 저울에 올려 봅니다. 태어난 달의 지지(월지)가 가장 무겁고, 일지가 그다음입니다. 강하면 덜어 주고, 약하면 북돋우는 것이 억부의 원리입니다.</p>
+      <div id="sgBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="sgNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -669,6 +675,18 @@ function render(r){
    $('jhBox').innerHTML=`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${sea} 태생</b> <span class="mini">월지 ${ZHI[mz]} · ${JH[sea][0]}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${JH[sea][1]}</div></div>`+
      `<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>원국의 불·물</b> <span class="mini">천간·지지 본기 기준</span><div style="margin-top:4px;font-size:14px;line-height:1.6">화(火) <b>${fire}</b>개 · 수(水) <b>${water}</b>개 → 조후 <b>${lv}</b></div></div>`;
    $('jhNote').innerHTML=(lv==='좋음'?`이 계절에 필요한 ${need} 기운이 원국에 갖춰져 있어, 차고 더운 균형이 잘 맞는 편으로 봅니다.`:lv==='보통'?`필요한 ${need} 기운이 조금 있어 균형은 무난한 편입니다. 그 기운이 들어오는 대운·세운에 일이 더 잘 풀린다고 봅니다.`:`이 계절에 필요한 ${need} 기운이 원국에 드러나 있지 않습니다. 그 기운이 들어오는 대운·세운을 좋은 때로 보고, 생활에서는 ${need.includes('火')?'햇볕·운동·밝은 색':'휴식·물가·차분한 색'}으로 채우라고 풀이합니다.`)+' 조후는 억부(강약)와 함께 보는 참고 자료입니다.'+(r.known?'':' 시간을 몰라 시주는 빼고 보았습니다.');}
+
+  // 신강·신약 풀이 (억부: 득령·득지·득세)
+  {const A=analyze(r), D=A.D, help=el=>{const k=(el-D+5)%5;return k===0||k===4;};
+   const dl=help(ZEL[P.m[1]]), dj=help(ZEL[P.d[1]]);
+   let hc=0,tc=0;[['y',0],['y',1],['m',0],['d',1]].concat(r.known&&P.h?[['h',0],['h',1]]:[]).forEach(([k,z])=>{tc++;if(help(z?ZEL[P[k][1]]:GEL[P[k][0]]))hc++;});
+   const ds=hc*2>tc, pct=Math.round(A.ratio*100);
+   const row=(t,ok,d)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${t}</b> <span class="mini">${ok?'○ 얻음':'× 못 얻음'}</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${d}</div></div>`;
+   $('sgBox').innerHTML=row('득령(得令)',dl,`월지 ${ZHI[P.m[1]]}(${EL[ZEL[P.m[1]]]}) 글자는 일간 ${GAN[P.d[0]]}(${EL[D]})에게 ${dl?'힘을 보탭니다. 태어난 계절의 힘을 얻어 뿌리가 단단하다고 봅니다.':'힘을 보태지 않습니다. 계절의 힘을 얻지 못해 다른 자리의 도움이 중요합니다.'}`)+
+     row('득지(得地)',dj,`일지 ${ZHI[P.d[1]]}(${EL[ZEL[P.d[1]]]}) 글자는 ${dj?'나를 받쳐 줍니다. 가까운 자리(배우자 자리)에 기댈 곳이 있다고 풀이합니다.':'나를 받쳐 주지 않습니다. 가까운 자리보다 바깥의 도움을 찾게 된다고 봅니다.'}`)+
+     row('득세(得勢)',ds,`나머지 글자 ${tc}개 가운데 나를 돕는 글자가 ${hc}개입니다. ${ds?'주변 세력이 내 편이 많습니다.':'주변에 힘을 빼는 글자가 더 많습니다.'}`)+
+     `<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>저울 결과</b> <span class="mini">월지 3배·일지 1.5배 가중치</span><div style="margin:6px 0 4px;height:10px;border-radius:6px;background:var(--line);overflow:hidden"><div style="width:${pct}%;height:100%;background:${A.strong?'#e11d48':'#2563eb'}"></div></div><div style="font-size:14px;line-height:1.6">돕는 힘 <b>${pct}%</b> → <b>${A.label}</b> · 용신 <b class="hz">${ELH[A.yong]}</b> ${EL[A.yong]}</div></div>`;
+   $('sgNote').innerHTML=(A.strong?`기운이 강한 사주입니다. 힘을 쓰고 나누는 ${REL[1]}·${REL[2]}·${REL[3]} 기운이 들어올 때 재능이 결과로 이어진다고 봅니다. 고집이 세지지 않도록 남의 말을 한 번 더 듣는 습관이 도움이 됩니다.`:`기운이 약한 편인 사주입니다. 나를 돕는 ${REL[4]}·${REL[0]} 기운이 들어올 때 힘이 붙는다고 봅니다. 혼자 다 떠안기보다 사람·공부·자격의 도움을 받는 쪽이 유리합니다.`)+' 신강·신약은 좋고 나쁨이 아니라 균형을 보는 기준이며, 조후와 함께 보는 참고 자료입니다.'+(r.known?'':' 시간을 몰라 시주는 빼고 보았습니다.');}
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
