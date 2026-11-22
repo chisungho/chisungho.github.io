@@ -407,6 +407,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="sgNote"></p>
     </div>
     <div class="card">
+      <h2>격국 풀이 <span class="sub">格局 · 월지 정기 기준</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">격국은 사주의 '그릇 모양'입니다. 태어난 달 지지(월지)에 숨은 대표 글자(정기)가 일간(나)에게 어떤 십신인지로 이름을 붙입니다. 같은 글자가 천간에 드러나(투출) 있으면 격이 더 뚜렷하다고 봅니다.</p>
+      <div id="gkBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="gkNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -687,6 +693,24 @@ function render(r){
      row('득세(得勢)',ds,`나머지 글자 ${tc}개 가운데 나를 돕는 글자가 ${hc}개입니다. ${ds?'주변 세력이 내 편이 많습니다.':'주변에 힘을 빼는 글자가 더 많습니다.'}`)+
      `<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>저울 결과</b> <span class="mini">월지 3배·일지 1.5배 가중치</span><div style="margin:6px 0 4px;height:10px;border-radius:6px;background:var(--line);overflow:hidden"><div style="width:${pct}%;height:100%;background:${A.strong?'#e11d48':'#2563eb'}"></div></div><div style="font-size:14px;line-height:1.6">돕는 힘 <b>${pct}%</b> → <b>${A.label}</b> · 용신 <b class="hz">${ELH[A.yong]}</b> ${EL[A.yong]}</div></div>`;
    $('sgNote').innerHTML=(A.strong?`기운이 강한 사주입니다. 힘을 쓰고 나누는 ${REL[1]}·${REL[2]}·${REL[3]} 기운이 들어올 때 재능이 결과로 이어진다고 봅니다. 고집이 세지지 않도록 남의 말을 한 번 더 듣는 습관이 도움이 됩니다.`:`기운이 약한 편인 사주입니다. 나를 돕는 ${REL[4]}·${REL[0]} 기운이 들어올 때 힘이 붙는다고 봅니다. 혼자 다 떠안기보다 사람·공부·자격의 도움을 받는 쪽이 유리합니다.`)+' 신강·신약은 좋고 나쁨이 아니라 균형을 보는 기준이며, 조후와 함께 보는 참고 자료입니다.'+(r.known?'':' 시간을 몰라 시주는 빼고 보았습니다.');}
+
+  // 격국 풀이 (월지 정기 십신 기준 내격)
+  {const JG=[9,5,0,1,4,2,3,5,6,7,4,8], dg=P.d[0], mz=P.m[1], jg=JG[mz], ss=sipsin(dg,jg);
+   const GK8={'비견':['건록격(建祿格)','월지에 내 뿌리가 있어 스스로 일어서는 힘이 강합니다. 남의 도움보다 자기 손으로 기반을 쌓는 자수성가형으로 봅니다.'],
+    '겁재':['양인격(羊刃格)·월겁격','기운이 날카롭고 추진력이 큽니다. 승부·경쟁에 강하지만 고집과 충돌을 다스릴 때 큰일을 맡는다고 풀이합니다.'],
+    '식신':['식신격(食神格)','재능·표현·먹을복을 뜻합니다. 여유롭고 꾸준하게 실력을 쌓아 결과를 내는 형으로, 교육·요리·기술·창작과 잘 맞는다고 봅니다.'],
+    '상관':['상관격(傷官格)','재치와 말솜씨, 새로운 것을 만드는 힘이 큽니다. 틀을 깨는 아이디어가 장점이고, 말과 규칙에서 부딪히지 않게 조절하면 빛난다고 봅니다.'],
+    '편재':['편재격(偏財格)','큰 흐름의 돈과 사람을 움직이는 그릇입니다. 사업·유통·영업처럼 활동 반경이 넓은 일에서 재주를 보인다고 풀이합니다.'],
+    '정재':['정재격(正財格)','성실하게 모으고 지키는 재물의 그릇입니다. 계획적이고 꼼꼼해 안정된 직장·관리·회계 쪽과 잘 맞는다고 봅니다.'],
+    '편관':['편관격(偏官格)·칠살격','압박을 견디고 이겨 내는 힘이 강합니다. 위기 관리·군경·현장 지휘처럼 결단이 필요한 자리에서 두각을 나타낸다고 봅니다.'],
+    '정관':['정관격(正官格)','질서와 명예, 신뢰의 그릇입니다. 원칙을 지키는 성품이라 조직·공직·관리직에서 인정받기 쉽다고 풀이합니다.'],
+    '편인':['편인격(偏印格)','남다른 직관과 연구심을 뜻합니다. 전문 기술·종교·철학·IT처럼 깊이 파고드는 분야에서 실력을 쌓는다고 봅니다.'],
+    '정인':['정인격(正印格)','배움과 보살핌, 문서운의 그릇입니다. 공부·자격·교육과 인연이 깊고, 윗사람의 도움을 잘 받는다고 풀이합니다.']};
+   const ks=[['y',0],['m',0]].concat(r.known&&P.h?[['h',0]]:[]), tu=ks.filter(([k])=>P[k][0]===jg).map(([k])=>({y:'연간',m:'월간',h:'시간'})[k]);
+   const g=GK8[ss], box=(t,d)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${t}</b><div style="margin-top:4px;font-size:14px;line-height:1.6">${d}</div></div>`;
+   $('gkBox').innerHTML=box(`월지 ${ZHI[mz]}(${ZK[mz]})의 정기 → ${GAN[jg]}(${GK[jg]})`,`일간 ${GAN[dg]}(${GK[dg]})에게 <b>${ss}</b>입니다. ${tu.length?`이 글자가 <b>${tu.join('·')}</b>에 드러나 있어(투출) 격이 뚜렷합니다.`:'천간에는 드러나지 않아, 실제 풀이에서는 다른 투출 글자와 함께 살펴봅니다.'}`)+
+     box(`격국: <span class="hz">${g[0]}</span>`,g[1]);
+   $('gkNote').innerHTML='전통 명리에서는 격국으로 그릇을, 억부·조후로 균형을 함께 봅니다. 여기서는 월지 정기만으로 단순하게 정한 내격(內格)이며, 종격·화격 같은 특수격은 따로 판단하지 않습니다. 재미·참고용으로 봐 주세요.'+(r.known?'':' 시간을 몰라 시간(時干)은 빼고 보았습니다.');}
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
