@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.csh2020.app",
+        "sha256_cert_fingerprints": ["6E:53:A9:5F:71:EC:E6:39:70:C3:50:F2:EB:2B:0C:06:E7:08:44:01:D4:13:8B:33:DC:5E:48:1E:EF:5B:E7:EE"]
+      }
+    }]
