@@ -1,6 +1,40 @@
 {
- "updated": "2026-11-24 00:10",
+ "updated": "2026-11-24 06:39",
  "items": [
+  {
+   "id": "p_1124_0600-p1",
+   "date": "2026-11-24 06:34",
+   "title": "고향사랑기부제, 20만 원 내면 20만4천 원",
+   "imgs": [
+    "info/img/p_1124_0600-p1/card1.webp",
+    "info/img/p_1124_0600-p1/card2.webp",
+    "info/img/p_1124_0600-p1/card3.webp",
+    "info/img/p_1124_0600-p1/card4.webp",
+    "info/img/p_1124_0600-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/97"
+    },
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    }
+   ]
+  },
   {
    "id": "p_1123_1500-p1",
    "date": "2026-11-23 15:35",
@@ -980,40 +1014,6 @@
     {
      "label": "유튜브 게시물 탭",
      "url": "https://www.youtube.com/@hochi9126/posts"
-    },
-    {
-     "label": "틱톡 채널",
-     "url": "https://www.tiktok.com/@hochi285"
-    }
-   ]
-  },
-  {
-   "id": "p_1118_0600-p1",
-   "date": "2026-11-18 06:47",
-   "title": "엔비디아 실적발표, 매출 2배 넘었다",
-   "imgs": [
-    "info/img/p_1118_0600-p1/card1.webp",
-    "info/img/p_1118_0600-p1/card2.webp",
-    "info/img/p_1118_0600-p1/card3.webp",
-    "info/img/p_1118_0600-p1/card4.webp",
-    "info/img/p_1118_0600-p1/card5.webp"
-   ],
-   "links": [
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528/post/77"
-    },
-    {
-     "label": "유튜브 게시물",
-     "url": "https://www.youtube.com/post/Ugkxi5xk9SHKSuayeuN6gLpSdt27fiJMfLxY"
-    },
-    {
-     "label": "인스타그램 채널",
-     "url": "https://www.instagram.com/jiseungho7/"
-    },
-    {
-     "label": "페이스북 채널",
-     "url": "https://www.facebook.com/profile.php?id=61595527151362"
     },
     {
      "label": "틱톡 채널",
