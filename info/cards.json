@@ -1,6 +1,40 @@
 {
- "updated": "2026-11-23 12:51",
+ "updated": "2026-11-23 15:43",
  "items": [
+  {
+   "id": "p_1123_1500-p1",
+   "date": "2026-11-23 15:35",
+   "title": "패딩 세탁법, 드라이가 보온을 깎았다",
+   "imgs": [
+    "info/img/p_1123_1500-p1/card1.webp",
+    "info/img/p_1123_1500-p1/card2.webp",
+    "info/img/p_1123_1500-p1/card3.webp",
+    "info/img/p_1123_1500-p1/card4.webp",
+    "info/img/p_1123_1500-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    },
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528"
+    }
+   ]
+  },
   {
    "id": "p_1123_1200-p1",
    "date": "2026-11-23 12:43",
@@ -972,40 +1006,6 @@
     {
      "label": "유튜브 게시물",
      "url": "https://www.youtube.com/post/Ugkxi5xk9SHKSuayeuN6gLpSdt27fiJMfLxY"
-    },
-    {
-     "label": "인스타그램 채널",
-     "url": "https://www.instagram.com/jiseungho7/"
-    },
-    {
-     "label": "페이스북 채널",
-     "url": "https://www.facebook.com/profile.php?id=61595527151362"
-    },
-    {
-     "label": "틱톡 채널",
-     "url": "https://www.tiktok.com/@hochi285"
-    }
-   ]
-  },
-  {
-   "id": "p_1117_1400-p1",
-   "date": "2026-11-17 14:38",
-   "title": "김장 비용, 배추값이 반토막 났다",
-   "imgs": [
-    "info/img/p_1117_1400-p1/card1.webp",
-    "info/img/p_1117_1400-p1/card2.webp",
-    "info/img/p_1117_1400-p1/card3.webp",
-    "info/img/p_1117_1400-p1/card4.webp",
-    "info/img/p_1117_1400-p1/card5.webp"
-   ],
-   "links": [
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528/post/70"
-    },
-    {
-     "label": "유튜브 게시물",
-     "url": "https://www.youtube.com/post/Ugkx_a7gLUNFC7OmsuaVKv3igjYc2N9sXGwP"
     },
     {
      "label": "인스타그램 채널",
