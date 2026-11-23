@@ -38,9 +38,13 @@
 <meta name="author" content="csh2020">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#064e3b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="새로운 도전">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
 :root{--g:#16a34a;--g2:#0f766e;--gd:#064e3b;--y:#fde047;--ink:#0f172a;--mute:#64748b;--line:#e2e8f0;--bg:#f8fafc}
@@ -679,6 +683,68 @@ b.addEventListener('click',function(e){e.preventDefault();var o=m.hidden;m.hidde
 document.addEventListener('click',function(e){if(!m.hidden&&!m.contains(e.target)&&e.target!==b)close()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!m.hidden){close();b.focus()}});
 m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close)});})();
+</script>
+
+<!-- 바탕화면·홈 화면 아이콘 만들기 (2026-11-23, 아이콘: AOC 캐릭터 아이오) -->
+<style id="appIconCss">
+#aiBtn{position:fixed;left:14px;bottom:14px;z-index:70;display:flex;align-items:center;gap:8px;background:#1746c8;color:#fff;border:0;border-radius:999px;padding:7px 14px 7px 7px;font:700 13.5px/1.2 inherit;box-shadow:0 10px 24px -10px #0b1f5ccc;cursor:pointer}
+#aiBtn img{width:30px;height:30px;border-radius:9px;background:#fff}
+#aiBtn[hidden]{display:none}
+#aiDlg{position:fixed;inset:0;z-index:95;background:rgba(11,31,92,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+#aiDlg[hidden]{display:none}
+#aiDlg .box{background:#fff;color:#141a26;border-radius:20px;max-width:420px;width:100%;padding:22px 20px;box-shadow:0 30px 80px -20px #0b1f5c99;text-align:center;font-size:14.5px;line-height:1.6}
+#aiDlg .box>img{width:96px;height:96px;border-radius:22px;box-shadow:0 8px 20px -8px #1746c899}
+#aiDlg h2{font-size:18px;margin:10px 0 4px;color:#0b1f5c}
+#aiDlg ol{text-align:left;margin:10px 0 4px;padding-left:22px}#aiDlg li{margin:5px 0}
+#aiDlg .go{display:block;width:100%;margin-top:12px;border:0;border-radius:12px;padding:12px;background:#1746c8;color:#fff;font:700 15px inherit;cursor:pointer}
+#aiDlg .go[hidden]{display:none}
+#aiDlg .x{margin-top:8px;border:0;background:none;color:#6b7487;font:600 13px inherit;cursor:pointer;padding:6px}
+#aiDlg small{display:block;color:#6b7487;font-size:12.5px;margin-top:6px}
+@media print{#aiBtn,#aiDlg{display:none!important}}
+</style>
+<button id="aiBtn" type="button" hidden aria-haspopup="dialog"><img src="/icon-192.png" alt="">아이콘 만들기</button>
+<div id="aiDlg" hidden role="dialog" aria-modal="true" aria-labelledby="aiTitle"><div class="box">
+  <img src="/icon-192.png" alt="새로운 도전 아이콘 (아이오)">
+  <h2 id="aiTitle">바탕화면·홈 화면에 아이콘 만들기</h2>
+  <div id="aiBody"></div>
+  <button class="go" id="aiGo" type="button" hidden>지금 아이콘 만들기</button>
+  <button class="x" id="aiClose" type="button">닫기</button>
+</div></div>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var ua=navigator.userAgent, iOS=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1),
+      android=/Android/.test(ua), samsung=/SamsungBrowser/.test(ua), mac=/Macintosh/.test(ua)&&!iOS,
+      safari=/Safari/.test(ua)&&!/Chrome|CriOS|FxiOS|EdgiOS|EdgA|Edg\//.test(ua), firefox=/Firefox|FxiOS/.test(ua),
+      kakao=/KAKAOTALK|NAVER\(inapp|Instagram|FBAN|FBAV|Line\//.test(ua);
+  var standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+  var deferred=null, prev=null;
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
+  if(standalone) return;                       // 이미 아이콘으로 연 경우 버튼 숨김
+  $('aiBtn').hidden=false;
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;});
+  window.addEventListener('appinstalled',function(){$('aiBtn').hidden=true;close();});
+  function steps(){
+    if(kakao) return '<p>지금 카카오톡·네이버 같은 앱 안에서 열려 있어요.</p><ol><li>오른쪽 위(또는 아래) <b>⋮ / 공유</b> 메뉴에서 <b>다른 브라우저로 열기</b>(사파리·크롬)를 누르세요.</li><li>열린 화면에서 다시 <b>아이콘 만들기</b>를 누르세요.</li></ol>';
+    if(iOS) return '<ol><li>사파리 아래쪽(아이패드는 위쪽) <b>공유 버튼 □↑</b>을 누르세요.</li><li>목록을 올려 <b>홈 화면에 추가</b>를 누르세요.</li><li>오른쪽 위 <b>추가</b>를 누르면 아이오 아이콘이 생깁니다.</li></ol><small>크롬 앱에서도 공유 버튼 → 홈 화면에 추가로 만들 수 있어요(iOS 16.4 이상).</small>';
+    if(android&&samsung) return '<ol><li>아래쪽 <b>≡ 메뉴</b>를 누르세요.</li><li><b>현재 페이지 추가 → 홈 화면</b>을 누르세요.</li></ol>';
+    if(android) return '<ol><li>오른쪽 위 <b>⋮ 메뉴</b>를 누르세요.</li><li><b>홈 화면에 추가</b> 또는 <b>앱 설치</b>를 누르세요.</li></ol>';
+    if(mac&&safari) return '<ol><li>메뉴 막대 <b>파일 → Dock에 추가</b>를 누르세요.</li><li>Dock과 응용 프로그램 폴더에 아이콘이 생깁니다.</li></ol>';
+    if(firefox) return '<ol><li>주소창 왼쪽 <b>자물쇠 아이콘</b>을 바탕화면으로 끌어다 놓으세요.</li></ol><small>크롬·엣지에서 열면 아이오 아이콘으로 바로 설치됩니다.</small>';
+    return '<ol><li>주소창 오른쪽 <b>설치 아이콘(⊕ 또는 □↓)</b>을 누르세요.</li><li>또는 <b>⋮ 메뉴 → 저장, 공유 및 전송 → 페이지를 앱으로 설치</b>(엣지: <b>… → 앱 → 이 사이트를 앱으로 설치</b>)를 누르세요.</li></ol><small>설치하면 바탕화면·시작 메뉴에 아이오 아이콘이 생깁니다.</small>';
+  }
+  function open(){
+    prev=document.activeElement;
+    $('aiGo').hidden=!deferred;
+    $('aiBody').innerHTML=deferred?'<p>버튼 한 번이면 '+(android?'홈 화면':'바탕화면·시작 메뉴')+'에 아이오 아이콘이 생기고, 누르면 홈페이지가 바로 열립니다.</p>':steps();
+    $('aiDlg').hidden=false;($('aiGo').hidden?$('aiClose'):$('aiGo')).focus();
+  }
+  function close(){$('aiDlg').hidden=true;if(prev&&prev.focus)prev.focus();}
+  $('aiBtn').onclick=open;$('aiClose').onclick=close;
+  $('aiDlg').addEventListener('click',function(e){if(e.target===$('aiDlg'))close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('aiDlg').hidden)close();});
+  $('aiGo').onclick=function(){if(!deferred)return;deferred.prompt();deferred.userChoice.then(function(c){deferred=null;if(c.outcome==='accepted'){$('aiBtn').hidden=true;close();}else{$('aiGo').hidden=true;$('aiBody').innerHTML=steps();}});};
+})();
 </script>
 </body>
 </html>
