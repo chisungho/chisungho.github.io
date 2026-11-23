@@ -413,6 +413,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="gkNote"></p>
     </div>
     <div class="card">
+      <h2>원진·귀문 풀이 <span class="sub">怨嗔 · 鬼門關 · 마음이 엇갈리는 자리</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">원진(怨嗔)은 서로 미워하고 원망한다는 뜻으로, 지지 둘이 만나면 겉으로는 가까워도 속마음이 엇갈린다고 봅니다. 귀문(鬼門關)은 예민함·직감과 연결되는 짝입니다. 원국의 네 지지에서 이 짝을 찾습니다.</p>
+      <div id="wjBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="wjNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -711,6 +717,21 @@ function render(r){
    $('gkBox').innerHTML=box(`월지 ${ZHI[mz]}(${ZK[mz]})의 정기 → ${GAN[jg]}(${GK[jg]})`,`일간 ${GAN[dg]}(${GK[dg]})에게 <b>${ss}</b>입니다. ${tu.length?`이 글자가 <b>${tu.join('·')}</b>에 드러나 있어(투출) 격이 뚜렷합니다.`:'천간에는 드러나지 않아, 실제 풀이에서는 다른 투출 글자와 함께 살펴봅니다.'}`)+
      box(`격국: <span class="hz">${g[0]}</span>`,g[1]);
    $('gkNote').innerHTML='전통 명리에서는 격국으로 그릇을, 억부·조후로 균형을 함께 봅니다. 여기서는 월지 정기만으로 단순하게 정한 내격(內格)이며, 종격·화격 같은 특수격은 따로 판단하지 않습니다. 재미·참고용으로 봐 주세요.'+(r.known?'':' 시간을 몰라 시간(時干)은 빼고 보았습니다.');}
+
+  // 원진·귀문 풀이 (지지 짝)
+  {const WJ=[[0,7],[1,6],[2,9],[3,8],[4,11],[5,10]], GM=[[0,9],[1,6],[2,7],[3,8],[4,11],[5,10]];
+   const NM={y:'년지',m:'월지',d:'일지',h:'시지'}, ks=['y','m','d'].concat(r.known&&P.h?['h']:[]);
+   const WJD={'0-7':'자미(子未) 원진 — 작은 말이 오래 마음에 남기 쉽습니다. 서운한 일은 그날 바로 풀어 두는 편이 좋습니다.','1-6':'축오(丑午) 원진 — 참다가 한 번에 터지는 짝입니다. 쌓아 두지 말고 조금씩 표현하면 부드러워집니다.','2-9':'인유(寅酉) 원진 — 서로 기준이 달라 부딪히기 쉽습니다. 옳고 그름보다 방식 차이로 보면 편해집니다.','3-8':'묘신(卯申) 원진 — 가까운 사이일수록 오해가 생기기 쉽습니다. 말보다 행동으로 신뢰를 보여 주면 좋습니다.','4-11':'진해(辰亥) 원진 — 속마음을 잘 드러내지 않아 거리감이 생기기 쉽습니다. 먼저 묻는 습관이 도움이 됩니다.','5-10':'사술(巳戌) 원진 — 자존심이 부딪히는 짝입니다. 한 발 물러서는 여유가 관계를 지켜 줍니다.'};
+   const GMD={'0-9':'자유(子酉) 귀문 — 감수성이 섬세하고 직감이 빠릅니다. 잠과 휴식을 잘 챙기면 집중력으로 이어집니다.','2-7':'인미(寅未) 귀문 — 생각이 깊고 걱정이 많아지기 쉽습니다. 기록·정리 습관이 마음을 가볍게 합니다.'};
+   const hit=[];
+   for(let i=0;i<ks.length;i++)for(let j=i+1;j<ks.length;j++){const a=P[ks[i]][1],b=P[ks[j]][1],lo=Math.min(a,b),hi=Math.max(a,b),key=lo+'-'+hi,where=NM[ks[i]]+'·'+NM[ks[j]];
+     const w=WJ.some(([x,y])=>x===lo&&y===hi), g=GM.some(([x,y])=>x===lo&&y===hi);
+     if(w)hit.push([`${where} <span class="hz">${ZHI[a]}${ZHI[b]}</span> 원진${g?'·귀문':''}`,WJD[key]+(g?' 귀문도 함께 걸려 예민함이 더해지니 마음 관리가 중요합니다.':'')]);
+     else if(g)hit.push([`${where} <span class="hz">${ZHI[a]}${ZHI[b]}</span> 귀문`,GMD[key]]);}
+   const box=(t,d)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${t}</b><div style="margin-top:4px;font-size:14px;line-height:1.6">${d}</div></div>`;
+   $('wjBox').innerHTML=hit.length?hit.map(([t,d])=>box(t,d)).join(''):box('원국에 원진·귀문 짝이 없습니다','지지끼리 속마음이 엇갈리는 짝이 없어, 관계에서 오해가 길게 남는 일은 적은 편으로 봅니다.');
+   const dIn=hit.some(([t])=>t.includes('일지'));
+   $('wjNote').innerHTML=(dIn?'일지(배우자 자리)가 걸려 있어 가까운 사람과의 대화 방식이 특히 중요하다고 봅니다. ':'')+'원진·귀문은 나쁜 운이라기보다 마음이 예민해지는 지점을 알려 주는 표시입니다. 합·충과 함께 보는 참고 자료이며, 재미·참고용으로 봐 주세요.'+(r.known?'':' 시간을 몰라 시지는 빼고 보았습니다.');}
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
