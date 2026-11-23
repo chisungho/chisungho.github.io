@@ -10,14 +10,102 @@
   "background_color": "#eaf3ff",
   "theme_color": "#1746c8",
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
-    { "name": "로또 번호 생성기", "url": "/lotto", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
-    { "name": "좋은 정보 보기", "url": "/info", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
-    { "name": "게시판", "url": "/board", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
+    {
+      "name": "로또 번호 생성기",
+      "url": "/lotto",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "좋은 정보 보기",
+      "url": "/info",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "게시판",
+      "url": "/board",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "dir": "ltr",
+  "orientation": "any",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "categories": [
+    "lifestyle",
+    "utilities",
+    "productivity"
+  ],
+  "screenshots": [
+    {
+      "src": "/store-shots/ph_home.webp",
+      "sizes": "1080x1920",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "무료 생활도구 홈 화면"
+    },
+    {
+      "src": "/store-shots/ph_lotto.webp",
+      "sizes": "1080x1920",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "로또 번호 생성·용지 인쇄"
+    },
+    {
+      "src": "/store-shots/ph_info.webp",
+      "sizes": "1080x1920",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "최신 좋은 정보"
+    },
+    {
+      "src": "/store-shots/pc_home.webp",
+      "sizes": "1920x1080",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "PC 홈 화면"
+    }
   ]
 }
