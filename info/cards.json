@@ -1,6 +1,40 @@
 {
- "updated": "2026-11-24 15:42",
+ "updated": "2026-11-24 18:36",
  "items": [
+  {
+   "id": "p_1124_1800-p1",
+   "date": "2026-11-24 18:34",
+   "title": "11월 금통위 전망, 대출 3억에 월 6만 원",
+   "imgs": [
+    "info/img/p_1124_1800-p1/card1.webp",
+    "info/img/p_1124_1800-p1/card2.webp",
+    "info/img/p_1124_1800-p1/card3.webp",
+    "info/img/p_1124_1800-p1/card4.webp",
+    "info/img/p_1124_1800-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    },
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528"
+    }
+   ]
+  },
   {
    "id": "p_1124_1500-p1",
    "date": "2026-11-24 15:35",
@@ -984,40 +1018,6 @@
     {
      "label": "틱톡 채널",
      "url": "https://www.tiktok.com/@hochi285"
-    }
-   ]
-  },
-  {
-   "id": "p_1118_2100-p2",
-   "date": "2026-11-18 21:41",
-   "title": "코스피 오늘 주가, 5천을 되찾았다",
-   "imgs": [
-    "info/img/p_1118_2100-p2/card1.webp",
-    "info/img/p_1118_2100-p2/card2.webp",
-    "info/img/p_1118_2100-p2/card3.webp",
-    "info/img/p_1118_2100-p2/card4.webp",
-    "info/img/p_1118_2100-p2/card5.webp"
-   ],
-   "links": [
-    {
-     "label": "유튜브 게시물",
-     "url": "https://www.youtube.com/post/Ugkx4RMxg6n7pFXLwpApKzTMc0UuYpXI1R5W"
-    },
-    {
-     "label": "인스타그램 채널",
-     "url": "https://www.instagram.com/jiseungho7/"
-    },
-    {
-     "label": "페이스북 채널",
-     "url": "https://www.facebook.com/profile.php?id=61595527151362"
-    },
-    {
-     "label": "틱톡 채널",
-     "url": "https://www.tiktok.com/@hochi285"
-    },
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528"
     }
    ]
   }
