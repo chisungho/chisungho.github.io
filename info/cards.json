@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24 18:36",
+ "updated": "2026-11-25 00:10",
  "items": [
   {
    "id": "p_1124_1800-p1",
@@ -82,6 +82,10 @@
    ],
    "links": [
     {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528/post/99"
+    },
+    {
      "label": "인스타그램 채널",
      "url": "https://www.instagram.com/jiseungho7/"
     },
@@ -96,10 +100,6 @@
     {
      "label": "틱톡 채널",
      "url": "https://www.tiktok.com/@hochi285"
-    },
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528"
     }
    ]
   },
