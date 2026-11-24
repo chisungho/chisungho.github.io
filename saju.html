@@ -419,6 +419,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="wjNote"></p>
     </div>
     <div class="card">
+      <h2>형·파·해 풀이 <span class="sub">刑 · 破 · 害 · 부딪히고 깨지는 자리</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">형(刑)은 서로 다그치고 조정하는 관계, 파(破)는 짜 놓은 틀이 깨지는 관계, 해(害)는 은근히 손해를 주고받는 관계입니다. 원국의 지지 사이에서 이 짝을 찾습니다.</p>
+      <div id="hpBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="hpNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -732,6 +738,24 @@ function render(r){
    $('wjBox').innerHTML=hit.length?hit.map(([t,d])=>box(t,d)).join(''):box('원국에 원진·귀문 짝이 없습니다','지지끼리 속마음이 엇갈리는 짝이 없어, 관계에서 오해가 길게 남는 일은 적은 편으로 봅니다.');
    const dIn=hit.some(([t])=>t.includes('일지'));
    $('wjNote').innerHTML=(dIn?'일지(배우자 자리)가 걸려 있어 가까운 사람과의 대화 방식이 특히 중요하다고 봅니다. ':'')+'원진·귀문은 나쁜 운이라기보다 마음이 예민해지는 지점을 알려 주는 표시입니다. 합·충과 함께 보는 참고 자료이며, 재미·참고용으로 봐 주세요.'+(r.known?'':' 시간을 몰라 시지는 빼고 보았습니다.');}
+
+  // 형·파·해 풀이 (지지 짝)
+  {const NM={y:'년지',m:'월지',d:'일지',h:'시지'}, ks=['y','m','d'].concat(r.known&&P.h?['h']:[]);
+   const HY={'2-5':['인사(寅巳) 형','무은지형(無恩之刑)의 한 짝입니다. 도움을 주고도 고마움을 못 받는 일이 생기기 쉬우니, 주고받는 선을 분명히 해 두면 좋습니다.'],'5-8':['사신(巳申) 형','무은지형의 한 짝이며 합(合)도 함께 걸립니다. 가까워졌다 멀어졌다 하는 관계가 생기기 쉬워 약속을 글로 남기는 습관이 도움이 됩니다.'],'2-8':['인신(寅申) 형','무은지형의 한 짝이자 충(沖)입니다. 이동·변화가 잦을 수 있어 안전과 일정 관리에 신경 쓰면 좋습니다.'],'1-10':['축술(丑戌) 형','지세지형(持勢之刑)의 한 짝입니다. 고집과 책임감이 함께 커지니 혼자 짊어지지 말고 나눠 맡기면 편해집니다.'],'7-10':['술미(戌未) 형','지세지형의 한 짝입니다. 자기 방식을 고수하다 부딪히기 쉬우니 남의 방법도 한 번 따라 해 보면 좋습니다.'],'1-7':['축미(丑未) 형','지세지형의 한 짝이자 충입니다. 집안·재산 문제로 마음 쓸 일이 생기기 쉬워 서류와 정리를 꼼꼼히 하면 좋습니다.'],'0-3':['자묘(子卯) 형','무례지형(無禮之刑)입니다. 가까운 사이에서 말이 날카로워지기 쉬우니 예의를 한 번 더 챙기면 관계가 오래갑니다.']};
+   const SELF={4:'진진(辰辰)',6:'오오(午午)',9:'유유(酉酉)',11:'해해(亥亥)'};
+   const PA={'0-9':'자유(子酉) 파','1-4':'축진(丑辰) 파','2-11':'인해(寅亥) 파','3-6':'묘오(卯午) 파','5-8':'사신(巳申) 파','7-10':'미술(未戌) 파'};
+   const HE={'0-7':'자미(子未) 해','1-6':'축오(丑午) 해','2-5':'인사(寅巳) 해','3-4':'묘진(卯辰) 해','8-11':'신해(申亥) 해','9-10':'유술(酉戌) 해'};
+   const hit=[]; let nH=0,nP=0,nE=0;
+   for(let i=0;i<ks.length;i++)for(let j=i+1;j<ks.length;j++){const a=P[ks[i]][1],b=P[ks[j]][1],lo=Math.min(a,b),hi=Math.max(a,b),key=lo+'-'+hi,where=NM[ks[i]]+'·'+NM[ks[j]];
+     if(a===b&&SELF[a]){nH++;hit.push([`${where} <span class="hz">${ZHI[a]}${ZHI[b]}</span> 자형`,`${SELF[a]} 자형(自刑)입니다. 스스로를 다그치는 마음이 강해지기 쉬우니, 완벽보다 꾸준함을 목표로 두면 편해집니다.`]);}
+     if(HY[key]){nH++;hit.push([`${where} <span class="hz">${ZHI[lo]}${ZHI[hi]}</span> ${HY[key][0]}`,HY[key][1]]);}
+     if(PA[key]){nP++;hit.push([`${where} <span class="hz">${ZHI[lo]}${ZHI[hi]}</span> ${PA[key]}`,'세워 둔 계획이나 관계의 틀이 한 번씩 흔들리기 쉬운 짝입니다. 큰일은 여유 일정을 두고 정하면 덜 흔들립니다.']);}
+     if(HE[key]){nE++;hit.push([`${where} <span class="hz">${ZHI[lo]}${ZHI[hi]}</span> ${HE[key]}`,'겉으로 드러나지 않게 서로 손해를 주고받기 쉬운 짝입니다. 돈·약속은 미루지 말고 그때그때 정리하면 좋습니다.']);}}
+   const zs=ks.map(k=>P[k][1]), has=x=>zs.includes(x);
+   const sam=(has(2)&&has(5)&&has(8))?'인사신(寅巳申) 삼형이 모두 갖춰졌습니다':(has(1)&&has(10)&&has(7))?'축술미(丑戌未) 삼형이 모두 갖춰졌습니다':'';
+   const box=(t,d)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${t}</b><div style="margin-top:4px;font-size:14px;line-height:1.6">${d}</div></div>`;
+   $('hpBox').innerHTML=(sam?box(sam,'세 글자가 모두 모이면 형의 힘이 커진다고 봅니다. 예부터 법·의료·군경처럼 남을 바로잡거나 고치는 일에서 오히려 힘이 된다고 풀이하기도 합니다.'):'')+(hit.length?hit.map(([t,d])=>box(t,d)).join(''):box('원국에 형·파·해 짝이 없습니다','지지끼리 다그치거나 깨지는 짝이 없어, 관계와 계획이 비교적 순탄하게 이어지는 편으로 봅니다.'));
+   $('hpNote').innerHTML=(hit.length?`형 <b>${nH}개</b>, 파 <b>${nP}개</b>, 해 <b>${nE}개</b>가 보입니다. `:'')+'형·파·해는 합·충보다 힘이 약한 보조 관계로 보며, 나쁜 일을 정해 두는 표시가 아니라 조심할 자리를 알려 주는 참고 자료입니다. 재미·참고용으로 봐 주세요.'+(r.known?'':' 시간을 몰라 시지는 빼고 보았습니다.');}
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
