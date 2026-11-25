@@ -3,196 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>AOC 지승호 고문 | AI 동영상 명함</title>
-<meta name="description" content="주식회사 에이오씨(AOC) 지승호 고문의 AI 동영상 명함. 버튼 한 번으로 연락처와 명함 동영상을 휴대폰에 저장하세요.">
+<title>AOC 지승호 고문 | 동영상 명함</title>
+<meta name="description" content="주식회사 에이오씨(AOC) 지승호 고문의 동영상 명함">
 <meta name="robots" content="noindex">
 <meta property="og:type" content="profile">
-<meta property="og:title" content="AOC 지승호 고문 — AI 동영상 명함">
+<meta property="og:title" content="AOC 지승호 고문 — 동영상 명함">
 <meta property="og:description" content="에이오씨 고문 지승호입니다. 이제는 동영상 명함으로 나의 기억을 고객님에게 심어주세요.">
 <meta property="og:image" content="https://csh2020.com/card/og.jpg">
 <meta property="og:url" content="https://csh2020.com/card/">
 <meta name="theme-color" content="#0b3d91">
+<script>
+/* 카카오톡 안 브라우저는 파일 저장을 막는다 → 열리자마자 휴대폰 기본 브라우저로 넘긴다(한 번만) */
+(function(){
+  if (/KAKAOTALK/i.test(navigator.userAgent) && location.hash !== '#ext') {
+    location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(location.origin + location.pathname + '#ext');
+  }
+})();
+</script>
 <style>
-:root{--blue:#0b3d91;--blue2:#1e6bff;--ink:#0f1b33;--sub:#51607a;--bg:#eef4ff;--card:#fff;--line:#d9e3f5}
+:root{--blue:#0b3d91;--blue2:#1e6bff}
 *{box-sizing:border-box}
-body{margin:0;background:linear-gradient(180deg,#e3ecff 0%,var(--bg) 40%,#fff 100%);color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}
-.wrap{max-width:480px;margin:0 auto;padding:16px 16px calc(28px + env(safe-area-inset-bottom))}
-.top{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 12px}
-.brand{font-weight:800;letter-spacing:.06em;color:var(--blue);font-size:20px}
-.brand small{display:block;font-size:12px;letter-spacing:0;color:var(--sub);font-weight:600}
-.tag{font-size:12px;font-weight:700;color:var(--blue2);background:#dfe9ff;border-radius:99px;padding:6px 10px}
-.video{position:relative;border-radius:18px;overflow:hidden;background:#0a1630;box-shadow:0 12px 32px rgba(11,61,145,.22);
-  display:flex;justify-content:center}
-.video video{display:block;height:min(58vh,calc((100vw - 32px)*16/9));max-height:760px;aspect-ratio:9/16;object-fit:cover;background:#0a1630}
-.who{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-top:14px;padding:16px 18px}
-.who .role{color:var(--sub);font-size:14px;font-weight:600}
-.who h1{margin:2px 0 10px;font-size:28px;letter-spacing:.08em}
-.who h1 span{font-size:13px;letter-spacing:.12em;color:var(--sub);font-weight:600;margin-left:6px}
-.row{display:flex;gap:10px;align-items:center;margin:6px 0;font-size:16px}
-.row b{width:54px;color:var(--sub);font-weight:600;font-size:14px}
-.row a{color:var(--ink);text-decoration:none;font-weight:600}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:14px;
-  font:inherit;font-weight:800;cursor:pointer;text-decoration:none}
-.save{margin-top:16px;min-height:62px;font-size:19px;color:#fff;background:linear-gradient(90deg,var(--blue),var(--blue2));box-shadow:0 8px 20px rgba(30,107,255,.35)}
+body{margin:0;background:#0a1630;color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif}
+.wrap{max-width:480px;margin:0 auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom))}
+.card{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.45)}
+.video{margin-top:14px;border-radius:16px;overflow:hidden;background:#000;display:flex;justify-content:center;
+  box-shadow:0 10px 28px rgba(0,0,0,.45)}
+.video video{display:block;height:min(54vh,calc((100vw - 32px)*16/9));aspect-ratio:9/16;object-fit:cover;background:#000}
+.save{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:62px;margin-top:16px;
+  border:0;border-radius:14px;font:inherit;font-size:19px;font-weight:800;color:#fff;cursor:pointer;
+  background:linear-gradient(90deg,var(--blue),var(--blue2));box-shadow:0 8px 20px rgba(30,107,255,.35)}
 .save:active{transform:translateY(1px)}
-.step2{margin-top:10px;min-height:54px;font-size:17px;color:var(--blue);background:#fff;border:2px solid var(--blue2);display:none}
-.step2.on{display:flex;animation:pop .4s ease}
-@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
-.minis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
-.mini{min-height:48px;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line)}
-.msg{min-height:20px;margin:10px 2px 0;font-size:14px;color:var(--blue);font-weight:600;text-align:center}
-.note{margin-top:14px;font-size:13px;line-height:1.6;color:var(--sub);background:#f6f9ff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
-.kakao{display:none;margin-bottom:12px;background:#fee500;color:#191919;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5}
-.kakao.on{display:block}
-.kakao a{color:#191919;font-weight:800}
-footer{text-align:center;color:#8a97ad;font-size:12px;margin-top:18px}
-.call{margin-top:14px;background:#fff;border:2px solid var(--blue2);border-radius:16px;padding:16px 16px 6px}
-.call h2{margin:0 0 6px;font-size:18px;color:var(--blue)}
-.call .lead{margin:0 0 12px;font-size:14px;line-height:1.6;color:var(--ink)}
-.tabs{display:flex;gap:6px;margin-bottom:10px}
-.tab{flex:1;min-height:40px;border:1px solid var(--line);background:#f6f9ff;border-radius:10px;font:inherit;font-size:14px;font-weight:700;color:var(--sub);cursor:pointer}
-.tab.on{background:var(--blue);border-color:var(--blue);color:#fff}
-.os{margin:0;padding-left:20px;font-size:14px;line-height:1.7}
-.os li{margin-bottom:6px}
-.app{margin:8px -4px 10px;padding:14px;border-radius:12px;background:#f0f6ff;border:1px dashed var(--blue2)}
-.app h3{margin:0 0 6px;font-size:16px;color:var(--blue)}
-.app h3 small{font-size:12px;color:var(--sub);font-weight:600}
-.app p{margin:0 0 10px;font-size:14px;line-height:1.6}
-.appbtn{min-height:52px;font-size:16px;color:#fff;background:#14833b;margin-bottom:10px}
-.os .tip{list-style:none;margin-left:-20px;font-size:13px;color:var(--sub);background:#f6f9ff;border-radius:10px;padding:8px 10px}
+.msg{min-height:22px;margin-top:10px;font-size:14px;line-height:1.5;color:#bcd3ff;text-align:center}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="kakao" id="kakao">카카오톡 안에서는 저장이 막힐 수 있어요.
-    <a id="openExt" href="#">휴대폰 기본 브라우저로 열기 →</a></div>
-
-  <div class="top">
-    <div class="brand">AOC<small>주식회사 에이오씨</small></div>
-    <div class="tag">AI 동영상 명함</div>
-  </div>
-
+  <img class="card" src="og.jpg" alt="주식회사 에이오씨 고문 지승호 명함 · 010-4009-2592 · sh.ji@aoc-corp.com">
   <div class="video">
-    <video id="vid" src="aoc-jiseungho.mp4" poster="poster-v.jpg" controls playsinline preload="metadata"></video>
+    <video src="aoc-jiseungho.mp4" poster="poster-v.jpg" controls playsinline preload="metadata"></video>
   </div>
-
-  <button class="btn save" id="save">📇 연락처 저장</button>
-  <button class="btn step2" id="saveVid">🎬 명함 동영상도 휴대폰에 저장</button>
+  <button class="save" id="save">📥 휴대폰에 저장</button>
   <div class="msg" id="msg"></div>
-
-  <div class="who">
-    <div class="role">주식회사 에이오씨 · 고문</div>
-    <h1>지승호<span>JI SEUNG HO</span></h1>
-    <div class="row"><b>전화</b><a href="tel:01040092592">010-4009-2592</a></div>
-    <div class="row"><b>이메일</b><a href="mailto:sh.ji@aoc-corp.com">sh.ji@aoc-corp.com</a></div>
-  </div>
-
-  <div class="minis">
-    <a class="btn mini" href="tel:01040092592">📞 전화하기</a>
-    <a class="btn mini" href="sms:01040092592">💬 문자하기</a>
-  </div>
-
-  <div class="note">
-    <b>저장하면 이렇게 돼요</b><br>
-    ① 이름·회사·전화번호·이메일·사진이 휴대폰 연락처에 들어갑니다.<br>
-    ② 명함 동영상(15초)이 사진첩(갤러리)에 저장됩니다.<br>
-    아이폰은 공유 창에서 <b>‘동영상 저장’</b>을 누르세요.
-  </div>
-
-  <div class="call" id="call">
-    <h2>③ 전화할 때 이 영상이 나오게 하기</h2>
-    <p class="lead">저장한 명함 동영상을 이 연락처의 <b>통화 배경</b>으로 지정하면, 지승호 고문에게 전화를 걸고 받을 때 통화 화면에 이 영상이 재생됩니다. 통신사 부가서비스 가입이 필요 없어요.</p>
-    <div class="tabs">
-      <button class="tab on" data-os="galaxy">갤럭시</button>
-      <button class="tab" data-os="iphone">아이폰</button>
-      <button class="tab" data-os="other">기타 폰</button>
-    </div>
-    <ol class="os" data-os="galaxy">
-      <li><b>연락처</b> 앱에서 ‘지승호’를 엽니다.</li>
-      <li><b>편집</b> → 아래쪽 <b>더보기</b> → <b>통화 배경</b>을 누릅니다.</li>
-      <li>오른쪽 위 <b>＋</b>를 눌러 갤러리에서 <b>AOC_지승호_고문_명함</b> 동영상을 고릅니다.</li>
-      <li><b>설정</b>(또는 저장)을 누르면 끝! 이제 통화 화면에 영상이 나옵니다.</li>
-      <li class="tip">메뉴가 안 보이면 <b>전화</b> 앱 → ⋮ → 설정 → <b>통화 배경</b>에서 설정하거나, 설정 앱에서 ‘통화 배경’을 검색하세요. 메뉴 이름은 기종·One UI 버전에 따라 조금 다를 수 있어요.</li>
-    </ol>
-    <ol class="os" data-os="iphone" hidden>
-      <li>아이폰은 통화 화면에 동영상을 넣는 기능이 없습니다(애플 정책).</li>
-      <li>대신 연락처에 들어간 <b>얼굴 사진</b>이 통화 화면에 크게 나옵니다. 연락처 → 지승호 → 편집 → 사진에서 ‘포스터’로 크게 설정할 수 있어요.</li>
-      <li>명함 동영상은 사진첩에 저장해 두고 언제든 다시 볼 수 있습니다.</li>
-    </ol>
-    <ol class="os" data-os="other" hidden>
-      <li>아래 <b>AOC 통화 명함 앱</b>을 설치하면 기종과 상관없이 통화 화면 위에 명함 영상이 뜹니다.</li>
-      <li>앱이 싫으면 <b>연락처 편집</b> 또는 <b>전화 앱 설정</b>에서 ‘통화 배경’, ‘통화 화면’ 항목을 찾아 저장한 동영상을 고르세요(기종마다 다름).</li>
-    </ol>
-
-    <div class="app" id="app">
-      <h3>📱 안드로이드 앱으로 하기 <small>(모든 안드로이드 8 이상)</small></h3>
-      <p>지승호 고문에게 전화를 <b>걸 때와 받을 때</b>, 통화 화면 위에 명함 영상 창이 떠서 무음으로 재생됩니다. 통화가 끝나면 저절로 닫히고, ✕로 바로 닫거나 손가락으로 옮길 수 있어요.</p>
-      <a class="btn appbtn" href="aoc-callcard.apk" download="AOC_통화명함.apk">⬇ AOC 통화 명함 앱 내려받기 (17MB)</a>
-      <ol class="os">
-        <li>내려받은 파일을 눌러 설치합니다. ‘출처를 알 수 없는 앱’ 안내가 나오면 <b>설정 → 이 출처 허용</b>을 켜 주세요.</li>
-        <li>‘Play 프로텍트’ 경고가 나오면 <b>세부정보 → 무시하고 설치</b>를 누르세요(AOC가 직접 배포하는 앱이라 나오는 안내입니다).</li>
-        <li>앱을 열어 ①전화 상태 권한 ②다른 앱 위에 표시 ③발신 통화 인식을 차례로 켭니다.</li>
-        <li><b>▶ 지금 미리 보기</b>로 영상 창이 뜨는지 확인하면 끝!</li>
-      </ol>
-    </div>
-  </div>
-
-  <footer>© AOC Corp. · AI 동영상 명함 제작 문의 010-4009-2592</footer>
 </div>
 <script>
 (function(){
   var VIDEO = 'aoc-jiseungho.mp4', VCF = 'jiseungho.vcf';
-  var VNAME = 'AOC_지승호_고문_명함.mp4', CNAME = '지승호_AOC고문.vcf';
-  var msg = document.getElementById('msg'), step2 = document.getElementById('saveVid');
-  var ua = navigator.userAgent || '';
-
-  // 카카오톡 안 브라우저면 바깥 브라우저로 여는 길을 알려 준다
-  if (/KAKAOTALK/i.test(ua)) {
-    document.getElementById('kakao').classList.add('on');
-    document.getElementById('openExt').href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(location.href);
-  }
-
-  // 공유 창(사진첩 저장)이 눌린 순간 바로 뜨도록 동영상을 미리 받아 둔다
-  var videoFile = null;
-  if (navigator.canShare && window.fetch) {
-    fetch(VIDEO).then(function(r){ return r.ok ? r.blob() : null; }).then(function(b){
-      if (!b) return;
-      var f = new File([b], VNAME, {type: 'video/mp4'});
-      if (navigator.canShare({files: [f]})) videoFile = f;
-    }).catch(function(){});
-  }
-
-  // ③ 통화 배경 안내: 기종 탭(안드로이드 삼성이면 갤럭시, 아이폰이면 아이폰을 먼저 보여 줌)
-  var tabs = document.querySelectorAll('.tab'), lists = document.querySelectorAll('.os');
-  function showOS(os){
-    tabs.forEach(function(t){ t.classList.toggle('on', t.dataset.os === os); });
-    lists.forEach(function(l){ if (l.dataset.os) l.hidden = l.dataset.os !== os; });
-    document.getElementById('app').hidden = os === 'iphone';
-  }
-  tabs.forEach(function(t){ t.addEventListener('click', function(){ showOS(t.dataset.os); }); });
-  if (/iPhone|iPad|iPod/i.test(ua)) showOS('iphone');  // 안드로이드는 크롬이 기종을 숨기므로 갤럭시(국내 대부분)를 기본으로 둔다
-
+  var msg = document.getElementById('msg');
   function download(url, name){
     var a = document.createElement('a');
     a.href = url; a.download = name; a.rel = 'noopener';
     document.body.appendChild(a); a.click(); a.remove();
   }
-
-  document.getElementById('save').addEventListener('click', function(){
-    download(VCF, CNAME);
-    msg.textContent = '연락처 파일을 열어 ‘저장’을 눌러 주세요. 이어서 아래 버튼으로 동영상도 저장하세요.';
-    step2.classList.add('on');
-  });
-
-  step2.addEventListener('click', function(){
-    if (videoFile) {
-      navigator.share({files: [videoFile], title: 'AOC 지승호 고문 동영상 명함'})
-        .then(function(){ msg.textContent = '동영상 저장 완료! 아래 ③으로 통화 배경도 설정해 보세요.'; })
-        .catch(function(e){ if (e && e.name !== 'AbortError') { download(VIDEO, VNAME); } });
+  var btn = document.getElementById('save');
+  var ios = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  var step = 0, videoFile = null;
+  // 아이폰: 사진첩 저장용 공유 창이 바로 뜨도록 동영상을 미리 받아 둔다
+  if (ios && navigator.canShare && window.fetch) {
+    fetch(VIDEO).then(function(r){ return r.ok ? r.blob() : null; }).then(function(b){
+      if (!b) return;
+      var f = new File([b], 'AOC_지승호_고문_명함.mp4', {type: 'video/mp4'});
+      if (navigator.canShare({files: [f]})) videoFile = f;
+    }).catch(function(){});
+  }
+  btn.addEventListener('click', function(){
+    if (!ios) {
+      // 안드로이드: 한 번 누르면 동영상과 연락처를 함께 받는다
+      download(VIDEO, 'AOC_지승호_고문_명함.mp4');
+      download(VCF, '지승호_AOC고문.vcf');
+      msg.textContent = '저장했어요. 연락처 화면이 뜨면 ‘저장’을 눌러 주세요.';
+      return;
+    }
+    // 아이폰: 파일을 한 번에 하나만 받을 수 있어 두 번 누른다
+    if (step === 0) {
+      download(VCF, '지승호_AOC고문.vcf');
+      step = 1;
+      btn.textContent = '🎬 동영상도 저장';
+      msg.textContent = '연락처 화면에서 ‘새로운 연락처 생성’을 누른 뒤, 아래 버튼으로 동영상도 저장하세요.';
+    } else if (videoFile) {
+      navigator.share({files: [videoFile]}).then(function(){ msg.textContent = '저장 완료!'; }).catch(function(){});
+      msg.textContent = '공유 창에서 ‘비디오 저장’을 누르면 사진첩에 저장돼요.';
     } else {
-      download(VIDEO, VNAME);
-      msg.textContent = '동영상을 내려받았어요. 다운로드 폴더나 갤러리에서 확인하세요.';
+      download(VIDEO, 'AOC_지승호_고문_명함.mp4');
     }
   });
 })();
