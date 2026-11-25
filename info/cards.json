@@ -1,6 +1,40 @@
 {
- "updated": "2026-11-25 18:09",
+ "updated": "2026-11-25 18:27",
  "items": [
+  {
+   "id": "p_1125_1800-p2",
+   "date": "2026-11-25 18:27",
+   "title": "삼성전자 배당금, 금요일에 4601원 들어온다",
+   "imgs": [
+    "info/img/p_1125_1800-p2/card1.webp",
+    "info/img/p_1125_1800-p2/card2.webp",
+    "info/img/p_1125_1800-p2/card3.webp",
+    "info/img/p_1125_1800-p2/card4.webp",
+    "info/img/p_1125_1800-p2/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    },
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528"
+    }
+   ]
+  },
   {
    "id": "p_1125_1800-p1",
    "date": "2026-11-25 18:02",
@@ -972,40 +1006,6 @@
     {
      "label": "유튜브 게시물",
      "url": "https://www.youtube.com/post/UgkxkRSnxRatu6aicc97LRgNNLqhR3cOp0PZ"
-    },
-    {
-     "label": "인스타그램 채널",
-     "url": "https://www.instagram.com/jiseungho7/"
-    },
-    {
-     "label": "페이스북 채널",
-     "url": "https://www.facebook.com/profile.php?id=61595527151362"
-    },
-    {
-     "label": "틱톡 채널",
-     "url": "https://www.tiktok.com/@hochi285"
-    }
-   ]
-  },
-  {
-   "id": "p_1119_1200-p1",
-   "date": "2026-11-19 12:37",
-   "title": "환율 하락 영향, 16만 원 아낀다",
-   "imgs": [
-    "info/img/p_1119_1200-p1/card1.webp",
-    "info/img/p_1119_1200-p1/card2.webp",
-    "info/img/p_1119_1200-p1/card3.webp",
-    "info/img/p_1119_1200-p1/card4.webp",
-    "info/img/p_1119_1200-p1/card5.webp"
-   ],
-   "links": [
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528/post/82"
-    },
-    {
-     "label": "유튜브 게시물",
-     "url": "https://www.youtube.com/post/UgkxDS5PQOLGwT-O2d5rExgc9iwjXU7O7asn"
     },
     {
      "label": "인스타그램 채널",
