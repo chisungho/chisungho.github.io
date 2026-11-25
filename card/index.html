@@ -26,23 +26,30 @@
 body{margin:0;background:#0a1630;color:#fff;
   font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif}
 .wrap{max-width:480px;margin:0 auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom))}
-.card{display:block;width:100%;height:auto;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.45)}
-.video{margin-top:14px;border-radius:16px;overflow:hidden;background:#000;display:flex;justify-content:center;
+.card{display:block;width:100%;height:auto;margin-top:14px;border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.45)}
+.video{position:relative;border-radius:16px;overflow:hidden;background:#000;display:flex;justify-content:center;
   box-shadow:0 10px 28px rgba(0,0,0,.45)}
 .video video{display:block;height:min(54vh,calc((100vw - 32px)*16/9));aspect-ratio:9/16;object-fit:cover;background:#000}
 .save{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:62px;margin-top:16px;
   border:0;border-radius:14px;font:inherit;font-size:19px;font-weight:800;color:#fff;cursor:pointer;
   background:linear-gradient(90deg,var(--blue),var(--blue2));box-shadow:0 8px 20px rgba(30,107,255,.35)}
 .save:active{transform:translateY(1px)}
+.unmute{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);padding:14px 20px;border:0;border-radius:999px;
+  font:inherit;font-size:17px;font-weight:800;color:#0b3d91;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.45);
+  cursor:pointer;white-space:nowrap;animation:pulse 1.6s ease-in-out infinite}
+.unmute[hidden]{display:none}
+@keyframes pulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.06)}}
 .msg{min-height:22px;margin-top:10px;font-size:14px;line-height:1.5;color:#bcd3ff;text-align:center}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <img class="card" src="og.jpg" alt="주식회사 에이오씨 고문 지승호 명함 · 010-4009-2592 · sh.ji@aoc-corp.com">
   <div class="video">
-    <video src="aoc-jiseungho.mp4" poster="poster-v.jpg" controls playsinline preload="metadata"></video>
+    <video id="vid" src="aoc-jiseungho.mp4" poster="poster-v.jpg" controls playsinline webkit-playsinline
+      autoplay muted preload="auto"></video>
+    <button class="unmute" id="unmute" hidden>🔊 소리 켜고 처음부터 보기</button>
   </div>
+  <img class="card" src="og.jpg" alt="주식회사 에이오씨 고문 지승호 명함 · 010-4009-2592 · sh.ji@aoc-corp.com">
   <button class="save" id="save">📥 휴대폰에 저장</button>
   <div class="msg" id="msg"></div>
 </div>
@@ -50,6 +57,18 @@ body{margin:0;background:#0a1630;color:#fff;
 (function(){
   var VIDEO = 'aoc-jiseungho.mp4', VCF = 'jiseungho.vcf';
   var msg = document.getElementById('msg');
+
+  // 열리자마자 자동 재생: 먼저 소리와 함께 시도하고, 브라우저가 막으면 무음으로 재생하며 '소리 켜기' 버튼을 띄운다
+  var vid = document.getElementById('vid'), un = document.getElementById('unmute');
+  function mutedPlay(){ vid.muted = true; vid.play().catch(function(){}); un.hidden = false; }
+  vid.muted = false;
+  var p = vid.play();
+  if (p && p.catch) p.catch(mutedPlay); else if (vid.paused) mutedPlay();
+  un.addEventListener('click', function(){
+    vid.muted = false; vid.currentTime = 0; vid.play().catch(function(){});
+    un.hidden = true;
+  });
+  vid.addEventListener('volumechange', function(){ if (!vid.muted) un.hidden = true; });
   function download(url, name){
     var a = document.createElement('a');
     a.href = url; a.download = name; a.rel = 'noopener';
