@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25 12:07",
+ "updated": "2026-11-25 12:43",
  "source": "https://link.inpock.co.kr/hgy671001",
  "items": [
   {
@@ -33165,6 +33165,17 @@
    "src": "naver",
    "srcName": "네이버 쇼핑",
    "note": "네이버 쇼핑 커넥트 활동으로, 판매 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8519890,
+   "no": null,
+   "name": "T212 [광고] [출발확정][오로라뷰잉+헌팅] 캐나다 오로라 로키여행 8일 <옐로우나이프/밴",
+   "url": "https://naver.me/5T0ayqaD",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
    "group": "numbered"
   },
   {
