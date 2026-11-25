@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AOC 지승호 고문 | AI 동영상 명함</title>
+<meta name="description" content="주식회사 에이오씨(AOC) 지승호 고문의 AI 동영상 명함. 버튼 한 번으로 연락처와 명함 동영상을 휴대폰에 저장하세요.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="AOC 지승호 고문 — AI 동영상 명함">
+<meta property="og:description" content="아직도 종이 명함만 건네시나요? 영상으로 첫인상을 남기는 AI 동영상 명함">
+<meta property="og:image" content="https://csh2020.com/card/poster.jpg">
+<meta property="og:url" content="https://csh2020.com/card/">
+<meta name="theme-color" content="#0b3d91">
+<style>
+:root{--blue:#0b3d91;--blue2:#1e6bff;--ink:#0f1b33;--sub:#51607a;--bg:#eef4ff;--card:#fff;--line:#d9e3f5}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#e3ecff 0%,var(--bg) 40%,#fff 100%);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:480px;margin:0 auto;padding:16px 16px calc(28px + env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 12px}
+.brand{font-weight:800;letter-spacing:.06em;color:var(--blue);font-size:20px}
+.brand small{display:block;font-size:12px;letter-spacing:0;color:var(--sub);font-weight:600}
+.tag{font-size:12px;font-weight:700;color:var(--blue2);background:#dfe9ff;border-radius:99px;padding:6px 10px}
+.video{position:relative;border-radius:18px;overflow:hidden;background:#0a1630;box-shadow:0 12px 32px rgba(11,61,145,.22);
+  display:flex;justify-content:center}
+.video video{display:block;height:min(58vh,calc((100vw - 32px)*16/9));max-height:760px;aspect-ratio:9/16;object-fit:cover;background:#0a1630}
+.who{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-top:14px;padding:16px 18px}
+.who .role{color:var(--sub);font-size:14px;font-weight:600}
+.who h1{margin:2px 0 10px;font-size:28px;letter-spacing:.08em}
+.who h1 span{font-size:13px;letter-spacing:.12em;color:var(--sub);font-weight:600;margin-left:6px}
+.row{display:flex;gap:10px;align-items:center;margin:6px 0;font-size:16px}
+.row b{width:54px;color:var(--sub);font-weight:600;font-size:14px}
+.row a{color:var(--ink);text-decoration:none;font-weight:600}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:14px;
+  font:inherit;font-weight:800;cursor:pointer;text-decoration:none}
+.save{margin-top:16px;min-height:62px;font-size:19px;color:#fff;background:linear-gradient(90deg,var(--blue),var(--blue2));box-shadow:0 8px 20px rgba(30,107,255,.35)}
+.save:active{transform:translateY(1px)}
+.step2{margin-top:10px;min-height:54px;font-size:17px;color:var(--blue);background:#fff;border:2px solid var(--blue2);display:none}
+.step2.on{display:flex;animation:pop .4s ease}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+.minis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.mini{min-height:48px;font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--line)}
+.msg{min-height:20px;margin:10px 2px 0;font-size:14px;color:var(--blue);font-weight:600;text-align:center}
+.note{margin-top:14px;font-size:13px;line-height:1.6;color:var(--sub);background:#f6f9ff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kakao{display:none;margin-bottom:12px;background:#fee500;color:#191919;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5}
+.kakao.on{display:block}
+.kakao a{color:#191919;font-weight:800}
+footer{text-align:center;color:#8a97ad;font-size:12px;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kakao" id="kakao">카카오톡 안에서는 저장이 막힐 수 있어요.
+    <a id="openExt" href="#">휴대폰 기본 브라우저로 열기 →</a></div>
+
+  <div class="top">
+    <div class="brand">AOC<small>주식회사 에이오씨</small></div>
+    <div class="tag">AI 동영상 명함</div>
+  </div>
+
+  <div class="video">
+    <video id="vid" src="aoc-jiseungho.mp4" poster="poster.jpg" controls playsinline preload="metadata"></video>
+  </div>
+
+  <button class="btn save" id="save">📇 연락처 저장</button>
+  <button class="btn step2" id="saveVid">🎬 명함 동영상도 휴대폰에 저장</button>
+  <div class="msg" id="msg"></div>
+
+  <div class="who">
+    <div class="role">주식회사 에이오씨 · 고문</div>
+    <h1>지승호<span>JI SEUNG HO</span></h1>
+    <div class="row"><b>전화</b><a href="tel:01040092592">010-4009-2592</a></div>
+    <div class="row"><b>이메일</b><a href="mailto:sh.ji@aoc-corp.com">sh.ji@aoc-corp.com</a></div>
+  </div>
+
+  <div class="minis">
+    <a class="btn mini" href="tel:01040092592">📞 전화하기</a>
+    <a class="btn mini" href="sms:01040092592">💬 문자하기</a>
+  </div>
+
+  <div class="note">
+    <b>저장하면 이렇게 돼요</b><br>
+    ① 이름·회사·전화번호·이메일·사진이 휴대폰 연락처에 들어갑니다.<br>
+    ② 명함 동영상(15초)이 사진첩(갤러리)에 저장됩니다.<br>
+    아이폰은 공유 창에서 <b>‘동영상 저장’</b>을 누르세요.
+  </div>
+
+  <footer>© AOC Corp. · AI 동영상 명함 제작 문의 010-4009-2592</footer>
+</div>
+<script>
+(function(){
+  var VIDEO = 'aoc-jiseungho.mp4', VCF = 'jiseungho.vcf';
+  var VNAME = 'AOC_지승호_고문_명함.mp4', CNAME = '지승호_AOC고문.vcf';
+  var msg = document.getElementById('msg'), step2 = document.getElementById('saveVid');
+  var ua = navigator.userAgent || '';
+
+  // 카카오톡 안 브라우저면 바깥 브라우저로 여는 길을 알려 준다
+  if (/KAKAOTALK/i.test(ua)) {
+    document.getElementById('kakao').classList.add('on');
+    document.getElementById('openExt').href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(location.href);
+  }
+
+  // 공유 창(사진첩 저장)이 눌린 순간 바로 뜨도록 동영상을 미리 받아 둔다
+  var videoFile = null;
+  if (navigator.canShare && window.fetch) {
+    fetch(VIDEO).then(function(r){ return r.ok ? r.blob() : null; }).then(function(b){
+      if (!b) return;
+      var f = new File([b], VNAME, {type: 'video/mp4'});
+      if (navigator.canShare({files: [f]})) videoFile = f;
+    }).catch(function(){});
+  }
+
+  function download(url, name){
+    var a = document.createElement('a');
+    a.href = url; a.download = name; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  document.getElementById('save').addEventListener('click', function(){
+    download(VCF, CNAME);
+    msg.textContent = '연락처 파일을 열어 ‘저장’을 눌러 주세요. 이어서 아래 버튼으로 동영상도 저장하세요.';
+    step2.classList.add('on');
+  });
+
+  step2.addEventListener('click', function(){
+    if (videoFile) {
+      navigator.share({files: [videoFile], title: 'AOC 지승호 고문 동영상 명함'})
+        .then(function(){ msg.textContent = '동영상 저장 완료! 연락처와 함께 보관하세요.'; })
+        .catch(function(e){ if (e && e.name !== 'AbortError') { download(VIDEO, VNAME); } });
+    } else {
+      download(VIDEO, VNAME);
+      msg.textContent = '동영상을 내려받았어요. 다운로드 폴더나 갤러리에서 확인하세요.';
+    }
+  });
+})();
+</script>
+</body>
+</html>
