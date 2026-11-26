@@ -1,6 +1,40 @@
 {
- "updated": "2026-11-26 00:10",
+ "updated": "2026-11-26 18:13",
  "items": [
+  {
+   "id": "p_1126_1800-p1",
+   "date": "2026-11-26 18:06",
+   "title": "기준금리 인상, 대출 1억이면 25만원 더",
+   "imgs": [
+    "info/img/p_1126_1800-p1/card1.webp",
+    "info/img/p_1126_1800-p1/card2.webp",
+    "info/img/p_1126_1800-p1/card3.webp",
+    "info/img/p_1126_1800-p1/card4.webp",
+    "info/img/p_1126_1800-p1/card5.webp"
+   ],
+   "links": [
+    {
+     "label": "인스타그램 채널",
+     "url": "https://www.instagram.com/jiseungho7/"
+    },
+    {
+     "label": "페이스북 채널",
+     "url": "https://www.facebook.com/profile.php?id=61595527151362"
+    },
+    {
+     "label": "유튜브 게시물 탭",
+     "url": "https://www.youtube.com/@hochi9126/posts"
+    },
+    {
+     "label": "틱톡 채널",
+     "url": "https://www.tiktok.com/@hochi285"
+    },
+    {
+     "label": "밴드 페이지",
+     "url": "https://band.us/page/104755528"
+    }
+   ]
+  },
   {
    "id": "p_1125_1800-p2",
    "date": "2026-11-25 18:27",
@@ -980,40 +1014,6 @@
     {
      "label": "유튜브 게시물 탭",
      "url": "https://www.youtube.com/@hochi9126/posts"
-    },
-    {
-     "label": "틱톡 채널",
-     "url": "https://www.tiktok.com/@hochi285"
-    }
-   ]
-  },
-  {
-   "id": "p_1119_ai-p1",
-   "date": "2026-11-19 15:16",
-   "title": "수능 AI 부정행위, 내 생각은 이렇다",
-   "imgs": [
-    "info/img/p_1119_ai-p1/card1.webp",
-    "info/img/p_1119_ai-p1/card2.webp",
-    "info/img/p_1119_ai-p1/card3.webp",
-    "info/img/p_1119_ai-p1/card4.webp",
-    "info/img/p_1119_ai-p1/card5.webp"
-   ],
-   "links": [
-    {
-     "label": "밴드 페이지",
-     "url": "https://band.us/page/104755528/post/83"
-    },
-    {
-     "label": "유튜브 게시물",
-     "url": "https://www.youtube.com/post/UgkxkRSnxRatu6aicc97LRgNNLqhR3cOp0PZ"
-    },
-    {
-     "label": "인스타그램 채널",
-     "url": "https://www.instagram.com/jiseungho7/"
-    },
-    {
-     "label": "페이스북 채널",
-     "url": "https://www.facebook.com/profile.php?id=61595527151362"
     },
     {
      "label": "틱톡 채널",
