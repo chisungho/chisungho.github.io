@@ -431,6 +431,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="nyNote"></p>
     </div>
     <div class="card">
+      <h2>궁위 풀이 <span class="sub">宮位 · 네 기둥이 맡은 자리</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">네 기둥은 각각 맡은 자리(궁)가 있습니다. 년주는 조상과 어린 시절, 월주는 부모·형제와 사회, 일지는 배우자와 가정, 시주는 자녀와 말년을 봅니다. 각 자리에 어떤 십신이 앉았는지로 그 자리의 분위기를 읽습니다.</p>
+      <div id="gwBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="gwNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -774,6 +780,20 @@ function render(r){
    const a=EL(nn.y), b=EL(nn.d), O='목화토금수', ia=O.indexOf(a), ib=O.indexOf(b);
    const rel=a===b?'같은 오행이라 타고난 바탕과 내 모습이 잘 어울립니다':(ia+1)%5===ib?`년주 ${JS(a,"이","가")} 일주 ${JS(b,"을","를")} 낳아 주는(생) 관계라 집안·윗사람의 도움을 받기 쉽다고 봅니다`:(ib+1)%5===ia?`일주 ${JS(b,"이","가")} 년주 ${JS(a,"을","를")} 낳아 주는(생) 관계라 내가 집안과 주변을 챙기는 편이라고 봅니다`:(ia+2)%5===ib?`년주 ${JS(a,"이","가")} 일주 ${JS(b,"을","를")} 누르는(극) 관계라 어릴 때 틀에 맞추느라 애쓴 경험이 많을 수 있습니다`:`일주 ${JS(b,"이","가")} 년주 ${JS(a,"을","를")} 누르는(극) 관계라 스스로 길을 개척하는 힘이 강하다고 봅니다`;
    $('nyNote').innerHTML=`년주 납음과 일주 납음은 ${rel}. 납음은 정통 명리의 오행 계산과 별개인 옛 상징 풀이로, 재미·참고용으로 봐 주세요.`+(r.known?'':' 시간을 몰라 시주는 빼고 보았습니다.');}
+
+  // 궁위 풀이 (년·월·일지·시 자리별 십신)
+  {const PL=[['y','년주 · 조상궁','조상·집안 내력, 0~15세 무렵'],['m','월주 · 부모·형제궁','부모·형제, 사회에 나서는 15~30세 무렵'],['d','일지 · 배우자궁','배우자·가정, 30~45세 무렵'],['h','시주 · 자녀궁','자녀·제자, 45세 이후 말년']];
+   const GH=[['비겁','나와 같은 기운이라 이 자리에서는 형제·동료처럼 어깨를 나란히 하는 관계가 됩니다. 서로 힘이 되지만 몫을 나누는 일도 생깁니다.'],['식상','내가 낳는 기운이라 이 자리에서 표현·재주·돌봄이 드러납니다. 베풀수록 관계가 부드러워집니다.'],['재성','내가 다스리는 기운이라 이 자리가 재물·현실 감각과 이어집니다. 챙기고 관리하는 역할을 맡기 쉽습니다.'],['관성','나를 다스리는 기운이라 이 자리에서 규칙·책임·체면을 배웁니다. 엄하지만 바르게 이끌어 주는 힘입니다.'],['인성','나를 낳아 주는 기운이라 이 자리에서 보살핌·배움·도움을 받기 쉽습니다. 기대고 쉴 수 있는 자리입니다.']];
+   const grp=g=>SS_ORDER.indexOf(sipsin(dg,g))>>1;
+   const box=(t,d)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${t}</b><div style="margin-top:4px;font-size:14px;line-height:1.6">${d}</div></div>`;
+   const rows=PL.filter(([k])=>k!=='h'||(r.known&&P.h)).map(([k,t,w])=>{const p=P[k];
+     const zi=grp(ZMAIN[p[1]]), zs=sipsin(dg,ZMAIN[p[1]]);
+     if(k==='d')return box(`${t} <span class="hz">${ZHI[p[1]]}</span> · ${zs}`,`<span class="mini">${w}</span><br>${GH[zi][1]}`);
+     const gs=sipsin(dg,p[0]), gi=grp(p[0]);
+     return box(`${t} <span class="hz">${GAN[p[0]]}${ZHI[p[1]]}</span> · ${gs} / ${zs}`,`<span class="mini">${w}</span><br>천간 ${gs}(${GH[gi][0]}): ${GH[gi][1]}`+(zi!==gi?`<br>지지 ${zs}(${GH[zi][0]}): ${GH[zi][1]}`:''));});
+   $('gwBox').innerHTML=box(`일간 · 나 <span class="hz">${GAN[dg]}</span>`,'사주의 주인공 자리입니다. 나머지 자리는 모두 이 글자를 기준으로 풀이합니다.')+rows.join('');
+   const sp=grp(ZMAIN[P.d[1]]);
+   $('gwNote').innerHTML=`배우자궁(일지)에 <b>${GH[sp][0]}</b>이 앉아 있습니다. 궁위는 자리의 분위기를 보는 옛 풀이일 뿐, 실제 가족 관계나 인연을 정해 두는 것이 아닙니다. 재미·참고용으로 봐 주세요.`+(r.known?'':' 시간을 몰라 시주(자녀궁)는 빼고 보았습니다.');}
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
