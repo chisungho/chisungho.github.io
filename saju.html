@@ -437,6 +437,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="gwNote"></p>
     </div>
     <div class="card">
+      <h2>띠 궁합 <span class="sub">生肖 · 년지로 보는 어울리는 띠</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">태어난 해의 지지(띠)끼리 삼합·육합이면 잘 어울리고, 충·원진이면 서로 맞춰 갈 부분이 많다고 보는 옛 풀이입니다. 띠는 입춘을 기준으로 정합니다.</p>
+      <div id="tgBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="tgNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -794,6 +800,19 @@ function render(r){
    $('gwBox').innerHTML=box(`일간 · 나 <span class="hz">${GAN[dg]}</span>`,'사주의 주인공 자리입니다. 나머지 자리는 모두 이 글자를 기준으로 풀이합니다.')+rows.join('');
    const sp=grp(ZMAIN[P.d[1]]);
    $('gwNote').innerHTML=`배우자궁(일지)에 <b>${GH[sp][0]}</b>이 앉아 있습니다. 궁위는 자리의 분위기를 보는 옛 풀이일 뿐, 실제 가족 관계나 인연을 정해 두는 것이 아닙니다. 재미·참고용으로 봐 주세요.`+(r.known?'':' 시간을 몰라 시주(자녀궁)는 빼고 보았습니다.');}
+
+  // 띠 궁합 (년지 기준 삼합·육합·충·원진)
+  {const TN=['쥐','소','호랑이','토끼','용','뱀','말','양','원숭이','닭','개','돼지'];
+   const z=P.y[1], f=i=>`${TN[(i+12)%12]}띠(${ZHI[(i+12)%12]})`;
+   const WJ=[7,6,9,8,11,10,1,0,3,2,5,4];
+   const box=(t,d)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px"><b>${t}</b><div style="margin-top:4px;font-size:14px;line-height:1.6">${d}</div></div>`;
+   $('tgBox').innerHTML=[
+    box(`삼합 · ${f(z+4)} · ${f(z+8)}`,'세 띠가 모여 한 오행의 큰 흐름을 만드는 사이입니다. 뜻이 잘 통해 동업·팀 일에서 손발이 맞는다고 봅니다.'),
+    box(`육합 · ${f(13-z)}`,'두 글자가 짝을 이뤄 하나로 묶이는 사이입니다. 서로 부족한 점을 채워 주는 정이 깊은 인연으로 풉니다.'),
+    box(`충 · ${f(z+6)}`,'정반대 자리의 띠라 생각과 생활 리듬이 엇갈리기 쉽습니다. 다르기 때문에 배울 점도 많으니, 역할을 나누면 오히려 서로를 보완합니다.'),
+    box(`원진 · ${f(WJ[z])}`,'이유 없이 서운함이 쌓이기 쉬운 사이로 봅니다. 마음에 담아 두지 말고 그때그때 말로 푸는 습관이 도움이 됩니다.')
+   ].join('');
+   $('tgNote').innerHTML=`내 띠는 <b>${f(z)}</b>입니다. 띠 궁합은 년지 하나만 보는 간단한 풀이라 일주·오행까지 보는 정식 궁합과 다르고, 실제 인연을 정해 두는 것이 아닙니다. 재미·참고용으로 봐 주세요.`;}
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
