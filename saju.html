@@ -443,6 +443,12 @@ footer{font-size:12.5px;color:var(--muted);max-width:68ch}
       <p class="note" id="tgNote"></p>
     </div>
     <div class="card">
+      <h2>삼재 풀이 <span class="sub">三災 · 띠로 보는 조심하는 3년</span></h2>
+      <p class="mini" style="margin:-4px 0 10px">삼재는 12년마다 한 번, 3년 동안 몸가짐을 조심하라는 옛 세시 풍속입니다. 삼합으로 묶인 세 띠가 같은 해에 함께 들고, 첫해를 들삼재, 둘째 해를 눌삼재, 마지막 해를 날삼재라고 부릅니다.</p>
+      <div id="sjBox" style="display:grid;gap:8px"></div>
+      <p class="note" id="sjNote"></p>
+    </div>
+    <div class="card">
       <h2>대운 <span class="sub">大運 · 10년 단위</span></h2>
       <p class="mini" id="yunInfo" style="margin:-4px 0 10px"></p>
       <div class="scroll"><div class="luck" id="dayun"></div></div>
@@ -813,6 +819,19 @@ function render(r){
     box(`원진 · ${f(WJ[z])}`,'이유 없이 서운함이 쌓이기 쉬운 사이로 봅니다. 마음에 담아 두지 말고 그때그때 말로 푸는 습관이 도움이 됩니다.')
    ].join('');
    $('tgNote').innerHTML=`내 띠는 <b>${f(z)}</b>입니다. 띠 궁합은 년지 하나만 보는 간단한 풀이라 일주·오행까지 보는 정식 궁합과 다르고, 실제 인연을 정해 두는 것이 아닙니다. 재미·참고용으로 봐 주세요.`;}
+
+  // 삼재 풀이 (년지 삼합 기준 들·눌·날삼재)
+  {const TN=['쥐','소','호랑이','토끼','용','뱀','말','양','원숭이','닭','개','돼지'];
+   const z=P.y[1], st=[2,11,8,5][z%4], ny=new Date().getFullYear(), zb=v=>((v-4)%12+12)%12;
+   let s=ny-2; while(zb(s)!==st)s++;
+   const pos=ny-s, f=i=>`${TN[i%12]}띠(${ZHI[i%12]})`;
+   const SJ=[['들삼재 · 入三災','삼재가 들어오는 첫해입니다. 새로 벌이는 일은 계획과 서류를 한 번 더 살피고, 무리한 확장보다 준비에 힘을 쓰라고 풀이합니다.'],
+    ['눌삼재 · 묵삼재','삼재가 머무는 가운데 해입니다. 하던 일을 지키는 데 마음을 두고, 건강 검진과 안전 점검을 미루지 말라고 봅니다.'],
+    ['날삼재 · 出三災','삼재가 나가는 마지막 해입니다. 끝이 보인다고 방심하기 쉬우니 마무리와 정리를 꼼꼼히 하라고 풀이합니다.']];
+   const box=(t,d,on)=>`<div style="border:1px solid var(--line);border-radius:10px;padding:9px 11px${on?';border-color:#e11d48':''}"><b>${t}</b>${on?' <span class="mini" style="color:#e11d48">← 올해</span>':''}<div style="margin-top:4px;font-size:14px;line-height:1.6">${d}</div></div>`;
+   $('sjBox').innerHTML=box(`함께 삼재가 드는 띠 · ${f(z)} · ${f(z+4)} · ${f(z+8)}`,`세 띠는 <span class="hz">${ZHI[st]}·${ZHI[(st+1)%12]}·${ZHI[(st+2)%12]}</span>(${TN[st]}·${TN[(st+1)%12]}·${TN[(st+2)%12]}) 해에 삼재가 듭니다.`)+
+     SJ.map(([t,d],i)=>box(`${t} · ${s+i}년 <span class="hz">${ZHI[zb(s+i)]}</span>(${TN[zb(s+i)]}해)`,d,pos===i)).join('');
+   $('sjNote').innerHTML=(pos>=0?`올해(${ny}년)는 <b>${SJ[pos][0].split(' ')[0]}</b>에 해당합니다. `:`올해(${ny}년)는 삼재에 해당하지 않습니다. 다음 삼재는 <b>${s}년</b>부터 3년입니다(${-pos}년 뒤). `)+'삼재는 명리학의 계산이 아니라 민간에서 전해 온 풍속이며, 삼재 때 오히려 일이 잘 풀린다는 복삼재(福三災)라는 말도 있습니다. 나쁜 일을 정해 두는 표시가 아니니 재미·참고용으로 봐 주세요. 해는 양력 연도로, 띠는 입춘 기준으로 계산했습니다.';}
 
   // 대운
   const y=r.yun, birthY=r.solar.y, nowY=new Date().getFullYear();
