@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28 12:14",
+ "updated": "2026-11-28 12:43",
  "source": "https://link.inpock.co.kr/hgy671001",
  "items": [
   {
@@ -39020,6 +39020,61 @@
    "group": "numbered"
   },
   {
+   "id": 8565930,
+   "no": null,
+   "name": "T226 [광고] [NS홈쇼핑/대한항공] 프리미엄 상해/오진 4일 노옵션노쇼핑 오진수향마을 동",
+   "url": "https://naver.me/5LQOWtiQ",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8565924,
+   "no": null,
+   "name": "T225 [광고] [홍콩완전정복/1.5일자유] 홍콩 핵심투어 3박 5일",
+   "url": "https://naver.me/GprRSi5d",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8565922,
+   "no": null,
+   "name": "T233 [광고] [여행의 맛] 동유럽 4개국 9일 체오헝폴 / 직항 / 2대궁전, 난쟁이의",
+   "url": "https://naver.me/5eD25NnF",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8565905,
+   "no": null,
+   "name": "T232 [광고] [출발확정] 다카마쓰/오카야마/도쿠시마 3일핵심관광 온천호텔 일본3대정원 고",
+   "url": "https://naver.me/x6J9wsTp",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/28/2026-11-28-1795836590082.webp?w=400",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8565904,
+   "no": null,
+   "name": "T231 [광고] [출발확정] [유류비NO인상] 방콕/파타야 5일 베스트셀러 코럴아일랜드요트투",
+   "url": "https://naver.me/51uKA6ZH",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
    "id": 8551798,
    "no": null,
    "name": "T230 [광고] 시드니/멜버른/골드코스트 9일 호주3대도시",
@@ -39306,17 +39361,6 @@
    "group": "numbered"
   },
   {
-   "id": 8499811,
-   "no": null,
-   "name": "T200 [광고] [출발확정] 튀르키예 일주 9일 <국내선 2회/인솔자동반/힐튼2박/동굴호텔1",
-   "url": "https://naver.me/FCZVxibZ",
-   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/23/2026-11-23-1795465244169.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
    "id": 8499810,
    "no": null,
    "name": "T195 [광고] [출발확정][앙코르왓/툭툭이/전신마사지/6대특식] 캄보디아 씨엠립 패키지 3",
@@ -39416,28 +39460,6 @@
    "group": "numbered"
   },
   {
-   "id": 8458520,
-   "no": null,
-   "name": "T188 [광고] [슈퍼위크][출발확정][4성->5성호텔 무료UP] 다낭/바나힐/호이안 3박5",
-   "url": "https://naver.me/5nhKuQ5G",
-   "img": "",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
-   "id": 8458519,
-   "no": null,
-   "name": "T187 [광고] [출발확정][온세일, 사가] 일본 3대 미인온천/사가/유후인 3일 (온천호텔",
-   "url": "https://naver.me/G5kMNeoR",
-   "img": "",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
    "id": 8444793,
    "no": null,
    "name": "T185 [광고] [출발확정] [저녁출발] 괌 5일 힐튼 프리미어타워 오션뷰룸 NEW시내관광",
@@ -39476,28 +39498,6 @@
    "name": "T182 [광고] 출발확정[청주][대만 4일] 노쇼핑 핵심투어 101빌딩오전출발",
    "url": "https://naver.me/xpjJSMa7",
    "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/19/2026-11-19-1795119637852.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
-   "id": 8444785,
-   "no": null,
-   "name": "T181 [광고] [출발확정/좌석확보][온천미식큐슈] 후쿠오카/유후인/벳부/아소 4일 (럭셔리",
-   "url": "https://naver.me/5eD5NATw",
-   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/19/2026-11-19-1795119634010.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
-   "id": 8444781,
-   "no": null,
-   "name": "T180 [광고] 크리스마스 잔여 2석/ 대한항공 [마카오 1박+홍콩 2박] 핵심관광 자유시간",
-   "url": "https://naver.me/FJOQdlj8",
-   "img": "",
    "src": "travel",
    "srcName": "여행",
    "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
@@ -39570,11 +39570,11 @@
    "group": "numbered"
   },
   {
-   "id": 8412859,
+   "id": 8412861,
    "no": null,
-   "name": "T165 [광고] /크리스마스마켓/출발확정/동유럽3국 9일 [오/헝/체]/프라하2연박 /할슈타",
-   "url": "https://naver.me/xLNbVX92",
-   "img": "",
+   "name": "T166 [광고] 출발확정대한항공 탑승 [마카오 1박+홍콩 2박] 핵심관광 자유시간3박4일",
+   "url": "https://naver.me/FJOQdlj8",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/17/2026-11-17-1794947045052.webp?w=400",
    "src": "travel",
    "srcName": "여행",
    "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
@@ -39586,6 +39586,17 @@
    "name": "T164 [광고] 남성룸조인가능[아시아나항공 직항] 전 일정 특급호텔(월드체인 3박) 튀르키예",
    "url": "https://naver.me/GLhW0bFl",
    "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/17/2026-11-17-1794947027681.webp?w=400",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8412857,
+   "no": null,
+   "name": "T163 [광고] 튀르키예 일주 9일 직항 이색여행 특급호텔(월드체인3박+동굴호텔) 3대옵션포",
+   "url": "https://naver.me/FuN2eICc",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/17/2026-11-17-1794947005631.webp?w=400",
    "src": "travel",
    "srcName": "여행",
    "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
@@ -39625,11 +39636,33 @@
    "group": "numbered"
   },
   {
+   "id": 8397029,
+   "no": null,
+   "name": "T156 [광고] [마감임박] [고객만족 BEST] 뉴질랜드 남북섬 9일",
+   "url": "https://naver.me/FHOWOYcx",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/16/2026-11-16-1794860706584.webp?w=400",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
    "id": 8397025,
    "no": null,
    "name": "T152 [광고] [확정][부산][상해/대한항공][노쇼핑] 상해의 밤은 낮보다 아름답다 3박4",
    "url": "https://naver.me/FZoYCvHO",
    "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/16/2026-11-16-1794860665356.webp?w=400",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
+   "id": 8397024,
+   "no": null,
+   "name": "T151 [광고] 동유럽3국 9일/출발확정/ [오/헝/체]/프라하2연박 /할슈타트 /프라하전일",
+   "url": "https://naver.me/xLNbVX92",
+   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/16/2026-11-16-1794860656174.webp?w=400",
    "src": "travel",
    "srcName": "여행",
    "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
@@ -39790,6 +39823,17 @@
    "group": "numbered"
   },
   {
+   "id": 8368294,
+   "no": null,
+   "name": "T124 [광고] [출발확정][FULLON QINGDAO] 청도/핵심 3일 [시그니처][노팁/",
+   "url": "https://naver.me/xuFqD2NB",
+   "img": "",
+   "src": "travel",
+   "srcName": "여행",
+   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
+   "group": "numbered"
+  },
+  {
    "id": 8368293,
    "no": null,
    "name": "T123 [광고] 장가계/원가계 5일 대한항공 TOP PICK 노팁노옵션노쇼핑",
@@ -39816,17 +39860,6 @@
    "no": null,
    "name": "T119 [광고] [유럽의 정석] 서유럽 4개국 10일 / 스위스 융프라우 + 파리 베르사유궁",
    "url": "https://naver.me/F3EyUbZA",
-   "img": "",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
-   "id": 8368287,
-   "no": null,
-   "name": "T118 [광고] [좌석확보 출발확정][오키픽] 오키나와 로와지르본관2박+더비치타워 4일 (츄",
-   "url": "https://naver.me/xB70Eytc",
    "img": "",
    "src": "travel",
    "srcName": "여행",
@@ -40131,17 +40164,6 @@
    "group": "numbered"
   },
   {
-   "id": 8341051,
-   "no": null,
-   "name": "T070 [광고] 출발확정/조인행사[홍콩완전정복/1.5일자유] 홍콩 핵심투어 3박 5일",
-   "url": "https://naver.me/GprRSi5d",
-   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/12/2026-11-12-1794504292344.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
    "id": 8341048,
    "no": null,
    "name": "T067 [광고] [노옵션+노쇼핑][리무진차량] 상해 4일 동방명주타워 예원 황포강유람선 주가",
@@ -40224,17 +40246,6 @@
    "name": "T059 [광고] [여유와 지중해를 담은] 그리스일주 9일 산토리니2박 주말도착 인솔자동행",
    "url": "https://naver.me/52aWpmV5",
    "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/12/2026-11-12-1794504208705.webp?w=400",
-   "src": "travel",
-   "srcName": "여행",
-   "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
-   "group": "numbered"
-  },
-  {
-   "id": 8341034,
-   "no": null,
-   "name": "T058 [광고] X-MAS [여행의 맛] 동유럽 4개국 9일 체오헝폴 / 직항 / 2대궁전,",
-   "url": "https://naver.me/5eD25NnF",
-   "img": "https://d13k46lqgoj3d6.cloudfront.net/2026/11/12/2026-11-12-1794504205623.webp?w=400",
    "src": "travel",
    "srcName": "여행",
    "note": "네이버 여행 커넥트 활동으로, 예약 시 수수료를 받습니다.",
